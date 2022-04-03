@@ -34,4 +34,5 @@ public class Singer {
     public void setSingerImage(String singerImage) {
         this.singerImage = singerImage;
     }
+
 }

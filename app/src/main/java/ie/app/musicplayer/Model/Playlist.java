@@ -35,4 +35,5 @@ public class Playlist {
     public void setPlaylistImage(String playlistImage) {
         this.playlistImage = playlistImage;
     }
+
 }

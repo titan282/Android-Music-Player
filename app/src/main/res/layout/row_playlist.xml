@@ -21,7 +21,6 @@
             android:layout_gravity="center"
             android:scaleType="fitXY"
             android:src="@drawable/music_rect" />
-
         <TextView
             android:id="@+id/textviewplaylist"
             android:layout_width="match_parent"

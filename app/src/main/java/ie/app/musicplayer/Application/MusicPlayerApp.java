@@ -7,4 +7,5 @@ public class MusicPlayerApp extends Application {
     public void onCreate() {
         super.onCreate();
     }
+
 }
