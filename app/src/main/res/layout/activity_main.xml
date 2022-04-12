@@ -13,18 +13,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Song" />
-
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Playlist" />
-    </com.google.android.material.tabs.TabLayout>
+        app:layout_constraintTop_toTopOf="parent"
+/>
 
     <androidx.viewpager.widget.ViewPager
         android:layout_width="match_parent"
@@ -33,6 +23,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/tabLayout" />
+        app:layout_constraintTop_toTopOf="@+id/tabLayout"
+        android:id="@+id/viewPager"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
