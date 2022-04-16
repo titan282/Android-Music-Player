@@ -4,9 +4,9 @@ public class Playlist {
 
     private int playlistId;
     private String playlistName;
-    private String playlistImage;
+    private int playlistImage;
 
-    public Playlist(int playlistId, String playlistName, String playlistImage) {
+    public Playlist(int playlistId, String playlistName, int playlistImage) {
         this.playlistId = playlistId;
         this.playlistName = playlistName;
         this.playlistImage = playlistImage;
@@ -28,12 +28,11 @@ public class Playlist {
         this.playlistName = playlistName;
     }
 
-    public String getPlaylistImage() {
+    public int getPlaylistImage() {
         return playlistImage;
     }
 
-    public void setPlaylistImage(String playlistImage) {
+    public void setPlaylistImage(int playlistImage) {
         this.playlistImage = playlistImage;
     }
-
 }
