@@ -3,11 +3,11 @@ package ie.app.musicplayer.Model;
 public class Song {
     private int songId;
     private String songName;
-    private String songImage;
+    private int songImage;
     private String songSinger;
     private String songURL;
 
-    public Song(int songId, String songName, String songImage, String songSinger, String songURL) {
+    public Song(int songId, String songName, int songImage, String songSinger, String songURL) {
         this.songId = songId;
         this.songName = songName;
         this.songImage = songImage;
@@ -31,11 +31,11 @@ public class Song {
         this.songName = songName;
     }
 
-    public String getSongImage() {
+    public int getSongImage() {
         return songImage;
     }
 
-    public void setSongImage(String songImage) {
+    public void setSongImage(int songImage) {
         this.songImage = songImage;
     }
 
