@@ -2,6 +2,8 @@ package ie.app.musicplayer.Adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.database.Cursor;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,10 +12,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import java.util.List;
-
-import ie.app.musicplayer.Fragment.SongFragment;
 import ie.app.musicplayer.Model.Song;
 import ie.app.musicplayer.R;
 
@@ -73,8 +72,6 @@ public class SongListAdapter extends RecyclerView.Adapter<SongListAdapter.SongVi
             songName = itemView.findViewById(R.id.textViewSongName);
             songSinger = itemView.findViewById(R.id.textViewSingerName);
             songSave = itemView.findViewById(R.id.imageViewtimdanhsachbaihat);
-
-
         }
     }
 
