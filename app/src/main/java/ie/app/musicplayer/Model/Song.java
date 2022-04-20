@@ -2,14 +2,18 @@ package ie.app.musicplayer.Model;
 
 public class Song {
     private int songId;
+    private int duration;
     private String songName;
+    private String songAlbum;
     private int songImage;
     private String songSinger;
     private String songURL;
 
-    public Song(int songId, String songName, int songImage, String songSinger, String songURL) {
+    public Song(int songId, int duration, String songName, String songAlbum, int songImage, String songSinger, String songURL) {
         this.songId = songId;
+        this.duration = duration;
         this.songName = songName;
+        this.songAlbum = songAlbum;
         this.songImage = songImage;
         this.songSinger = songSinger;
         this.songURL = songURL;
