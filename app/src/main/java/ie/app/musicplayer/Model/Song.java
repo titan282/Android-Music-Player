@@ -1,6 +1,8 @@
 package ie.app.musicplayer.Model;
 
-public class Song {
+import java.io.Serializable;
+
+public class Song implements Serializable {
     private int songId;
     private int duration;
     private String songName;
@@ -57,6 +59,12 @@ public class Song {
 
     public void setSongURL(String songURL) {
         this.songURL = songURL;
+    }
+    public void setDuration(int duration){
+        this.duration = duration;
+    }
+    public int getDuration(){
+        return duration;
     }
 
 }

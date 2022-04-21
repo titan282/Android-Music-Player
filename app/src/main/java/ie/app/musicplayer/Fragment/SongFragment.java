@@ -2,6 +2,7 @@ package ie.app.musicplayer.Fragment;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -19,6 +20,8 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
+
+import ie.app.musicplayer.Activity.PlayControlActivity;
 import ie.app.musicplayer.Adapter.SongListAdapter;
 import ie.app.musicplayer.Model.Song;
 import ie.app.musicplayer.R;
@@ -29,14 +32,22 @@ public class SongFragment extends Fragment {
     private RecyclerView songView;
     private SongListAdapter songListAdapter;
     private ActivityResultLauncher<String> requestPermissionLauncher;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         view = inflater.inflate(R.layout.fragment_song, container, false);
         songView = view.findViewById(R.id.songView);
-        songListAdapter = new SongListAdapter(getContext());
+        songListAdapter = new SongListAdapter(getContext(), new SongListAdapter.ItemClickListener() {
+            @Override
+            public void onItemClick(Song song) {
+                Intent intent = new Intent(SongFragment.this.getActivity(), PlayControlActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("object_song",song);
+                intent.putExtras(bundle);
+                startActivity(intent);
+            }
+        });
 
         requestPermissionLauncher = registerForActivityResult(
                 new ActivityResultContracts.RequestPermission(), isGranted -> {
@@ -97,7 +108,7 @@ public class SongFragment extends Fragment {
                     MediaStore.Audio.Media.ALBUM,
                     MediaStore.Audio.Media.ARTIST,
                     MediaStore.Audio.Media.DURATION,
-                    MediaStore.Audio.Media.DATA
+                    MediaStore.Audio.Media.DATA,
             };
             String sortOrder = MediaStore.Audio.Media.TITLE + " ASC";
 
@@ -118,4 +129,7 @@ public class SongFragment extends Fragment {
         }
         return songList;
     }
+
+
+
 }
