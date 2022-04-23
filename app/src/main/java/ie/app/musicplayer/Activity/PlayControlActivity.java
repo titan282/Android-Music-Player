@@ -6,6 +6,7 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.View;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -47,102 +48,28 @@ public class PlayControlActivity extends AppCompatActivity {
         updateTimeSong();
 
         playPauseBtn.setOnClickListener(view -> {
-            if(mediaPlayer.isPlaying()){
-                pauseMusic();
-            }
-            else{
-                playMusic();
-            }
+            playpause();
         });
-
         previousBtn.setOnClickListener(view -> {
-            switch (loopStatus) {
-                case WHOLE:
-                case OFF:
-                    position = position > 0 ? --position : songList.size() - 1;
-                    break;
-            }
-
-            if (mediaPlayer.isPlaying()) {
-                mediaPlayer.stop();
-            }
-
-            mediaPlayer = MediaPlayer.create(getApplicationContext(), Uri.parse(songList.get(position).getSongURL()));
-            setTimeTotal();
-            setInfoToLayout(songList.get(position));
-            mediaPlayer.start();
+            previous();
         });
-
         nextBtn.setOnClickListener(view -> {
-            switch (loopStatus) {
-                case WHOLE:
-                case OFF:
-                    position = position < songList.size() - 1 ? ++position : 0;
-                    break;
-            }
-
-            if (mediaPlayer.isPlaying()) {
-                mediaPlayer.stop();
-            }
-
-            if (mediaPlayer.isPlaying()) {
-                mediaPlayer.stop();
-            }
-
-            mediaPlayer = MediaPlayer.create(getApplicationContext(), Uri.parse(songList.get(position).getSongURL()));
-            setTimeTotal();
-            setInfoToLayout(songList.get(position));
-            mediaPlayer.start();
+            next();
         });
-
         loopBtn.setOnClickListener(view -> {
-            switch (loopStatus) {
-                case OFF:
-                    loopStatus = Status.WHOLE;
-                    loopBtn.setImageResource(R.drawable.iconrepeatwhole);
-                    break;
-                case WHOLE:
-                    loopStatus = Status.SINGLE;
-                    loopBtn.setImageResource(R.drawable.iconrepeatsingle);
-                    break;
-                default:
-                    loopStatus = Status.OFF;
-                    loopBtn.setImageResource(R.drawable.iconrepeat);
-                    break;
-            }
+            loop();
         });
-
         shuffleBtn.setOnClickListener(view -> {
-            switch (shuffleStatus) {
-                case OFF:
-                    shuffleStatus = Status.ON;
-                    shuffleBtn.setImageResource(R.drawable.iconsuffleon);
-                    Song currentSong = songList.get(position);
-                    Collections.shuffle(songList);
-                    position = songList.indexOf(currentSong);
-                    // Shuffle songList Here
-                    break;
-                default:
-                    shuffleStatus = Status.OFF;
-                    currentSong = songList.get(position);
-                    songList = originalSongList;
-                    position = songList.indexOf(currentSong);
-                    shuffleBtn.setImageResource(R.drawable.iconsuffle);
-                    break;
-            }
+            shuffle();
         });
-
 
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
             }
-
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-
             }
-
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 mediaPlayer.seekTo(seekBar.getProgress());
@@ -155,6 +82,82 @@ public class PlayControlActivity extends AppCompatActivity {
         super.onDestroy();
         mediaPlayer.stop();
 //        mediaPlayer.release();
+    }
+    private void playpause(){
+        if(mediaPlayer.isPlaying()){
+            pauseMusic();
+        }
+        else{
+            playMusic();
+        }
+    }
+    private void next(){
+        switch (loopStatus) {
+            case WHOLE:
+            case OFF:
+                position = position < songList.size() - 1 ? ++position : 0;
+                break;
+        }
+
+        if (mediaPlayer.isPlaying()) {
+            mediaPlayer.stop();
+        }
+        mediaPlayer = MediaPlayer.create(getApplicationContext(), Uri.parse(songList.get(position).getSongURL()));
+        setTimeTotal();
+        setInfoToLayout(songList.get(position));
+        mediaPlayer.start();
+    }
+    private void previous(){
+        switch (loopStatus) {
+            case WHOLE:
+            case OFF:
+                position = position > 0 ? --position : songList.size() - 1;
+                break;
+        }
+
+        if (mediaPlayer.isPlaying()) {
+            mediaPlayer.stop();
+        }
+
+        mediaPlayer = MediaPlayer.create(getApplicationContext(), Uri.parse(songList.get(position).getSongURL()));
+        setTimeTotal();
+        setInfoToLayout(songList.get(position));
+        mediaPlayer.start();
+    }
+    private void loop(){
+        switch (loopStatus) {
+            case OFF:
+                loopStatus = Status.WHOLE;
+                loopBtn.setImageResource(R.drawable.iconrepeatwhole);
+                break;
+            case WHOLE:
+                loopStatus = Status.SINGLE;
+                loopBtn.setImageResource(R.drawable.iconrepeatsingle);
+                break;
+            default:
+                loopStatus = Status.OFF;
+                loopBtn.setImageResource(R.drawable.iconrepeat);
+                break;
+        }
+    }
+    private void shuffle(){
+        switch (shuffleStatus) {
+            case OFF:
+                shuffleStatus = Status.ON;
+                shuffleBtn.setImageResource(R.drawable.iconsuffleon);
+                Song currentSong = songList.get(position);
+                Collections.shuffle(songList);
+                position = songList.indexOf(currentSong);
+                // Shuffle songList Here
+                break;
+            default:
+                shuffleStatus = Status.OFF;
+                currentSong = songList.get(position);
+                songList = originalSongList;
+                position = songList.indexOf(currentSong);
+                shuffleBtn.setImageResource(R.drawable.iconsuffle);
+                break;
+        }
     }
     private void playMusic(){
         mediaPlayer.start();
@@ -177,7 +180,6 @@ public class PlayControlActivity extends AppCompatActivity {
         runtime = findViewById(R.id.textViewruntime);
         seekBar =findViewById(R.id.seekBartime);
     }
-
     private int getPosition(){
         Bundle bundle = getIntent().getExtras();
         if(bundle == null){
@@ -186,7 +188,6 @@ public class PlayControlActivity extends AppCompatActivity {
         position = (int) bundle.get("Position");
         return position;
     }
-
     private List<Song> getSongList() {
         Bundle bundle = getIntent().getExtras();
         if (bundle == null){
@@ -194,7 +195,6 @@ public class PlayControlActivity extends AppCompatActivity {
         }
         return (List<Song>) bundle.get("Playlist");
     }
-
     private void setTimeTotal(){
         SimpleDateFormat time = new SimpleDateFormat("mm:ss");
         duration.setText(time.format(mediaPlayer.getDuration()));
@@ -228,6 +228,9 @@ public class PlayControlActivity extends AppCompatActivity {
                 SimpleDateFormat timeFormat = new SimpleDateFormat("mm:ss");
                 runtime.setText(timeFormat.format(mediaPlayer.getCurrentPosition()));
                 seekBar.setProgress(mediaPlayer.getCurrentPosition());
+                if(mediaPlayer.getCurrentPosition()==mediaPlayer.getDuration()){
+                    next();
+                }
                 handler.postDelayed(this,500);
             }
         },100);
