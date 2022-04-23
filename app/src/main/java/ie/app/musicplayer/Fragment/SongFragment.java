@@ -12,6 +12,8 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -30,6 +32,7 @@ public class SongFragment extends Fragment {
 
     private View view;
     private RecyclerView songView;
+    private List<Song> songList;
     private SongListAdapter songListAdapter;
     private ActivityResultLauncher<String> requestPermissionLauncher;
     @Override
@@ -43,7 +46,8 @@ public class SongFragment extends Fragment {
             public void onItemClick(Song song) {
                 Intent intent = new Intent(SongFragment.this.getActivity(), PlayControlActivity.class);
                 Bundle bundle = new Bundle();
-                bundle.putSerializable("object_song",song);
+                bundle.putParcelableArrayList("Playlist", (ArrayList<? extends Parcelable>) songList);
+                bundle.putInt("Position", songList.indexOf(song));
                 intent.putExtras(bundle);
                 startActivity(intent);
             }
@@ -52,7 +56,8 @@ public class SongFragment extends Fragment {
         requestPermissionLauncher = registerForActivityResult(
                 new ActivityResultContracts.RequestPermission(), isGranted -> {
                     if (isGranted) {
-                        songListAdapter.setData(loadSongFromSharedStorage());
+                        loadSongFromSharedStorage();
+                        songListAdapter.setData(songList);
                     } else {
                         onRequestPermissionResult();
                     }
@@ -71,7 +76,8 @@ public class SongFragment extends Fragment {
     private void onRequestPermissionResult() {
         if (ContextCompat.checkSelfPermission(this.getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 == PackageManager.PERMISSION_GRANTED) {
-            songListAdapter.setData(loadSongFromSharedStorage());
+            loadSongFromSharedStorage();
+            songListAdapter.setData(songList);
         } else if (shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)){
             // In an educational UI, explain to the user why your app requires this
             // permission for a specific feature to behave as expected.
@@ -97,8 +103,8 @@ public class SongFragment extends Fragment {
         }
     }
 
-    public List<Song> loadSongFromSharedStorage() {
-        List<Song> songList = new ArrayList<>();
+    public void loadSongFromSharedStorage() {
+        songList = new ArrayList<>();
         if (ContextCompat.checkSelfPermission(this.getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 == PackageManager.PERMISSION_GRANTED) {
 
@@ -127,9 +133,5 @@ public class SongFragment extends Fragment {
                 }
             }
         }
-        return songList;
     }
-
-
-
 }

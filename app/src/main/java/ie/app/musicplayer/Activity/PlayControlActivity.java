@@ -2,20 +2,18 @@ package ie.app.musicplayer.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
-import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.view.View;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toolbar;
-
 import java.io.IOException;
-import java.net.URL;
 import java.text.SimpleDateFormat;
+import java.util.Collections;
+import java.util.List;
 
 import ie.app.musicplayer.Model.Song;
 import ie.app.musicplayer.R;
@@ -27,27 +25,114 @@ public class PlayControlActivity extends AppCompatActivity {
     private Toolbar collapse;
     private SeekBar seekBar;
     private MediaPlayer mediaPlayer;
+    private List<Song> songList;
+    private List<Song> originalSongList;
+    private int position = 0;
+
+    private enum Status {OFF, SINGLE, WHOLE, ON}
+    private Status shuffleStatus = Status.OFF;
+    private Status loopStatus = Status.OFF;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play_control);
         init();
-        Song song = getSong();
-        setInfoToLayout(song);
-        initMediaPlayer(song.getSongURL());
+        songList = getSongList();
+        originalSongList = songList;
+        position = getPosition();
+        setInfoToLayout(songList.get(position));
+        initMediaPlayer(songList.get(position).getSongURL());
         setTimeTotal();
         updateTimeSong();
-        playPauseBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(mediaPlayer.isPlaying()){
-                    pauseMusic();
-                }
-                else{
-                    playMusic();
-                }
+
+        playPauseBtn.setOnClickListener(view -> {
+            if(mediaPlayer.isPlaying()){
+                pauseMusic();
+            }
+            else{
+                playMusic();
             }
         });
+
+        previousBtn.setOnClickListener(view -> {
+            switch (loopStatus) {
+                case WHOLE:
+                case OFF:
+                    position = position > 0 ? --position : songList.size() - 1;
+                    break;
+            }
+
+            if (mediaPlayer.isPlaying()) {
+                mediaPlayer.stop();
+            }
+
+            mediaPlayer = MediaPlayer.create(getApplicationContext(), Uri.parse(songList.get(position).getSongURL()));
+            setTimeTotal();
+            setInfoToLayout(songList.get(position));
+            mediaPlayer.start();
+        });
+
+        nextBtn.setOnClickListener(view -> {
+            switch (loopStatus) {
+                case WHOLE:
+                case OFF:
+                    position = position < songList.size() - 1 ? ++position : 0;
+                    break;
+            }
+
+            if (mediaPlayer.isPlaying()) {
+                mediaPlayer.stop();
+            }
+
+            if (mediaPlayer.isPlaying()) {
+                mediaPlayer.stop();
+            }
+
+            mediaPlayer = MediaPlayer.create(getApplicationContext(), Uri.parse(songList.get(position).getSongURL()));
+            setTimeTotal();
+            setInfoToLayout(songList.get(position));
+            mediaPlayer.start();
+        });
+
+        loopBtn.setOnClickListener(view -> {
+            switch (loopStatus) {
+                case OFF:
+                    loopStatus = Status.WHOLE;
+                    loopBtn.setImageResource(R.drawable.iconrepeatwhole);
+                    break;
+                case WHOLE:
+                    loopStatus = Status.SINGLE;
+                    loopBtn.setImageResource(R.drawable.iconrepeatsingle);
+                    break;
+                default:
+                    loopStatus = Status.OFF;
+                    loopBtn.setImageResource(R.drawable.iconrepeat);
+                    break;
+            }
+        });
+
+        shuffleBtn.setOnClickListener(view -> {
+            switch (shuffleStatus) {
+                case OFF:
+                    shuffleStatus = Status.ON;
+                    shuffleBtn.setImageResource(R.drawable.iconsuffleon);
+                    Song currentSong = songList.get(position);
+                    Collections.shuffle(songList);
+                    position = songList.indexOf(currentSong);
+                    // Shuffle songList Here
+                    break;
+                default:
+                    shuffleStatus = Status.OFF;
+                    currentSong = songList.get(position);
+                    songList = originalSongList;
+                    position = songList.indexOf(currentSong);
+                    shuffleBtn.setImageResource(R.drawable.iconsuffle);
+                    break;
+            }
+        });
+
+
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
@@ -92,14 +177,24 @@ public class PlayControlActivity extends AppCompatActivity {
         runtime = findViewById(R.id.textViewruntime);
         seekBar =findViewById(R.id.seekBartime);
     }
-    private Song getSong(){
+
+    private int getPosition(){
         Bundle bundle = getIntent().getExtras();
         if(bundle == null){
+            return 0;
+        }
+        position = (int) bundle.get("Position");
+        return position;
+    }
+
+    private List<Song> getSongList() {
+        Bundle bundle = getIntent().getExtras();
+        if (bundle == null){
             return null;
         }
-        Song song = (Song) bundle.get("object_song");
-        return song;
+        return (List<Song>) bundle.get("Playlist");
     }
+
     private void setTimeTotal(){
         SimpleDateFormat time = new SimpleDateFormat("mm:ss");
         duration.setText(time.format(mediaPlayer.getDuration()));
@@ -110,7 +205,9 @@ public class PlayControlActivity extends AppCompatActivity {
         singerName.setText(song.getSongSinger());
     }
     private void initMediaPlayer(String URL){
-        mediaPlayer = new MediaPlayer();
+        if (mediaPlayer == null) {
+            mediaPlayer = new MediaPlayer();
+        }
 //        mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
         runtime.setText(""+mediaPlayer.getCurrentPosition());
         try {
