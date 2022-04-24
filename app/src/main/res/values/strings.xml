@@ -3,4 +3,15 @@
 
     <!-- song  -->
     <string name="singer">Ca sĩ</string>
+    <string name="random">Random</string>
+    <string name="previous">Previous</string>
+    <string name="pause">Pause</string>
+    <string name="next">Next</string>
+    <string name="repeat">Repeat</string>
+    <string name="totaltime">--:--</string>
+    <string name="runtime">--:--</string>
+    <string name="love">Love</string>
+    <string name="single">---</string>
+    <string name="title">------</string>
+    <string name="gredientbg">TODO</string>
 </resources>

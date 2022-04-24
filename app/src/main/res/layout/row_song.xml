@@ -4,7 +4,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:id="@+id/layout_row_song">
 
     <ImageView
         android:id="@+id/imageViewSongImage"
@@ -27,7 +28,6 @@
         android:layout_marginTop="16dp"
         android:maxWidth="300dp"
         android:text="Tên Bài Hát"
-        android:textColor="#151515"
         android:textSize="21sp"
         android:maxLines="1"
         app:layout_constraintStart_toEndOf="@+id/imageViewSongImage"

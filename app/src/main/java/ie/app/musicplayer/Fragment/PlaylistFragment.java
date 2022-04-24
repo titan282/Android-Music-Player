@@ -16,6 +16,7 @@ import java.util.List;
 
 import ie.app.musicplayer.Adapter.PlaylistListAdapter;
 import ie.app.musicplayer.Model.Playlist;
+import ie.app.musicplayer.Model.Song;
 import ie.app.musicplayer.R;
 
 public class PlaylistFragment extends Fragment {
@@ -41,12 +42,8 @@ public class PlaylistFragment extends Fragment {
 
         // List for testing
         List<Playlist> test = new ArrayList<>();
-        test.add(new Playlist(1, "Jazz", R.drawable.music_rect));
-        test.add(new Playlist(2, "Pop", R.drawable.music_rect));
-        test.add(new Playlist(3, "US/UK", R.drawable.music_rect));
-        test.add(new Playlist(4, "EDM", R.drawable.music_rect));
-        test.add(new Playlist(5, "Traditional", R.drawable.music_rect));
-        test.add(new Playlist(6, "Drum", R.drawable.music_rect));
+        test.add(new Playlist(1, "Jazz", R.drawable.music_rect, new ArrayList<Song>()));
+        test.add(new Playlist(2, "Pop", R.drawable.music_rect, new ArrayList<Song>()));
 
         playlistListAdapter.setData(test);
         playlistReCycleView.setAdapter(playlistListAdapter);

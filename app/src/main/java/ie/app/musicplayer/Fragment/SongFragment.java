@@ -2,6 +2,7 @@ package ie.app.musicplayer.Fragment;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,6 +21,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
+import ie.app.musicplayer.Activity.PlayControlActivity;
 import ie.app.musicplayer.Adapter.SongListAdapter;
 import ie.app.musicplayer.Model.Song;
 import ie.app.musicplayer.R;
@@ -27,6 +30,7 @@ public class SongFragment extends Fragment {
 
     private View view;
     private RecyclerView songView;
+    private List<Song> songList;
     private SongListAdapter songListAdapter;
     private ActivityResultLauncher<String> requestPermissionLauncher;
 
@@ -36,12 +40,23 @@ public class SongFragment extends Fragment {
 
         view = inflater.inflate(R.layout.fragment_song, container, false);
         songView = view.findViewById(R.id.songView);
-        songListAdapter = new SongListAdapter(getContext());
+        songListAdapter = new SongListAdapter(getContext(), new SongListAdapter.ItemClickListener() {
+            @Override
+            public void onItemClick(Song song) {
+                Intent intent = new Intent(SongFragment.this.getActivity(), PlayControlActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putParcelableArrayList("Playlist", (ArrayList<? extends Parcelable>) songList);
+                bundle.putInt("Position", songList.indexOf(song));
+                intent.putExtras(bundle);
+                startActivity(intent);
+            }
+        });
 
         requestPermissionLauncher = registerForActivityResult(
                 new ActivityResultContracts.RequestPermission(), isGranted -> {
                     if (isGranted) {
-                        songListAdapter.setData(loadSongFromSharedStorage());
+                        loadSongFromSharedStorage();
+                        songListAdapter.setData(songList);
                     } else {
                         onRequestPermissionResult();
                     }
@@ -60,7 +75,8 @@ public class SongFragment extends Fragment {
     private void onRequestPermissionResult() {
         if (ContextCompat.checkSelfPermission(this.getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 == PackageManager.PERMISSION_GRANTED) {
-            songListAdapter.setData(loadSongFromSharedStorage());
+            loadSongFromSharedStorage();
+            songListAdapter.setData(songList);
         } else if (shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)){
             // In an educational UI, explain to the user why your app requires this
             // permission for a specific feature to behave as expected.
@@ -86,8 +102,8 @@ public class SongFragment extends Fragment {
         }
     }
 
-    public List<Song> loadSongFromSharedStorage() {
-        List<Song> songList = new ArrayList<>();
+    public void loadSongFromSharedStorage() {
+        songList = new ArrayList<>();
         if (ContextCompat.checkSelfPermission(this.getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 == PackageManager.PERMISSION_GRANTED) {
 
@@ -97,7 +113,7 @@ public class SongFragment extends Fragment {
                     MediaStore.Audio.Media.ALBUM,
                     MediaStore.Audio.Media.ARTIST,
                     MediaStore.Audio.Media.DURATION,
-                    MediaStore.Audio.Media.DATA
+                    MediaStore.Audio.Media.DATA,
             };
             String sortOrder = MediaStore.Audio.Media.TITLE + " ASC";
 
@@ -116,6 +132,5 @@ public class SongFragment extends Fragment {
                 }
             }
         }
-        return songList;
     }
 }

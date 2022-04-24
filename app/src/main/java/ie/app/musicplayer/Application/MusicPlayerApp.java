@@ -10,6 +10,7 @@ public class MusicPlayerApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+
     }
 
 }
