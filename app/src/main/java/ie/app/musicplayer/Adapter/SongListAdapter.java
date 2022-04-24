@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -51,6 +52,15 @@ public class SongListAdapter extends RecyclerView.Adapter<SongListAdapter.SongVi
         holder.songImage.setImageResource(song.getSongImage());
         holder.songName.setText(song.getSongName());
         holder.songSinger.setText(song.getSongSinger());
+        holder.menuMore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                PopupMenu popupMenu = new PopupMenu(context, view);
+                popupMenu.getMenuInflater().inflate(R.menu.popup, popupMenu.getMenu());
+                popupMenu.show();
+//                popupMenu.setOnMenuItemClickListener();
+            }
+           });
         holder.layoutSongItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -72,6 +82,7 @@ public class SongListAdapter extends RecyclerView.Adapter<SongListAdapter.SongVi
         private ImageView songImage;
         private TextView songName;
         private TextView songSinger;
+        private ImageView menuMore;
         private ImageView songSave;
         private ItemClickListener itemClickListener;
         private ConstraintLayout layoutSongItem;
@@ -81,7 +92,8 @@ public class SongListAdapter extends RecyclerView.Adapter<SongListAdapter.SongVi
             songImage = itemView.findViewById(R.id.imageViewSongImage);
             songName = itemView.findViewById(R.id.textViewSongName);
             songSinger = itemView.findViewById(R.id.textViewSingerName);
-            songSave = itemView.findViewById(R.id.imageViewtimdanhsachbaihat);
+            menuMore = itemView.findViewById(R.id.menuMore);
+//            songSave = itemView.findViewById(R.id.imageViewtimdanhsachbaihat);
             layoutSongItem = itemView.findViewById(R.id.layout_row_song);
         }
 

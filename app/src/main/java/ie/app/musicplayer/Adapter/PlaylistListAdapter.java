@@ -1,6 +1,7 @@
 package ie.app.musicplayer.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import ie.app.musicplayer.Model.Playlist;
+import ie.app.musicplayer.PlaylistDetail;
 import ie.app.musicplayer.R;
 
 public class PlaylistListAdapter extends RecyclerView.Adapter<PlaylistListAdapter.PlaylistViewHolder> {
@@ -40,6 +42,14 @@ public class PlaylistListAdapter extends RecyclerView.Adapter<PlaylistListAdapte
         if (playlist == null) return;
         holder.playListName.setText(playlist.getPlaylistName());
         holder.playListImg.setImageResource(playlist.getPlaylistImage());
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, PlaylistDetail.class);
+//                intent.putExtra("PlaylistName", );
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override

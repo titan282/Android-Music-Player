@@ -5,9 +5,13 @@
       <map>
         <entry key="..\:/AndroidStudio/music-player/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.2265" />
         <entry key="..\:/AndroidStudio/music-player/app/src/main/res/drawable/ic_launcher_background.xml" value="0.2265" />
+        <entry key="..\:/AndroidStudio/music-player/app/src/main/res/drawable/more_icon.xml" value="0.2265" />
         <entry key="..\:/AndroidStudio/music-player/app/src/main/res/layout/activity_main.xml" value="0.22826086956521738" />
+        <entry key="..\:/AndroidStudio/music-player/app/src/main/res/layout/activity_playlist_detail.xml" value="0.22826086956521738" />
         <entry key="..\:/AndroidStudio/music-player/app/src/main/res/layout/fragment_song.xml" value="0.22826086956521738" />
-        <entry key="..\:/AndroidStudio/music-player/app/src/main/res/layout/row_song.xml" value="0.22826086956521738" />
+        <entry key="..\:/AndroidStudio/music-player/app/src/main/res/layout/row_playlist.xml" value="0.22826086956521738" />
+        <entry key="..\:/AndroidStudio/music-player/app/src/main/res/layout/row_song.xml" value="0.2" />
+        <entry key="..\:/AndroidStudio/music-player/app/src/main/res/menu/popup.xml" value="0.25416666666666665" />
         <entry key="..\:/Education/Third-S/Mobile/music-player/app/src/main/res/layout/activity_main.xml" value="0.2269021739130435" />
         <entry key="..\:/Education/Third-S/Mobile/music-player/app/src/main/res/layout/activity_play_control.xml" value="0.2269021739130435" />
         <entry key="..\:/Education/Third-S/Mobile/music-player/app/src/main/res/layout/fragment_playlist.xml" value="0.2269021739130435" />
