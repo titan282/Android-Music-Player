@@ -12,7 +12,6 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -22,7 +21,6 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
-
 import ie.app.musicplayer.Activity.PlayControlActivity;
 import ie.app.musicplayer.Adapter.SongListAdapter;
 import ie.app.musicplayer.Model.Song;
@@ -35,6 +33,7 @@ public class SongFragment extends Fragment {
     private List<Song> songList;
     private SongListAdapter songListAdapter;
     private ActivityResultLauncher<String> requestPermissionLauncher;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
