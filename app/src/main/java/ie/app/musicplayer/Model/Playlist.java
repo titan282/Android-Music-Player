@@ -11,6 +11,18 @@ public class Playlist implements Parcelable {
     private int playlistImage;
     private List<Song> songList;
 
+    public List<Song> getSongList() {
+        return songList;
+    }
+
+    public void setSongList(List<Song> songList) {
+        this.songList = songList;
+    }
+
+    public void addToSongList(Song song){
+        songList.add(song);
+    }
+
     public Playlist(int playlistId, String playlistName, int playlistImage, List<Song> songList) {
         this.playlistId = playlistId;
         this.playlistName = playlistName;
