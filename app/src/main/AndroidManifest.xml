@@ -13,7 +13,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MusicPlayer">
         <activity
-            android:name=".PlaylistDetail"
+            android:name=".Activity.PlayControlActivity"
+            android:exported="false" />
+       <activity
+            android:name=".Activity.PlayControlActivity"
             android:exported="false" />
         <activity
             android:name=".Activity.HomeActivity"

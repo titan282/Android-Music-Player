@@ -10,8 +10,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 import ie.app.musicplayer.Model.Song;
@@ -22,9 +24,10 @@ public class SongListAdapter extends RecyclerView.Adapter<SongListAdapter.SongVi
 
     private Context context;
     private List<Song> songList;
-
-    public SongListAdapter(Context context) {
+    private ItemClickListener itemClickListener;
+    public SongListAdapter(Context context, ItemClickListener itemClickListener) {
         this.context = context;
+        this.itemClickListener = itemClickListener;
     }
 
     public void setData(List<Song> list) {
@@ -36,7 +39,7 @@ public class SongListAdapter extends RecyclerView.Adapter<SongListAdapter.SongVi
     @Override
     public SongViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_song, parent, false);
-        return new SongViewHolder(view);
+        return new SongViewHolder(view, itemClickListener);
     }
 
     @Override
@@ -57,6 +60,12 @@ public class SongListAdapter extends RecyclerView.Adapter<SongListAdapter.SongVi
                 popupMenu.show();
 //                popupMenu.setOnMenuItemClickListener();
             }
+           });
+        holder.layoutSongItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                itemClickListener.onItemClick(song);
+            }
         });
     }
 
@@ -68,15 +77,16 @@ public class SongListAdapter extends RecyclerView.Adapter<SongListAdapter.SongVi
         return 0;
     }
 
-    public class SongViewHolder extends RecyclerView.ViewHolder {
+    public class SongViewHolder extends RecyclerView.ViewHolder{
 
         private ImageView songImage;
         private TextView songName;
         private TextView songSinger;
         private ImageView menuMore;
         private ImageView songSave;
-
-        public SongViewHolder(@NonNull View itemView) {
+        private ItemClickListener itemClickListener;
+        private ConstraintLayout layoutSongItem;
+        public SongViewHolder(@NonNull View itemView, ItemClickListener itemClickLister) {
             super(itemView);
 
             songImage = itemView.findViewById(R.id.imageViewSongImage);
@@ -84,7 +94,14 @@ public class SongListAdapter extends RecyclerView.Adapter<SongListAdapter.SongVi
             songSinger = itemView.findViewById(R.id.textViewSingerName);
             menuMore = itemView.findViewById(R.id.menuMore);
 //            songSave = itemView.findViewById(R.id.imageViewtimdanhsachbaihat);
+            layoutSongItem = itemView.findViewById(R.id.layout_row_song);
         }
+
+
+    }
+
+    public interface ItemClickListener {
+        void onItemClick(Song song);
     }
 
 }
