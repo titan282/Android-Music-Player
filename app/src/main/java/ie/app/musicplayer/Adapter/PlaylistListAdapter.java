@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import ie.app.musicplayer.Model.Playlist;
-import ie.app.musicplayer.PlaylistDetail;
+import ie.app.musicplayer.Activity.PlaylistDetailActivity;
 import ie.app.musicplayer.R;
 
 public class PlaylistListAdapter extends RecyclerView.Adapter<PlaylistListAdapter.PlaylistViewHolder> {
@@ -45,7 +45,7 @@ public class PlaylistListAdapter extends RecyclerView.Adapter<PlaylistListAdapte
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(context, PlaylistDetail.class);
+                Intent intent = new Intent(context, PlaylistDetailActivity.class);
 //                intent.putExtra("PlaylistName", );
                 context.startActivity(intent);
             }

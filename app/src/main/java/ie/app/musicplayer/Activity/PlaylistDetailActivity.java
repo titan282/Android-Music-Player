@@ -1,4 +1,4 @@
-package ie.app.musicplayer;
+package ie.app.musicplayer.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
@@ -10,8 +10,9 @@ import java.util.ArrayList;
 
 import ie.app.musicplayer.Model.Playlist;
 import ie.app.musicplayer.Model.Song;
+import ie.app.musicplayer.R;
 
-public class PlaylistDetail extends AppCompatActivity {
+public class PlaylistDetailActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
     ImageView playlistImage;

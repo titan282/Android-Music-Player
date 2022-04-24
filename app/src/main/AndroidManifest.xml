@@ -16,7 +16,7 @@
             android:name=".Activity.PlayControlActivity"
             android:exported="false" />
        <activity
-            android:name=".Activity.PlayControlActivity"
+            android:name=".Activity.PlaylistDetailActivity"
             android:exported="false" />
         <activity
             android:name=".Activity.HomeActivity"
