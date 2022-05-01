@@ -231,7 +231,8 @@ public class PlayControlActivity extends AppCompatActivity {
                 if(mediaPlayer.getCurrentPosition()==mediaPlayer.getDuration()){
                     next();
                 }
-                handler.postDelayed(this,100);
+                handler.postDelayed(this,100
+                );
             }
         },100);
     }
