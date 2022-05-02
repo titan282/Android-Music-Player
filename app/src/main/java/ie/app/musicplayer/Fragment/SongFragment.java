@@ -23,6 +23,8 @@ import java.util.ArrayList;
 import java.util.List;
 import ie.app.musicplayer.Activity.PlayControlActivity;
 import ie.app.musicplayer.Adapter.SongListAdapter;
+import ie.app.musicplayer.Application.MusicPlayerApp;
+import ie.app.musicplayer.Database.DBManager;
 import ie.app.musicplayer.Model.Song;
 import ie.app.musicplayer.R;
 
@@ -34,10 +36,11 @@ public class SongFragment extends Fragment {
     private SongListAdapter songListAdapter;
     private ActivityResultLauncher<String> requestPermissionLauncher;
 
+    private DBManager dbManager;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
+        dbManager = new DBManager(getContext());
         view = inflater.inflate(R.layout.fragment_song, container, false);
         songView = view.findViewById(R.id.songView);
         songListAdapter = new SongListAdapter(getContext(), new SongListAdapter.ItemClickListener() {
@@ -112,7 +115,6 @@ public class SongFragment extends Fragment {
                     MediaStore.Audio.Media.TITLE,
                     MediaStore.Audio.Media.ALBUM,
                     MediaStore.Audio.Media.ARTIST,
-                    MediaStore.Audio.Media.DURATION,
                     MediaStore.Audio.Media.DATA,
             };
             String sortOrder = MediaStore.Audio.Media.TITLE + " ASC";
@@ -125,10 +127,9 @@ public class SongFragment extends Fragment {
                     String songName = cursor.getString(1);
                     String songAlbum = cursor.getString(2);
                     String songSinger = cursor.getString(3);
-                    int songDuration = cursor.getInt(4);
-                    String songURL = cursor.getString(5);
+                    String songURL = cursor.getString(4);
 
-                    songList.add(new Song(songId, songDuration, songName, songAlbum, R.drawable.music_rect, songSinger, songURL));
+                    songList.add(new Song(songId, songName, songAlbum, R.drawable.music_rect, songSinger, songURL));
                 }
             }
         }

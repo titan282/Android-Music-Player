@@ -14,17 +14,21 @@ import android.util.Log;
 import com.google.android.material.tabs.TabLayout;
 import ie.app.musicplayer.Adapter.SongListAdapter;
 import ie.app.musicplayer.Adapter.ViewPagerAdapter;
+import ie.app.musicplayer.Application.MusicPlayerApp;
+import ie.app.musicplayer.Database.DBManager;
 import ie.app.musicplayer.R;
 
 public class HomeActivity extends AppCompatActivity {
 
     private TabLayout mTabLayout;
     private ViewPager mViewPager;
+    private DBManager dbManager;
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        dbManager = new DBManager(HomeActivity.this);
         mTabLayout = findViewById(R.id.tabLayout);
         mViewPager = findViewById(R.id.viewPager);
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager(),
@@ -33,5 +37,11 @@ public class HomeActivity extends AppCompatActivity {
         mTabLayout.setupWithViewPager(mViewPager);
         mTabLayout.getTabAt(0).setText("Song");
         mTabLayout.getTabAt(1).setText("Playlist");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        dbManager.close();
     }
 }
