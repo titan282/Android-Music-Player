@@ -112,7 +112,6 @@ public class SongFragment extends Fragment {
                     MediaStore.Audio.Media.TITLE,
                     MediaStore.Audio.Media.ALBUM,
                     MediaStore.Audio.Media.ARTIST,
-                    MediaStore.Audio.Media.DURATION,
                     MediaStore.Audio.Media.DATA,
             };
             String sortOrder = MediaStore.Audio.Media.TITLE + " ASC";
@@ -125,10 +124,9 @@ public class SongFragment extends Fragment {
                     String songName = cursor.getString(1);
                     String songAlbum = cursor.getString(2);
                     String songSinger = cursor.getString(3);
-                    int songDuration = cursor.getInt(4);
-                    String songURL = cursor.getString(5);
+                    String songURL = cursor.getString(4);
 
-                    songList.add(new Song(songId, songDuration, songName, songAlbum, R.drawable.music_rect, songSinger, songURL));
+                    songList.add(new Song(songId, songName, songAlbum, R.drawable.music_rect, songSinger, songURL));
                 }
             }
         }
