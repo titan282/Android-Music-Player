@@ -61,14 +61,14 @@ public class DBManager {
     }
 
     // add 1 song to playlist
-    public void addSongToPlaylist(Song song, Playlist playlist){
+    public void addSongToPlaylist(Song song, String playlistName){
         ContentValues values = new ContentValues();
         values.put(DBHelper.SONG_NAME,song.getSongName());
         values.put(DBHelper.SONG_ALBUM,song.getSongAlbum());
         values.put(DBHelper.SONG_IMG,song.getSongImage());
         values.put(DBHelper.SONG_SINGER,song.getSongSinger());
         values.put(DBHelper.SONG_URL,song.getSongURL());
-        values.put(DBHelper.PLAYLIST_ID,getPlaylistID(playlist.getPlaylistName()));
+        values.put(DBHelper.PLAYLIST_ID,getPlaylistID(playlistName));
         database.insert(DBHelper.SONG_TABLE,null,values);
     }
 
