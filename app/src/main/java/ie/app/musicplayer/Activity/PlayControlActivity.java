@@ -16,6 +16,7 @@ import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.List;
 
+import ie.app.musicplayer.Database.DBManager;
 import ie.app.musicplayer.Model.Song;
 import ie.app.musicplayer.R;
 
@@ -26,6 +27,7 @@ public class PlayControlActivity extends AppCompatActivity {
     private Toolbar collapse;
     private SeekBar seekBar;
     private MediaPlayer mediaPlayer;
+    private DBManager dbManager;
     private List<Song> songList;
     private List<Song> originalSongList;
     private int position = 0;
@@ -36,6 +38,7 @@ public class PlayControlActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        dbManager = new DBManager(PlayControlActivity.this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play_control);
         init();
@@ -80,6 +83,7 @@ public class PlayControlActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        dbManager.close();
         mediaPlayer.stop();
 //        mediaPlayer.release();
     }

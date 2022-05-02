@@ -23,6 +23,8 @@ import java.util.ArrayList;
 import java.util.List;
 import ie.app.musicplayer.Activity.PlayControlActivity;
 import ie.app.musicplayer.Adapter.SongListAdapter;
+import ie.app.musicplayer.Application.MusicPlayerApp;
+import ie.app.musicplayer.Database.DBManager;
 import ie.app.musicplayer.Model.Song;
 import ie.app.musicplayer.R;
 
@@ -34,10 +36,11 @@ public class SongFragment extends Fragment {
     private SongListAdapter songListAdapter;
     private ActivityResultLauncher<String> requestPermissionLauncher;
 
+    private DBManager dbManager;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
+        dbManager = new DBManager(getContext());
         view = inflater.inflate(R.layout.fragment_song, container, false);
         songView = view.findViewById(R.id.songView);
         songListAdapter = new SongListAdapter(getContext(), new SongListAdapter.ItemClickListener() {

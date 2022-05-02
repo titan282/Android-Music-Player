@@ -19,8 +19,8 @@ public class DBManager {
     private SQLiteDatabase database;
     private DBHelper dbHelper;
 
-    public DBManager(@Nullable Context context, @Nullable String name, @Nullable SQLiteDatabase.CursorFactory factory, int version){
-        dbHelper = new DBHelper(context, name, factory, version);
+    public DBManager(@Nullable Context context){
+        dbHelper = new DBHelper(context);
     }
     public void open() throws SQLException {
         database = dbHelper.getWritableDatabase();

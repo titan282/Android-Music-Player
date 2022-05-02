@@ -20,6 +20,8 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String PLAYLIST_NAME = "PlaylistName";
     public static final String PLAYLIST_IMG = "PlaylistImage";
 
+    private static final String DATABASE_NAME = "musicplayer.db";
+    private static final int VERSION = 1;
     // Song: ID, Name, Album, img, singer, url, playlistID
     private static final String DATABASE_CREATE_TABLE_SONG =
             String.format("CREATE TABLE IF NOT EXIST %s" +
@@ -36,8 +38,8 @@ public class DBHelper extends SQLiteOpenHelper {
             String.format("CREATE TABLE IF NOT EXIST %s " +
             "(%s INTEGER PRIMARY KEY AUTOINCREMENT," +
             "%s TEXT NOT NULL);",PLAYLIST_TABLE,PLAYLIST_ID,PLAYLIST_NAME);
-    public DBHelper(@Nullable Context context, @Nullable String name, @Nullable SQLiteDatabase.CursorFactory factory, int version) {
-        super(context, name, factory, version);
+    public DBHelper(@Nullable Context context) {
+        super(context, DATABASE_NAME, null, VERSION);
     }
     //Function for CREATE, DELETE, UPDATE,...
     public void query(String sql){
