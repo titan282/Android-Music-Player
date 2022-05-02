@@ -41,6 +41,8 @@ public class SongFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         dbManager = new DBManager(getContext());
+//                dbManager.open();
+//        dbManager.addPlaylist("Love");
         view = inflater.inflate(R.layout.fragment_song, container, false);
         songView = view.findViewById(R.id.songView);
         songListAdapter = new SongListAdapter(getContext(), new SongListAdapter.ItemClickListener() {

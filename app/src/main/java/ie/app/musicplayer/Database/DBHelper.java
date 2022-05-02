@@ -15,6 +15,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String SONG_IMG = "SongImage";
     public static final String SONG_SINGER = "SongSinger";
     public static final String SONG_URL = "SongURL";
+
     public static final String PLAYLIST_TABLE = "Playlists";
     public static final String PLAYLIST_ID = "PlaylistID";
     public static final String PLAYLIST_NAME = "PlaylistName";
@@ -24,20 +25,20 @@ public class DBHelper extends SQLiteOpenHelper {
     private static final int VERSION = 1;
     // Song: ID, Name, Album, img, singer, url, playlistID
     private static final String DATABASE_CREATE_TABLE_SONG =
-            String.format("CREATE TABLE IF NOT EXIST %s" +
+            String.format("CREATE TABLE IF NOT EXISTS %s" +
                     "(%s INTEGER PRIMARY KEY AUTOINCREMENT," +
                     "%s TEXT NOT NULL," +
                     "%s TEXT NOT NULL," +
                     "%s INTEGER NOT NULL," +
                     "%s TEXT NOT NULL," +
                     "%s TEXT NOT NULL," +
-                    "%s INTEGER",SONG_TABLE,SONG_ID,SONG_NAME,SONG_ALBUM,SONG_IMG, SONG_SINGER, SONG_URL, PLAYLIST_ID);
+                    "%s INTEGER);",SONG_TABLE,SONG_ID,SONG_NAME,SONG_ALBUM,SONG_IMG, SONG_SINGER, SONG_URL, PLAYLIST_ID);
 
-    // Playlist: ID, Name
+    // Playlists(ID,Name)
     private static final String DATABASE_CREATE_TABLE_PLAYLIST =
-            String.format("CREATE TABLE IF NOT EXIST %s " +
+            String.format("CREATE TABLE IF NOT EXISTS %s " +
             "(%s INTEGER PRIMARY KEY AUTOINCREMENT," +
-            "%s TEXT NOT NULL);",PLAYLIST_TABLE,PLAYLIST_ID,PLAYLIST_NAME);
+            "%s TEXT);",PLAYLIST_TABLE,PLAYLIST_ID,PLAYLIST_NAME);
     public DBHelper(@Nullable Context context) {
         super(context, DATABASE_NAME, null, VERSION);
     }
@@ -55,8 +56,8 @@ public class DBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        query(DATABASE_CREATE_TABLE_SONG);
-        query(DATABASE_CREATE_TABLE_PLAYLIST);
+        sqLiteDatabase.execSQL(DATABASE_CREATE_TABLE_SONG);
+        sqLiteDatabase.execSQL(DATABASE_CREATE_TABLE_PLAYLIST);
     }
 
     @Override

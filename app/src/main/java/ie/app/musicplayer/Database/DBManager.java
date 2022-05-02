@@ -22,7 +22,7 @@ public class DBManager {
     public DBManager(@Nullable Context context){
         dbHelper = new DBHelper(context);
     }
-    public void open() throws SQLException {
+    public void open()  {
         database = dbHelper.getWritableDatabase();
     }
 
@@ -30,10 +30,12 @@ public class DBManager {
         database.close();
     }
 
-    public void addPlaylist(Playlist playlist){
+    public void addPlaylist(String playlistName){
+        open();
         ContentValues values = new ContentValues();
-        values.put(DBHelper.PLAYLIST_NAME,playlist.getPlaylistName());
+        values.put(DBHelper.PLAYLIST_NAME,playlistName);
         database.insert(DBHelper.PLAYLIST_TABLE,null,values);
+        close();
     }
     public void addSong(Song song){
     }
