@@ -35,8 +35,11 @@ public class HomeActivity extends AppCompatActivity {
                 FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         mViewPager.setAdapter(adapter);
         mTabLayout.setupWithViewPager(mViewPager);
-        mTabLayout.getTabAt(0).setText("Song");
-        mTabLayout.getTabAt(1).setText("Playlist");
+        mTabLayout.getTabAt(0).setText("Songs");
+        mTabLayout.getTabAt(1).setText("Playlists");
+        mTabLayout.getTabAt(2).setText("Albums");
+        mTabLayout.getTabAt(3).setText("Artists");
+
     }
 
     @Override
