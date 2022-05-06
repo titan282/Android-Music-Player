@@ -6,12 +6,14 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.os.Bundle;
+
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -19,8 +21,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import ie.app.musicplayer.Activity.PlayControlActivity;
 import ie.app.musicplayer.Adapter.SongListAdapter;
 import ie.app.musicplayer.Application.MusicPlayerApp;
@@ -35,8 +39,10 @@ public class SongFragment extends Fragment {
     private List<Song> songList;
     private SongListAdapter songListAdapter;
     private ActivityResultLauncher<String> requestPermissionLauncher;
+    private Thread loadingThread;
 
     private DBManager dbManager;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -82,7 +88,7 @@ public class SongFragment extends Fragment {
                 == PackageManager.PERMISSION_GRANTED) {
             loadSongFromSharedStorage();
             songListAdapter.setData(songList);
-        } else if (shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)){
+        } else if (shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
             // In an educational UI, explain to the user why your app requires this
             // permission for a specific feature to behave as expected.
             AlertDialog.Builder alertDialog = new AlertDialog.Builder(this.getContext());
@@ -123,16 +129,25 @@ public class SongFragment extends Fragment {
 
             try (Cursor cursor = this.getContext().getApplicationContext().getContentResolver().query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
                     projection, null, null, sortOrder)) {
-                while (cursor.moveToNext()) {
-                    Log.d("Permission", "loadSong");
-                    int songId = cursor.getInt(0);
-                    String songName = cursor.getString(1);
-                    String songAlbum = cursor.getString(2);
-                    String songSinger = cursor.getString(3);
-                    String songURL = cursor.getString(4);
+                loadingThread = new Thread() {
+                    @Override
+                    public void run() {
+                        super.run();
+                        while (cursor.moveToNext()) {
+                            int songId = cursor.getInt(0);
+                            String songName = cursor.getString(1);
+                            String songAlbum = cursor.getString(2);
+                            String songSinger = cursor.getString(3);
+                            String songURL = cursor.getString(4);
 
-                    songList.add(new Song(songId, songName, songAlbum, R.drawable.music_rect, songSinger, songURL));
-                }
+                            Song song = new Song(songId, songName, songAlbum, R.drawable.music_rect, songSinger, songURL);
+                            song.loadEmbeddedPicture();
+                            songList.add(song);
+
+                        }
+                    }
+                };
+                loadingThread.run();
             }
         }
     }

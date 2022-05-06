@@ -2,17 +2,24 @@ package ie.app.musicplayer.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toolbar;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -24,6 +31,7 @@ import ie.app.musicplayer.R;
 
 public class PlayControlActivity extends AppCompatActivity {
     private ImageButton playPauseBtn, previousBtn, nextBtn, loopBtn, shuffleBtn;
+    private ImageView songPicture;
     private TextView songName, singerName;
     private TextView duration, runtime;
     private Toolbar collapse;
@@ -35,7 +43,7 @@ public class PlayControlActivity extends AppCompatActivity {
     private int position = 0;
 
     private enum Status {OFF, SINGLE, WHOLE, ON}
-    private Thread changeSongThread;
+    private Thread changeSongThread, setInfoThread;
 
     private Status shuffleStatus = Status.OFF;
     private Status loopStatus = Status.OFF;
@@ -202,6 +210,7 @@ public class PlayControlActivity extends AppCompatActivity {
         duration = findViewById(R.id.textViewtimetotal);
         runtime = findViewById(R.id.textViewruntime);
         seekBar = findViewById(R.id.seekBartime);
+        songPicture = findViewById(R.id.thumnail);
     }
 
     private int getPosition() {
@@ -228,8 +237,26 @@ public class PlayControlActivity extends AppCompatActivity {
     }
 
     private void setInfoToLayout(Song song) {
-        songName.setText(song.getSongName());
-        singerName.setText(song.getSongSinger());
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                songName.setText(song.getSongName());
+                singerName.setText(song.getSongSinger());
+                MediaMetadataRetriever mmr = new MediaMetadataRetriever();
+                mmr.setDataSource(song.getSongURL());
+                byte[] artBytes = mmr.getEmbeddedPicture();
+                if (artBytes != null) {
+                    InputStream is = new ByteArrayInputStream(artBytes);
+                    Bitmap bitmap = BitmapFactory.decodeStream(is);
+                    songPicture.setImageBitmap(bitmap);
+                    Log.d("setImage - PlayControlActivity", "Check");
+                } else {
+                    songPicture.setImageResource(song.getSongImage());
+                    Log.d("setImage - PlayControlActivity", "Check 2");
+                }
+                mmr.release();
+            }
+        });
     }
 
     private void initMediaPlayer(String URL) {
@@ -239,10 +266,14 @@ public class PlayControlActivity extends AppCompatActivity {
 //        mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
         runtime.setText("" + mediaPlayer.getCurrentPosition());
         try {
+            if (mediaPlayer.isPlaying()) {
+                mediaPlayer.pause();
+            }
             mediaPlayer.setDataSource(URL);
+            mediaPlayer.setOnPreparedListener(mediaPlayer -> {
+                mediaPlayer.start();
+            });
             mediaPlayer.prepare();
-            mediaPlayer.start();
-
 
         } catch (IOException e) {
             e.printStackTrace();
