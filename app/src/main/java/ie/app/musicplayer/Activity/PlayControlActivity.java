@@ -14,6 +14,7 @@ import android.widget.Toolbar;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -46,7 +47,7 @@ public class PlayControlActivity extends AppCompatActivity {
         setContentView(R.layout.activity_play_control);
         init();
         songList = getSongList();
-        originalSongList = songList;
+        originalSongList = new ArrayList<>(songList);
         position = getPosition();
         setInfoToLayout(songList.get(position));
         initMediaPlayer(songList.get(position).getSongURL());
@@ -88,7 +89,7 @@ public class PlayControlActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        dbManager.close();
+//        dbManager.close();
         mediaPlayer.stop();
 //        mediaPlayer.release();
     }
@@ -153,7 +154,7 @@ public class PlayControlActivity extends AppCompatActivity {
             default:
                 shuffleStatus = Status.OFF;
                 currentSong = songList.get(position);
-                songList = originalSongList;
+                songList = new ArrayList<>(originalSongList);
                 position = songList.indexOf(currentSong);
                 shuffleBtn.setImageResource(R.drawable.iconsuffle);
                 break;
