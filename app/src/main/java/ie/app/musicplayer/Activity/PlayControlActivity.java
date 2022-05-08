@@ -17,6 +17,8 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toolbar;
 
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -26,11 +28,12 @@ import java.util.Collections;
 import java.util.List;
 
 import ie.app.musicplayer.Database.DBManager;
+import ie.app.musicplayer.Fragment.PlayControlBottomSheetFragment;
 import ie.app.musicplayer.Model.Song;
 import ie.app.musicplayer.R;
 
 public class PlayControlActivity extends AppCompatActivity {
-    private ImageButton playPauseBtn, previousBtn, nextBtn, loopBtn, shuffleBtn;
+    private ImageButton playPauseBtn, previousBtn, nextBtn, loopBtn, shuffleBtn, showBtn;
     private ImageView songPicture;
     private TextView songName, singerName;
     private TextView duration, runtime;
@@ -77,6 +80,9 @@ public class PlayControlActivity extends AppCompatActivity {
         shuffleBtn.setOnClickListener(view -> {
             shuffle();
         });
+        showBtn.setOnClickListener(view -> {
+            showPlaylist();
+        });
 
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -92,6 +98,11 @@ public class PlayControlActivity extends AppCompatActivity {
                 mediaPlayer.seekTo(seekBar.getProgress());
             }
         });
+    }
+
+    private void showPlaylist() {
+        PlayControlBottomSheetFragment bottomSheetFragment = new PlayControlBottomSheetFragment(songList);
+        bottomSheetFragment.show(getSupportFragmentManager(), bottomSheetFragment.getTag());
     }
 
     @Override
@@ -204,6 +215,7 @@ public class PlayControlActivity extends AppCompatActivity {
         loopBtn = findViewById(R.id.loopBtn);
         previousBtn = findViewById(R.id.previousBtn);
         shuffleBtn = findViewById(R.id.shuffleBtn);
+        showBtn = findViewById(R.id.showPlaylist);
         songName = findViewById(R.id.songName);
         singerName = findViewById(R.id.singerName);
 //        collapse = findViewById(R.id.collapse);
