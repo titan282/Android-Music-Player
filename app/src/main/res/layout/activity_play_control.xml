@@ -198,6 +198,18 @@
             android:contentDescription="@string/repeat"
             android:scaleType="fitXY"
             app:srcCompat="@drawable/iconrepeat" />
+
+        <ImageButton
+            android:id="@+id/showPlaylist"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="10dp"
+            android:layout_toEndOf="@+id/nextBtn"
+            android:background="@null"
+            android:contentDescription="@string/repeat"
+            android:scaleType="fitXY"
+            app:srcCompat="@drawable/iconrepeat" />
     </RelativeLayout>
 
     <ImageButton
