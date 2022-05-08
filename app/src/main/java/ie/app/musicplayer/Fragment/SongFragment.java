@@ -141,7 +141,7 @@ public class SongFragment extends Fragment {
                             String songURL = cursor.getString(4);
 
                             Song song = new Song(songId, songName, songAlbum, R.drawable.music_rect, songSinger, songURL);
-                            song.loadEmbeddedPicture();
+//                            song.loadEmbeddedPicture();
                             songList.add(song);
 
                         }

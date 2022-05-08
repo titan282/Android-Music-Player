@@ -1,9 +1,11 @@
 package ie.app.musicplayer.Activity;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.AudioManager;
 import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -11,10 +13,16 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.Toolbar;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
@@ -33,7 +41,7 @@ import ie.app.musicplayer.Model.Song;
 import ie.app.musicplayer.R;
 
 public class PlayControlActivity extends AppCompatActivity {
-    private ImageButton playPauseBtn, previousBtn, nextBtn, loopBtn, shuffleBtn, showBtn;
+    private ImageButton playPauseBtn, previousBtn, nextBtn, loopBtn, shuffleBtn, showBtn,favoriteBtn;
     private ImageView songPicture;
     private TextView songName, singerName;
     private TextView duration, runtime;
@@ -50,11 +58,12 @@ public class PlayControlActivity extends AppCompatActivity {
 
     private Status shuffleStatus = Status.OFF;
     private Status loopStatus = Status.OFF;
+    private Status favoriteStatus = Status.OFF;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        dbManager = new DBManager(PlayControlActivity.this);
         super.onCreate(savedInstanceState);
+        dbManager = new DBManager(PlayControlActivity.this);
         setContentView(R.layout.activity_play_control);
         init();
         songList = getSongList();
@@ -80,6 +89,9 @@ public class PlayControlActivity extends AppCompatActivity {
         shuffleBtn.setOnClickListener(view -> {
             shuffle();
         });
+        favoriteBtn.setOnClickListener(view -> {
+            addToFavorite();
+        });
         showBtn.setOnClickListener(view -> {
             showPlaylist();
         });
@@ -104,7 +116,18 @@ public class PlayControlActivity extends AppCompatActivity {
         PlayControlBottomSheetFragment bottomSheetFragment = new PlayControlBottomSheetFragment(songList);
         bottomSheetFragment.show(getSupportFragmentManager(), bottomSheetFragment.getTag());
     }
-
+    private void addToFavorite(){
+        switch(favoriteStatus){
+            case OFF:
+                favoriteBtn.setImageResource(R.drawable.ic_favorite);
+                favoriteStatus = Status.ON;
+                break;
+            case ON:
+                favoriteBtn.setImageResource(R.drawable.ic_favorite_border);
+                favoriteStatus = Status.OFF;
+                break;
+        }
+    }
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -147,15 +170,15 @@ public class PlayControlActivity extends AppCompatActivity {
         switch (loopStatus) {
             case OFF:
                 loopStatus = Status.WHOLE;
-                loopBtn.setImageResource(R.drawable.iconrepeatwhole);
+                loopBtn.setImageResource(R.drawable.ic_repeat_whole);
                 break;
             case WHOLE:
                 loopStatus = Status.SINGLE;
-                loopBtn.setImageResource(R.drawable.iconrepeatsingle);
+                loopBtn.setImageResource(R.drawable.ic_repeat_one);
                 break;
             default:
                 loopStatus = Status.OFF;
-                loopBtn.setImageResource(R.drawable.iconrepeat);
+                loopBtn.setImageResource(R.drawable.ic_repeat);
                 break;
         }
     }
@@ -164,7 +187,7 @@ public class PlayControlActivity extends AppCompatActivity {
         switch (shuffleStatus) {
             case OFF:
                 shuffleStatus = Status.ON;
-                shuffleBtn.setImageResource(R.drawable.iconsuffleon);
+                shuffleBtn.setImageResource(R.drawable.ic_shuffle_on);
                 Song currentSong = songList.get(position);
                 Collections.shuffle(songList);
                 position = songList.indexOf(currentSong);
@@ -175,19 +198,19 @@ public class PlayControlActivity extends AppCompatActivity {
                 currentSong = songList.get(position);
                 songList = new ArrayList<>(originalSongList);
                 position = songList.indexOf(currentSong);
-                shuffleBtn.setImageResource(R.drawable.iconsuffle);
+                shuffleBtn.setImageResource(R.drawable.ic_shuffle);
                 break;
         }
     }
 
     private void playMusic() {
         mediaPlayer.start();
-        playPauseBtn.setImageResource(R.drawable.play);
+        playPauseBtn.setImageResource(R.drawable.ic_pause);
     }
 
     private void pauseMusic() {
         mediaPlayer.pause();
-        playPauseBtn.setImageResource(R.drawable.pause);
+        playPauseBtn.setImageResource(R.drawable.ic_play_arrow);
     }
 
     private void changeSong() {
@@ -216,6 +239,7 @@ public class PlayControlActivity extends AppCompatActivity {
         previousBtn = findViewById(R.id.previousBtn);
         shuffleBtn = findViewById(R.id.shuffleBtn);
         showBtn = findViewById(R.id.showPlaylist);
+        favoriteBtn = findViewById(R.id.favoriteBtn);
         songName = findViewById(R.id.songName);
         singerName = findViewById(R.id.singerName);
 //        collapse = findViewById(R.id.collapse);
@@ -274,8 +298,10 @@ public class PlayControlActivity extends AppCompatActivity {
     private void initMediaPlayer(String URL) {
         if (mediaPlayer == null) {
             mediaPlayer = new MediaPlayer();
+
         }
 //        mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+
         runtime.setText("" + mediaPlayer.getCurrentPosition());
         try {
             if (mediaPlayer.isPlaying()) {
@@ -290,20 +316,26 @@ public class PlayControlActivity extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
     }
 
     private void updateTimeSong() {
         Handler handler = new Handler();
+
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
+                mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                    @Override
+                    public void onCompletion(MediaPlayer mediaPlayer) {
+                        Toast.makeText(PlayControlActivity.this,"Next",Toast.LENGTH_SHORT).show();
+                        next();
+                    }
+                });
                 if (mediaPlayer != null) {
                     SimpleDateFormat timeFormat = new SimpleDateFormat("mm:ss");
                     runtime.setText(timeFormat.format(mediaPlayer.getCurrentPosition()));
                     seekBar.setProgress(mediaPlayer.getCurrentPosition());
-                }
-                if (mediaPlayer.getCurrentPosition() == mediaPlayer.getDuration()) {
-                    next();
                 }
                 handler.postDelayed(this, 100
                 );

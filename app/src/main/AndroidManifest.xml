@@ -15,7 +15,7 @@
         android:theme="@style/Theme.MusicPlayer">
         <activity
             android:name=".Activity.PlayControlActivity"
-            android:exported="false" />
+            />
        <activity
             android:name=".Activity.PlaylistDetailActivity"
             android:exported="false" />
