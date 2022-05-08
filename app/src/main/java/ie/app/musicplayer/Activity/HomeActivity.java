@@ -7,10 +7,16 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 import android.Manifest;
+import android.app.Activity;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+
 import com.google.android.material.tabs.TabLayout;
 import ie.app.musicplayer.Adapter.SongListAdapter;
 import ie.app.musicplayer.Adapter.ViewPagerAdapter;
