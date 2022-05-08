@@ -1,8 +1,14 @@
 package ie.app.musicplayer.Model;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.MediaMetadataRetriever;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.io.Serializable;
 
 public class Song implements Parcelable {
@@ -13,6 +19,7 @@ public class Song implements Parcelable {
     private int songImage;
     private String songSinger;
     private String songURL;
+    private Bitmap songEmbeddedPicture;
 
     public Song(){}
     public Song(int songId, String songName, String songAlbum, int songImage, String songSinger, String songURL) {
@@ -67,6 +74,14 @@ public class Song implements Parcelable {
         this.songSinger = songSinger;
     }
 
+    public Bitmap getSongEmbeddedPicture() {
+        return songEmbeddedPicture;
+    }
+
+    public void setSongEmbeddedPicture(Bitmap songEmbeddedPicture) {
+        this.songEmbeddedPicture = songEmbeddedPicture;
+    }
+
     public static final Creator<Song> CREATOR = new Creator<Song>() {
         @Override
         public Song createFromParcel(Parcel in) {
@@ -117,5 +132,23 @@ public class Song implements Parcelable {
         parcel.writeInt(songImage);
         parcel.writeString(songSinger);
         parcel.writeString(songURL);
+    }
+
+    public void loadEmbeddedPicture() {
+        if (songURL == null) {
+            Log.d("loadEmbeddedPicture - Song class", toString());
+        }
+
+        MediaMetadataRetriever mmr = new MediaMetadataRetriever();
+        try {
+            mmr.setDataSource(songURL);
+            byte[] artBytes = mmr.getEmbeddedPicture();
+            if (artBytes != null) {
+                songEmbeddedPicture = BitmapFactory.decodeByteArray(artBytes, 0, artBytes.length);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        mmr.release();
     }
 }
