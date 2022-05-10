@@ -1,7 +1,5 @@
 package ie.app.musicplayer.Activity;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.MediaMetadataRetriever;
@@ -9,16 +7,12 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
-import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toolbar;
-
-import com.google.android.material.bottomsheet.BottomSheetBehavior;
-
+import androidx.appcompat.app.AppCompatActivity;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -26,13 +20,12 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
 import ie.app.musicplayer.Database.DBManager;
 import ie.app.musicplayer.Fragment.PlayControlBottomSheetFragment;
 import ie.app.musicplayer.Model.Song;
 import ie.app.musicplayer.R;
 
-public class PlayControlActivity extends AppCompatActivity {
+public class PlayControlActivity extends AppCompatActivity implements PlayControlBottomSheetFragment.IOnItemSelectedListener {
     private ImageButton playPauseBtn, previousBtn, nextBtn, loopBtn, shuffleBtn, showBtn;
     private ImageView songPicture;
     private TextView songName, singerName;
@@ -44,6 +37,12 @@ public class PlayControlActivity extends AppCompatActivity {
     private List<Song> songList;
     private List<Song> originalSongList;
     private int position = 0;
+
+    @Override
+    public void getSong(Song song) {
+        position = songList.indexOf(song);
+        changeSong();
+    }
 
     private enum Status {OFF, SINGLE, WHOLE, ON}
     private Thread changeSongThread, setInfoThread;
@@ -100,17 +99,17 @@ public class PlayControlActivity extends AppCompatActivity {
         });
     }
 
-    private void showPlaylist() {
-        PlayControlBottomSheetFragment bottomSheetFragment = new PlayControlBottomSheetFragment(songList);
-        bottomSheetFragment.show(getSupportFragmentManager(), bottomSheetFragment.getTag());
-    }
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
 //        dbManager.close();
         mediaPlayer.stop();
 //        mediaPlayer.release();
+    }
+
+    private void showPlaylist() {
+        PlayControlBottomSheetFragment bottomSheetFragment = new PlayControlBottomSheetFragment(songList);
+        bottomSheetFragment.show(getSupportFragmentManager(), bottomSheetFragment.getTag());
     }
 
     private void playpause() {
@@ -261,10 +260,8 @@ public class PlayControlActivity extends AppCompatActivity {
                     InputStream is = new ByteArrayInputStream(artBytes);
                     Bitmap bitmap = BitmapFactory.decodeStream(is);
                     songPicture.setImageBitmap(bitmap);
-                    Log.d("setImage - PlayControlActivity", "Check");
                 } else {
                     songPicture.setImageResource(song.getSongImage());
-                    Log.d("setImage - PlayControlActivity", "Check 2");
                 }
                 mmr.release();
             }
