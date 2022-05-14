@@ -35,6 +35,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import ie.app.musicplayer.Application.MusicPlayerApp;
 import ie.app.musicplayer.Database.DBManager;
 import ie.app.musicplayer.Fragment.PlayControlBottomSheetFragment;
 import ie.app.musicplayer.Model.Song;
@@ -52,7 +53,7 @@ public class PlayControlActivity extends AppCompatActivity {
     private List<Song> songList;
     private List<Song> originalSongList;
     private int position = 0;
-
+    public MusicPlayerApp app;
     private enum Status {OFF, SINGLE, WHOLE, ON}
     private Thread changeSongThread, setInfoThread;
 
@@ -63,7 +64,7 @@ public class PlayControlActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        dbManager = new DBManager(PlayControlActivity.this);
+        app = (MusicPlayerApp)getApplication();
         setContentView(R.layout.activity_play_control);
         init();
         songList = getSongList();

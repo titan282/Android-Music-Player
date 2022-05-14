@@ -11,6 +11,8 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.Serializable;
 
+import ie.app.musicplayer.Application.MusicPlayerApp;
+
 public class Song implements Parcelable {
     private int songId;
 //    private int duration;
