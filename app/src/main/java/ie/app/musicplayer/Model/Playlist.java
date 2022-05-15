@@ -4,6 +4,7 @@ import android.os.Parcelable;
 
 import com.orm.SugarRecord;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -23,7 +24,7 @@ public class Playlist extends SugarRecord<Playlist> implements Parcelable {
     }
 
     public void addToSongList(Song song){
-        songList.add(song);
+        this.songList.add(song);
     }
 
     public Playlist( String playlistName, int playlistImage, List<Song> songList) {

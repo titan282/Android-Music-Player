@@ -16,6 +16,9 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.PopupMenu;
 
 import com.google.android.material.tabs.TabLayout;
 import ie.app.musicplayer.Adapter.SongListAdapter;
@@ -28,6 +31,8 @@ public class HomeActivity extends AppCompatActivity {
 
     private TabLayout mTabLayout;
     private ViewPager mViewPager;
+    private ImageButton ibSearchBtn;
+    private ImageView ivSort;
     private DBManager dbManager;
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -37,6 +42,8 @@ public class HomeActivity extends AppCompatActivity {
         dbManager = new DBManager(HomeActivity.this);
         mTabLayout = findViewById(R.id.tabLayout);
         mViewPager = findViewById(R.id.viewPager);
+        ivSort = findViewById(R.id.sortBtn);
+        ibSearchBtn=findViewById(R.id.search_btn);
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager(),
                 FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         mViewPager.setAdapter(adapter);
@@ -45,7 +52,14 @@ public class HomeActivity extends AppCompatActivity {
         mTabLayout.getTabAt(1).setText("Playlists");
         mTabLayout.getTabAt(2).setText("Albums");
         mTabLayout.getTabAt(3).setText("Artists");
-
+        ivSort.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                PopupMenu popupMenu = new PopupMenu(HomeActivity.this, view);
+                popupMenu.getMenuInflater().inflate(R.menu.sort, popupMenu.getMenu());
+                popupMenu.show();
+            }
+        });
     }
 
     @Override

@@ -3,9 +3,11 @@ package ie.app.musicplayer.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -16,15 +18,20 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatDialogFragment;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import ie.app.musicplayer.Adapter.PlaylistDialogAdapter;
 import ie.app.musicplayer.Model.Playlist;
+import ie.app.musicplayer.Model.Song;
 import ie.app.musicplayer.R;
 
 public class AddToPlaylistDialog extends AppCompatDialogFragment {
     private Context context;
-    public AddToPlaylistDialog(Context context){
+    private Song song;
+    private List<Playlist> playlists;
+    public AddToPlaylistDialog(Context context, Song song){
         this.context = context;
+        this.song =song;
     }
 
     @Nullable
@@ -48,7 +55,9 @@ public class AddToPlaylistDialog extends AppCompatDialogFragment {
                         .setPositiveButton("Add", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                new Playlist(playlistName.getText().toString(),R.drawable.music_rect,new ArrayList<>()).save();
+                                List<Song> songList = new ArrayList<Song>();
+                                songList.add(song);
+                                new Playlist(playlistName.getText().toString(),R.drawable.music_rect, songList).save();
                             }
                         })
                         .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -58,6 +67,15 @@ public class AddToPlaylistDialog extends AppCompatDialogFragment {
                             }
                         });
                 builder.create().show();
+            }
+        });
+        lvPlaylistName.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                playlists = Playlist.listAll(Playlist.class);
+//                Playlist.deleteAll(Playlist.class);
+//                playlists.get(0).addToSongList(song);
+                Log.v("playlist", playlists.get(0).getPlaylistName()+ " "+playlists.get(0).getSongList().get(0).getSongName());
             }
         });
         return view;

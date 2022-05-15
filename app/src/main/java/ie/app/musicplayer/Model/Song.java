@@ -137,4 +137,17 @@ public class Song implements Parcelable {
         }
         mmr.release();
     }
+
+    @Override
+    public String toString() {
+        return "Song{" +
+                "songId=" + songId +
+                ", songName='" + songName + '\'' +
+                ", songAlbum='" + songAlbum + '\'' +
+                ", songImage=" + songImage +
+                ", songSinger='" + songSinger + '\'' +
+                ", songURL='" + songURL + '\'' +
+                ", songEmbeddedPicture=" + songEmbeddedPicture +
+                '}';
+    }
 }

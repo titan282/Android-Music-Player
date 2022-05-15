@@ -18,6 +18,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import ie.app.musicplayer.Dialog.AddToPlaylistDialog;
@@ -72,7 +75,7 @@ public class SongListAdapter extends RecyclerView.Adapter<SongListAdapter.SongVi
                     public boolean onMenuItemClick(MenuItem menuItem) {
                         switch (menuItem.getItemId()){
                             case R.id.AddToPlaylist:
-                                AddToPlaylistDialog addToPlaylistDialog = new AddToPlaylistDialog(context);
+                                AddToPlaylistDialog addToPlaylistDialog = new AddToPlaylistDialog(context,song);
                                 AppCompatActivity activity = (AppCompatActivity) context;
                                 addToPlaylistDialog.show(activity.getSupportFragmentManager(), "My Manager");
                                 break;

@@ -50,5 +50,7 @@ public class PlaylistFragment extends Fragment {
 //        playlists.get(1).save();
         playlistListAdapter.setData(Playlist.listAll(Playlist.class));
         playlistReCycleView.setAdapter(playlistListAdapter);
+        playlistListAdapter.notifyDataSetChanged();
+
     }
 }

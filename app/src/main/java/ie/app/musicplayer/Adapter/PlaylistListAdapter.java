@@ -46,7 +46,7 @@ public class PlaylistListAdapter extends RecyclerView.Adapter<PlaylistListAdapte
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, PlaylistDetailActivity.class);
-//                intent.putExtra("PlaylistName", );
+//                intent.putExtra("position",1);
                 context.startActivity(intent);
             }
         });
