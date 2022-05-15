@@ -1,7 +1,9 @@
 package ie.app.musicplayer.Activity;
 
+
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -24,9 +26,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Toolbar;
-
-import com.google.android.material.bottomsheet.BottomSheetBehavior;
-
+import androidx.appcompat.app.AppCompatActivity;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -36,13 +36,16 @@ import java.util.Collections;
 import java.util.List;
 
 import ie.app.musicplayer.Application.MusicPlayerApp;
+
 import ie.app.musicplayer.Database.DBManager;
 import ie.app.musicplayer.Fragment.PlayControlBottomSheetFragment;
 import ie.app.musicplayer.Model.Song;
 import ie.app.musicplayer.R;
 
-public class PlayControlActivity extends AppCompatActivity {
+
+public class PlayControlActivity extends AppCompatActivity implements PlayControlBottomSheetFragment.IOnItemSelectedListener {
     private ImageButton playPauseBtn, previousBtn, nextBtn, loopBtn, shuffleBtn, showBtn,favoriteBtn;
+
     private ImageView songPicture;
     private TextView songName, singerName;
     private TextView duration, runtime;
@@ -54,12 +57,21 @@ public class PlayControlActivity extends AppCompatActivity {
     private List<Song> originalSongList;
     private int position = 0;
     public MusicPlayerApp app;
+
     private enum Status {OFF, SINGLE, WHOLE, ON}
     private Thread changeSongThread, setInfoThread;
 
     private Status shuffleStatus = Status.OFF;
     private Status loopStatus = Status.OFF;
     private Status favoriteStatus = Status.OFF;
+  
+    @Override
+    public void getSong(Song song) {
+        position = songList.indexOf(song);
+        changeSong();
+    }
+
+   
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,6 +125,7 @@ public class PlayControlActivity extends AppCompatActivity {
         });
     }
 
+
     private void showPlaylist() {
         PlayControlBottomSheetFragment bottomSheetFragment = new PlayControlBottomSheetFragment(songList);
         bottomSheetFragment.show(getSupportFragmentManager(), bottomSheetFragment.getTag());
@@ -129,12 +142,18 @@ public class PlayControlActivity extends AppCompatActivity {
                 break;
         }
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
 //        dbManager.close();
         mediaPlayer.stop();
 //        mediaPlayer.release();
+    }
+
+    private void showPlaylist() {
+        PlayControlBottomSheetFragment bottomSheetFragment = new PlayControlBottomSheetFragment(songList);
+        bottomSheetFragment.show(getSupportFragmentManager(), bottomSheetFragment.getTag());
     }
 
     private void playpause() {
@@ -286,10 +305,8 @@ public class PlayControlActivity extends AppCompatActivity {
                     InputStream is = new ByteArrayInputStream(artBytes);
                     Bitmap bitmap = BitmapFactory.decodeStream(is);
                     songPicture.setImageBitmap(bitmap);
-                    Log.d("setImage - PlayControlActivity", "Check");
                 } else {
                     songPicture.setImageResource(song.getSongImage());
-                    Log.d("setImage - PlayControlActivity", "Check 2");
                 }
                 mmr.release();
             }
