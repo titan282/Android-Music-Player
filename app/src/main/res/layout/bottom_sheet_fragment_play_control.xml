@@ -34,23 +34,23 @@
 
         </ImageButton>
 
-        <ImageButton
-            android:id="@+id/modifyButton"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            app:layout_constraintEnd_toStartOf="@id/deleteButton"
-            app:layout_constraintTop_toTopOf="parent">
+<!--        <ImageButton-->
+<!--            android:id="@+id/modifyButton"-->
+<!--            android:layout_width="30dp"-->
+<!--            android:layout_height="30dp"-->
+<!--            app:layout_constraintEnd_toStartOf="@id/deleteButton"-->
+<!--            app:layout_constraintTop_toTopOf="parent">-->
 
-        </ImageButton>
+<!--        </ImageButton>-->
 
-        <ImageButton
-            android:id="@+id/deleteButton"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+<!--        <ImageButton-->
+<!--            android:id="@+id/deleteButton"-->
+<!--            android:layout_width="30dp"-->
+<!--            android:layout_height="30dp"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent">-->
 
-        </ImageButton>
+<!--        </ImageButton>-->
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 

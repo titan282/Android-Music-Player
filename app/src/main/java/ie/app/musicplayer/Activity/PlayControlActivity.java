@@ -5,6 +5,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.AudioManager;
@@ -13,6 +14,7 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,13 +41,15 @@ import ie.app.musicplayer.Application.MusicPlayerApp;
 
 import ie.app.musicplayer.Database.DBManager;
 import ie.app.musicplayer.Fragment.PlayControlBottomSheetFragment;
+import ie.app.musicplayer.Fragment.SongFragment;
 import ie.app.musicplayer.Model.Song;
 import ie.app.musicplayer.R;
 
 
 public class PlayControlActivity extends AppCompatActivity implements PlayControlBottomSheetFragment.IOnItemSelectedListener {
-    private ImageButton playPauseBtn, previousBtn, nextBtn, loopBtn, shuffleBtn, showBtn,favoriteBtn;
+    public enum Status {OFF, SINGLE, WHOLE, ON}
 
+    private ImageButton playPauseBtn, previousBtn, nextBtn, loopBtn, shuffleBtn, showBtn,favoriteBtn;
     private ImageView songPicture;
     private TextView songName, singerName;
     private TextView duration, runtime;
@@ -57,9 +61,9 @@ public class PlayControlActivity extends AppCompatActivity implements PlayContro
     private List<Song> originalSongList;
     private int position = 0;
     public MusicPlayerApp app;
-
-    private enum Status {OFF, SINGLE, WHOLE, ON}
     private Thread changeSongThread, setInfoThread;
+    private PlayControlBottomSheetFragment bottomSheetFragment;
+
 
     private Status shuffleStatus = Status.OFF;
     private Status loopStatus = Status.OFF;
@@ -68,10 +72,19 @@ public class PlayControlActivity extends AppCompatActivity implements PlayContro
     @Override
     public void getSong(Song song) {
         position = songList.indexOf(song);
+        playPauseBtn.setImageResource(R.drawable.ic_pause);
         changeSong();
     }
 
-   
+    @Override
+    public void getShuffleStatus() {
+        shuffle();
+    }
+
+    @Override
+    public void getLoopStatus() {
+        loop();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,7 +140,7 @@ public class PlayControlActivity extends AppCompatActivity implements PlayContro
 
 
     private void showPlaylist() {
-        PlayControlBottomSheetFragment bottomSheetFragment = new PlayControlBottomSheetFragment(songList);
+        bottomSheetFragment = new PlayControlBottomSheetFragment(songList, shuffleStatus, loopStatus);
         bottomSheetFragment.show(getSupportFragmentManager(), bottomSheetFragment.getTag());
     }
     private void addToFavorite(){
@@ -207,6 +220,8 @@ public class PlayControlActivity extends AppCompatActivity implements PlayContro
                 Song currentSong = songList.get(position);
                 Collections.shuffle(songList);
                 position = songList.indexOf(currentSong);
+
+                bottomSheetFragment.updateSongListAdapter(songList);
                 // Shuffle songList Here
                 break;
             default:
@@ -215,6 +230,8 @@ public class PlayControlActivity extends AppCompatActivity implements PlayContro
                 songList = new ArrayList<>(originalSongList);
                 position = songList.indexOf(currentSong);
                 shuffleBtn.setImageResource(R.drawable.ic_shuffle);
+
+                bottomSheetFragment.updateSongListAdapter(songList);
                 break;
         }
     }

@@ -125,7 +125,8 @@ public class SongFragment extends Fragment {
             };
             String sortOrder = MediaStore.Audio.Media.TITLE + " ASC";
 
-            try (Cursor cursor = this.getContext().getApplicationContext().getContentResolver().query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
+            try (Cursor cursor = this.getContext().getApplicationContext()
+                    .getContentResolver().query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
                     projection, null, null, sortOrder)) {
                 loadingThread = new Thread() {
                     @Override
@@ -139,7 +140,6 @@ public class SongFragment extends Fragment {
                             String songURL = cursor.getString(4);
 
                             Song song = new Song(songId, songName, songAlbum, R.drawable.music_rect, songSinger, songURL);
-//                            song.loadEmbeddedPicture();
                             songList.add(song);
 
                         }
@@ -147,6 +147,12 @@ public class SongFragment extends Fragment {
                 };
                 loadingThread.run();
             }
+            Thread loadAlbumPicThread = new Thread(() -> {
+                for (Song song : songList) {
+                    song.loadEmbeddedPicture();
+                }
+            });
+            loadAlbumPicThread.start();
         }
     }
 }
