@@ -275,7 +275,6 @@ public class PlayControlActivity extends AppCompatActivity implements PlayContro
         favoriteBtn = findViewById(R.id.favoriteBtn);
         songName = findViewById(R.id.songName);
         singerName = findViewById(R.id.singerName);
-//        collapse = findViewById(R.id.collapse);
         duration = findViewById(R.id.textViewtimetotal);
         runtime = findViewById(R.id.textViewruntime);
         seekBar = findViewById(R.id.seekBartime);
@@ -331,7 +330,6 @@ public class PlayControlActivity extends AppCompatActivity implements PlayContro
             mediaPlayer = new MediaPlayer();
 
         }
-//        mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
 
         runtime.setText("" + mediaPlayer.getCurrentPosition());
         try {

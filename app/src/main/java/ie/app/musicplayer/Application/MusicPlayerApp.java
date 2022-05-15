@@ -12,13 +12,12 @@ import ie.app.musicplayer.Model.Song;
 
 public class MusicPlayerApp extends Application {
 
-//    public DBManager dbManager;
+
     public List<Song> songList = new ArrayList<>();
     @Override
     public void onCreate() {
         super.onCreate();
-//        dbManager = new DBManager(this);
-//        dbManager.addPlaylist("Love");
+
     }
 
 }

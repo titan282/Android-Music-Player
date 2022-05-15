@@ -51,6 +51,5 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-//        dbManager.close();
     }
 }

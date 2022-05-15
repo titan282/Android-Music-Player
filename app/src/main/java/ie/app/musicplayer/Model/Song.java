@@ -7,15 +7,9 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-import java.io.Serializable;
-
-import ie.app.musicplayer.Application.MusicPlayerApp;
 
 public class Song implements Parcelable {
     private int songId;
-//    private int duration;
     private String songName;
     private String songAlbum;
     private int songImage;
@@ -26,7 +20,6 @@ public class Song implements Parcelable {
     public Song(){}
     public Song(int songId, String songName, String songAlbum, int songImage, String songSinger, String songURL) {
         this.songId = songId;
-//        this.duration = duration;
         this.songName = songName;
         this.songAlbum = songAlbum;
         this.songImage = songImage;
@@ -36,7 +29,6 @@ public class Song implements Parcelable {
 
     protected Song(Parcel in) {
         songId = in.readInt();
-//        duration = in.readInt();
         songName = in.readString();
         songAlbum = in.readString();
         songImage = in.readInt();
@@ -112,13 +104,6 @@ public class Song implements Parcelable {
         this.songURL = songURL;
     }
 
-//    public void setDuration(int duration) {
-//        this.duration = duration;
-//    }
-
-//    public int getDuration() {
-//        return duration;
-//    }
 
     @Override
     public int describeContents() {
@@ -128,7 +113,6 @@ public class Song implements Parcelable {
     @Override
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeInt(songId);
-//        parcel.writeInt(duration);
         parcel.writeString(songName);
         parcel.writeString(songAlbum);
         parcel.writeInt(songImage);
