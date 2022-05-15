@@ -1,10 +1,13 @@
 package ie.app.musicplayer.Model;
 import android.os.Parcel;
 import android.os.Parcelable;
+
+import com.orm.SugarRecord;
+
 import java.util.List;
 
 
-public class Playlist implements Parcelable {
+public class Playlist extends SugarRecord<Playlist> implements Parcelable {
 
     private int playlistId;
     private String playlistName;
@@ -23,13 +26,18 @@ public class Playlist implements Parcelable {
         songList.add(song);
     }
 
-    public Playlist(int playlistId, String playlistName, int playlistImage, List<Song> songList) {
-        this.playlistId = playlistId;
+    public Playlist( String playlistName, int playlistImage, List<Song> songList) {
         this.playlistName = playlistName;
         this.playlistImage = playlistImage;
         this.songList = songList;
     }
-
+    public Playlist(){}
+    public Playlist( int playlistId,String playlistName, int playlistImage, List<Song> songList) {
+        this.playlistName = playlistName;
+        this.playlistImage = playlistImage;
+        this.songList = songList;
+        this.playlistId = playlistId;
+    }
     public int getPlaylistId() {
         return playlistId;
     }

@@ -25,7 +25,7 @@ public class PlaylistFragment extends Fragment {
     private RecyclerView playlistReCycleView;
     private PlaylistListAdapter playlistListAdapter;
     private DBManager dbManager;
-
+    private List<Playlist> playlists = new ArrayList<Playlist>();
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -44,11 +44,11 @@ public class PlaylistFragment extends Fragment {
         playlistReCycleView.setLayoutManager(gridLayoutManager);
 
         // List for testing
-        List<Playlist> test = new ArrayList<>();
-        test.add(new Playlist(1, "Jazz", R.drawable.music_rect, new ArrayList<Song>()));
-        test.add(new Playlist(2, "Pop", R.drawable.music_rect, new ArrayList<Song>()));
 
-        playlistListAdapter.setData(test);
+//        playlists.get(0).save();
+//        playlists.add(new Playlist(2, "Pop", R.drawable.music_rect, new ArrayList<Song>()));
+//        playlists.get(1).save();
+        playlistListAdapter.setData(Playlist.listAll(Playlist.class));
         playlistReCycleView.setAdapter(playlistListAdapter);
     }
 }

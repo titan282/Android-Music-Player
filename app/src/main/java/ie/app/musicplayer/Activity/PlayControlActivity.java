@@ -93,7 +93,7 @@ public class PlayControlActivity extends AppCompatActivity implements PlayContro
         setContentView(R.layout.activity_play_control);
         init();
         songList = getSongList();
-        originalSongList = new ArrayList<>(songList);
+        originalSongList = new ArrayList<Song>(songList);
         position = getPosition();
         setInfoToLayout(songList.get(position));
         initMediaPlayer(songList.get(position).getSongURL());
