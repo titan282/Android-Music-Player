@@ -8,16 +8,16 @@
     tools:context=".Activity.PlaylistDetailActivity" >
 
     <ImageView
+        android:id="@+id/playlistPhoto"
         android:layout_width="match_parent"
         android:layout_height="250dp"
-        android:id="@+id/playlistPhoto"
-        android:src="@drawable/music_rect"
-        android:scaleType="centerCrop"/>
+        android:scaleType="centerCrop"
+        android:src="@drawable/music_rect" />
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/playlistDetailRecycleView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/playlistDetailRecycleView"
-        android:layout_below="@+id/playlistPhoto"/>
+        android:layout_below="@+id/playlistPhoto" />
 
 </RelativeLayout>

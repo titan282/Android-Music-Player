@@ -29,10 +29,10 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="-2dp"
-        android:layout_marginTop="7dp"
-        android:layout_marginEnd="1dp"
-        android:layout_marginBottom="-6dp"
+        android:layout_marginStart="-3dp"
+        android:layout_marginTop="9dp"
+        android:layout_marginEnd="2dp"
+        android:layout_marginBottom="-8dp"
         android:background="@drawable/dark"
         android:contentDescription="@string/gredientbg"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -41,25 +41,27 @@
 
     <ImageView
         android:id="@+id/thumnail"
-        android:layout_width="275dp"
-        android:layout_height="275dp"
+        android:layout_width="362dp"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/collapse"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="56dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="6dp"
+        android:layout_marginRight="16dp"
         android:background="@drawable/music_rect" />
 
     <RelativeLayout
         android:id="@+id/inforSong"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@id/thumnail"
         android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_centerInParent="true"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="420dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="100dp">
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="17dp"
+        android:layout_marginTop="22dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="0dp">
 
         <TextView
             android:id="@+id/songName"
@@ -81,29 +83,31 @@
             android:textColor="#E4E4E4"
             android:textSize="20sp" />
 
-        <ImageView
-            android:id="@+id/Favorite"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+        <ImageButton
+            android:id="@+id/favoriteBtn"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:background="@drawable/icon_love"
-            android:contentDescription="@string/love"
+            android:layout_marginTop="17dp"
+            android:layout_marginEnd="20dp"
+            android:background="@null"
+            android:contentDescription="@string/random"
             android:scaleType="fitXY"
-            tools:srcCompat="@tools:sample/backgrounds/scenic" />
+            app:srcCompat="@drawable/ic_favorite_border" />
     </RelativeLayout>
 
     <SeekBar
         android:id="@+id/seekBartime"
         android:layout_width="match_parent"
         android:layout_height="35dp"
-        android:layout_alignParentTop="true"
+        android:layout_below="@+id/inforSong"
         android:layout_centerHorizontal="true"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="507dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:progressTint="#FFFFFF"
-        android:thumb="@drawable/thumb" />
+        android:thumb="@drawable/switch_thumb_material" />
 
     <RelativeLayout
         android:id="@+id/inforTime"
@@ -111,8 +115,9 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/seekBartime"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp">
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp">
 
         <TextView
             android:id="@+id/textViewruntime"
@@ -133,12 +138,15 @@
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/music_control"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/showPlaylist"
         android:layout_below="@id/inforTime"
+        android:layout_centerHorizontal="true"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="16dp"
         android:orientation="horizontal">
 
         <ImageButton
@@ -151,7 +159,7 @@
             android:background="@null"
             android:contentDescription="@string/random"
             android:scaleType="fitXY"
-            app:srcCompat="@drawable/iconsuffle" />
+            app:srcCompat="@drawable/ic_shuffle" />
 
         <ImageButton
             android:id="@+id/previousBtn"
@@ -163,7 +171,7 @@
             android:background="@null"
             android:contentDescription="@string/previous"
             android:scaleType="fitXY"
-            app:srcCompat="@drawable/iconpreview" />
+            app:srcCompat="@drawable/ic_skip_previous" />
 
         <ImageButton
             android:id="@+id/playPauseBtn"
@@ -173,7 +181,7 @@
             android:background="@null"
             android:contentDescription="@string/pause"
             android:scaleType="fitXY"
-            app:srcCompat="@drawable/play" />
+            app:srcCompat="@drawable/ic_pause" />
 
         <ImageButton
             android:id="@+id/nextBtn"
@@ -185,7 +193,7 @@
             android:background="@null"
             android:contentDescription="@string/next"
             android:scaleType="fitXY"
-            app:srcCompat="@drawable/iconnext" />
+            app:srcCompat="@drawable/ic_skip_next" />
 
         <ImageButton
             android:id="@+id/loopBtn"
@@ -197,32 +205,19 @@
             android:background="@null"
             android:contentDescription="@string/repeat"
             android:scaleType="fitXY"
-            app:srcCompat="@drawable/iconrepeat" />
-
-        <ImageButton
-            android:id="@+id/showPlaylist"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="10dp"
-            android:layout_toEndOf="@+id/nextBtn"
-            android:background="@null"
-            android:contentDescription="@string/repeat"
-            android:scaleType="fitXY"
-            app:srcCompat="@drawable/iconrepeat" />
+            app:srcCompat="@drawable/ic_repeat" />
     </RelativeLayout>
 
     <ImageButton
-        android:id="@+id/collapseImageView"
-        android:layout_width="37dp"
-        android:layout_height="42dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginStart="1dp"
-        android:layout_marginTop="1dp"
-        android:layout_marginEnd="373dp"
+        android:id="@+id/showPlaylist"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_alignEnd="@id/music_control"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="22dp"
+        android:layout_marginBottom="32dp"
         android:background="@null"
+        android:contentDescription="@string/repeat"
         android:scaleType="fitXY"
-        app:srcCompat="@drawable/arrow_down" />
+        app:srcCompat="@drawable/ic_queue_music" />
 </RelativeLayout>

@@ -41,14 +41,12 @@ public class SongFragment extends Fragment {
     private ActivityResultLauncher<String> requestPermissionLauncher;
     private Thread loadingThread;
 
-    private DBManager dbManager;
+    public MusicPlayerApp app;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        dbManager = new DBManager(getContext());
-//                dbManager.open();
-//        dbManager.addPlaylist("Love");
+        app =(MusicPlayerApp) getActivity().getApplication();
         view = inflater.inflate(R.layout.fragment_song, container, false);
         songView = view.findViewById(R.id.songView);
         songListAdapter = new SongListAdapter(getContext(), new SongListAdapter.ItemClickListener() {
@@ -141,7 +139,7 @@ public class SongFragment extends Fragment {
                             String songURL = cursor.getString(4);
 
                             Song song = new Song(songId, songName, songAlbum, R.drawable.music_rect, songSinger, songURL);
-                            song.loadEmbeddedPicture();
+//                            song.loadEmbeddedPicture();
                             songList.add(song);
 
                         }

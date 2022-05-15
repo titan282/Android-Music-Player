@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/iconsuffle">
+            app:srcCompat="@drawable/ic_shuffle">
 
         </ImageButton>
 
@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             app:layout_constraintStart_toEndOf="@id/shuffleBtn"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/iconrepeat">>
+            app:srcCompat="@drawable/ic_repeat">>
 
         </ImageButton>
 
