@@ -151,10 +151,6 @@ public class PlayControlActivity extends AppCompatActivity implements PlayContro
 //        mediaPlayer.release();
     }
 
-    private void showPlaylist() {
-        PlayControlBottomSheetFragment bottomSheetFragment = new PlayControlBottomSheetFragment(songList);
-        bottomSheetFragment.show(getSupportFragmentManager(), bottomSheetFragment.getTag());
-    }
 
     private void playpause() {
         if (mediaPlayer.isPlaying()) {
