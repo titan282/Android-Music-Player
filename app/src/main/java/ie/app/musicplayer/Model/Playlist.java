@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class Playlist extends SugarRecord<Playlist> implements Parcelable {
+public class Playlist extends SugarRecord implements Parcelable {
 
     private int playlistId;
     private String playlistName;
