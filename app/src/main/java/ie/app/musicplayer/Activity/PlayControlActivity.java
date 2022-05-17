@@ -1,47 +1,27 @@
 package ie.app.musicplayer.Activity;
 
 
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-
-
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.media.AudioManager;
-import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Parcelable;
 import android.util.Log;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Toolbar;
 import androidx.appcompat.app.AppCompatActivity;
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import ie.app.musicplayer.Application.MusicPlayerApp;
-
 import ie.app.musicplayer.Database.DBManager;
 import ie.app.musicplayer.Fragment.PlayControlBottomSheetFragment;
-import ie.app.musicplayer.Fragment.SongFragment;
 import ie.app.musicplayer.Model.Song;
 import ie.app.musicplayer.R;
 
@@ -61,7 +41,7 @@ public class PlayControlActivity extends AppCompatActivity implements PlayContro
     private List<Song> originalSongList;
     private int position = 0;
     public MusicPlayerApp app;
-    private Thread changeSongThread, setInfoThread;
+    private Thread changeSongThread;
     private PlayControlBottomSheetFragment bottomSheetFragment;
 
 
@@ -314,6 +294,7 @@ public class PlayControlActivity extends AppCompatActivity implements PlayContro
             singerName.setText(song.getSongSinger());
             if (song.isHasPic()) {
                 song.checkPicStatusAndLoad();
+                songPicture.setImageBitmap(song.getSongEmbeddedPicture());
             } else {
                 songPicture.setImageResource(song.getSongImage());
             }
