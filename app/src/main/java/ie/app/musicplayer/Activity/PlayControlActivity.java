@@ -93,7 +93,7 @@ public class PlayControlActivity extends AppCompatActivity implements PlayContro
         setContentView(R.layout.activity_play_control);
         init();
         songList = getSongList();
-        originalSongList = new ArrayList<Song>(songList);
+        originalSongList = new ArrayList<>(songList);
         position = getPosition();
         setInfoToLayout(songList.get(position));
         initMediaPlayer(songList.get(position).getSongURL());
@@ -221,7 +221,9 @@ public class PlayControlActivity extends AppCompatActivity implements PlayContro
                 Collections.shuffle(songList);
                 position = songList.indexOf(currentSong);
 
-                bottomSheetFragment.updateSongListAdapter(songList);
+                if (bottomSheetFragment != null) {
+                    bottomSheetFragment.updateSongListAdapter(songList);
+                }
                 // Shuffle songList Here
                 break;
             default:
@@ -231,7 +233,9 @@ public class PlayControlActivity extends AppCompatActivity implements PlayContro
                 position = songList.indexOf(currentSong);
                 shuffleBtn.setImageResource(R.drawable.ic_shuffle);
 
-                bottomSheetFragment.updateSongListAdapter(songList);
+                if (bottomSheetFragment != null) {
+                    bottomSheetFragment.updateSongListAdapter(songList);
+                }
                 break;
         }
     }
@@ -305,22 +309,13 @@ public class PlayControlActivity extends AppCompatActivity implements PlayContro
     }
 
     private void setInfoToLayout(Song song) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                songName.setText(song.getSongName());
-                singerName.setText(song.getSongSinger());
-                MediaMetadataRetriever mmr = new MediaMetadataRetriever();
-                mmr.setDataSource(song.getSongURL());
-                byte[] artBytes = mmr.getEmbeddedPicture();
-                if (artBytes != null) {
-                    InputStream is = new ByteArrayInputStream(artBytes);
-                    Bitmap bitmap = BitmapFactory.decodeStream(is);
-                    songPicture.setImageBitmap(bitmap);
-                } else {
-                    songPicture.setImageResource(song.getSongImage());
-                }
-                mmr.release();
+        runOnUiThread(() -> {
+            songName.setText(song.getSongName());
+            singerName.setText(song.getSongSinger());
+            if (song.isHasPic()) {
+                song.checkPicStatusAndLoad();
+            } else {
+                songPicture.setImageResource(song.getSongImage());
             }
         });
     }

@@ -49,16 +49,13 @@ public class SongFragment extends Fragment {
         app =(MusicPlayerApp) getActivity().getApplication();
         view = inflater.inflate(R.layout.fragment_song, container, false);
         songView = view.findViewById(R.id.songView);
-        songListAdapter = new SongListAdapter(getContext(), new SongListAdapter.ItemClickListener() {
-            @Override
-            public void onItemClick(Song song) {
-                Intent intent = new Intent(SongFragment.this.getActivity(), PlayControlActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putParcelableArrayList("Playlist", (ArrayList<? extends Parcelable>) songList);
-                bundle.putInt("Position", songList.indexOf(song));
-                intent.putExtras(bundle);
-                startActivity(intent);
-            }
+        songListAdapter = new SongListAdapter(getContext(), song -> {
+            Intent intent = new Intent(SongFragment.this.getActivity(), PlayControlActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putParcelableArrayList("Playlist", (ArrayList<? extends Parcelable>) songList);
+            bundle.putInt("Position", songList.indexOf(song));
+            intent.putExtras(bundle);
+            startActivity(intent);
         });
 
         requestPermissionLauncher = registerForActivityResult(
@@ -154,5 +151,6 @@ public class SongFragment extends Fragment {
             });
             loadAlbumPicThread.start();
         }
+        ((MusicPlayerApp)getActivity().getApplication()).songList = new ArrayList<>(songList);
     }
 }

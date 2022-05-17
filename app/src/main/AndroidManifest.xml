@@ -21,6 +21,7 @@
         <activity
             android:name=".Activity.PlayControlActivity"
             />
+        <activity android:name=".Activity.SearchActivity"/>
        <activity
             android:name=".Activity.PlaylistDetailActivity"
             android:exported="false" />
