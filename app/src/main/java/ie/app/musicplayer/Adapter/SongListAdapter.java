@@ -1,10 +1,6 @@
 package ie.app.musicplayer.Adapter;
 
-import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
-import android.database.Cursor;
-import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -12,15 +8,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import ie.app.musicplayer.Dialog.AddToPlaylistDialog;
@@ -47,7 +40,7 @@ public class SongListAdapter extends RecyclerView.Adapter<SongListAdapter.SongVi
     @Override
     public SongViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_song, parent, false);
-        return new SongViewHolder(view, itemClickListener);
+        return new SongViewHolder(view);
     }
 
     @Override
@@ -82,12 +75,7 @@ public class SongListAdapter extends RecyclerView.Adapter<SongListAdapter.SongVi
                 }
             });
         });
-        holder.layoutSongItem.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                itemClickListener.onItemClick(song);
-            }
-        });
+        holder.layoutSongItem.setOnClickListener(view -> itemClickListener.onItemClick(song));
     }
 
     @Override
@@ -107,10 +95,10 @@ public class SongListAdapter extends RecyclerView.Adapter<SongListAdapter.SongVi
         private ImageView songSave;
         private ItemClickListener itemClickListener;
         private ConstraintLayout layoutSongItem;
-        public SongViewHolder(@NonNull View itemView, ItemClickListener itemClickLister) {
+        public SongViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            songImage = itemView.findViewById(R.id.imageViewSongImage);
+            songImage = itemView.findViewById(R.id.albumImage);
             songName = itemView.findViewById(R.id.textViewSongName);
             songSinger = itemView.findViewById(R.id.textViewSingerName);
             menuMore = itemView.findViewById(R.id.menuMore);

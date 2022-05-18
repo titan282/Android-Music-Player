@@ -13,11 +13,16 @@
         <entry key="..\:/AndroidStudio/music-player/app/src/main/res/layout/row_song.xml" value="0.2" />
         <entry key="..\:/AndroidStudio/music-player/app/src/main/res/menu/popup.xml" value="0.25416666666666665" />
         <entry key="..\:/Education/Mobile/music-player/app/src/main/res/drawable/custom_edit_text.xml" value="0.2355" />
+        <entry key="..\:/Education/Mobile/music-player/app/src/main/res/drawable/ic_album.xml" value="0.2355" />
         <entry key="..\:/Education/Mobile/music-player/app/src/main/res/layout/activity_main.xml" value="0.22826086956521738" />
         <entry key="..\:/Education/Mobile/music-player/app/src/main/res/layout/bottom_sheet_fragment_play_control.xml" value="0.192481884057971" />
         <entry key="..\:/Education/Mobile/music-player/app/src/main/res/layout/fragment_album.xml" value="0.22826086956521738" />
+        <entry key="..\:/Education/Mobile/music-player/app/src/main/res/layout/fragment_artist.xml" value="0.22826086956521738" />
         <entry key="..\:/Education/Mobile/music-player/app/src/main/res/layout/fragment_playlist.xml" value="0.22826086956521738" />
         <entry key="..\:/Education/Mobile/music-player/app/src/main/res/layout/fragment_song.xml" value="0.20516304347826086" />
+        <entry key="..\:/Education/Mobile/music-player/app/src/main/res/layout/row_album.xml" value="0.22826086956521738" />
+        <entry key="..\:/Education/Mobile/music-player/app/src/main/res/layout/row_playlist.xml" value="0.192481884057971" />
+        <entry key="..\:/Education/Mobile/music-player/app/src/main/res/layout/row_song.xml" value="0.192481884057971" />
         <entry key="..\:/Education/Mobile/music-player/app/src/main/res/layout/search_activity.xml" value="0.2" />
         <entry key="..\:/Education/Mobile/music-player/app/src/main/res/menu/sort.xml" value="0.25416666666666665" />
         <entry key="..\:/Education/Third-S/Mobile/music-player/app/src/main/res/layout/activity_main.xml" value="0.2269021739130435" />

@@ -8,7 +8,7 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import java.util.HashMap;
 import java.util.Objects;
 
-import ie.app.musicplayer.Fragment.SearchSingerFragment;
+import ie.app.musicplayer.Fragment.SearchAlbumFragment;
 import ie.app.musicplayer.Fragment.SearchSongFragment;
 
 public class SearchViewPagerAdapter extends FragmentPagerAdapter {
@@ -18,7 +18,7 @@ public class SearchViewPagerAdapter extends FragmentPagerAdapter {
     public SearchViewPagerAdapter(@NonNull FragmentManager fm, int behavior) {
         super(fm, behavior);
         fragmentHashMap.put(0, new SearchSongFragment());
-        fragmentHashMap.put(1, new SearchSingerFragment());
+        fragmentHashMap.put(1, new SearchAlbumFragment());
     }
 
     @NonNull
