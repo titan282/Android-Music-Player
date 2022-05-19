@@ -20,6 +20,9 @@
 
     <color name="darkColorPrimary">#202124</color>
     <color name="darkColorSurface">#202124</color>
+    <color name="Tan_dark">#D8000510</color>
+
+    <color name="neon_green">#39FF14</color>
 
     <color name="blackColorSurface">#000000</color>
 

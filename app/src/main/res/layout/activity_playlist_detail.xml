@@ -4,20 +4,83 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/cardview_dark_background"
+    android:background="@color/Tan_dark"
     tools:context=".Activity.PlaylistDetailActivity" >
 
     <ImageView
         android:id="@+id/playlistPhoto"
         android:layout_width="match_parent"
-        android:layout_height="250dp"
+        android:layout_height="300dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/music_rect" />
+        android:src="@drawable/dark" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/playlistDetailRecycleView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/playlistPhoto" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="45dp"
+        android:cropToPadding="false"
+        android:scaleType="centerCrop"
+        app:srcCompat="@drawable/music_rect" />
+
+    <ImageButton
+        android:id="@+id/moreButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@id/playlistPhoto"
+        app:srcCompat="@drawable/icon_more" />
+
+    <ImageButton
+        android:id="@+id/backButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="?attr/actionModeCloseDrawable" />
+
+    <ImageButton
+        android:id="@+id/addButton"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignBottom="@id/playlistPhoto"
+        android:layout_marginStart="80dp"
+        app:srcCompat="@drawable/ic_app_shortcut_last_added_white" />
+
+    <ImageButton
+        android:id="@+id/imageButton"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignEnd="@id/playlistPhoto"
+        android:layout_alignBottom="@id/playlistPhoto"
+        android:layout_marginEnd
+            ="80dp"
+        app:srcCompat="@android:drawable/stat_sys_download" />
+
+    <Button
+        android:id="@+id/playButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/playlistPhoto"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/bgr_green_playbutton"
+        android:text="Play" />
+
+    <TextView
+        android:id="@+id/albumName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/playButton"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="10dp"
+        android:text="Album 1"
+        android:textAllCaps="true"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
 
 </RelativeLayout>
