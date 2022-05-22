@@ -64,7 +64,6 @@ public class PlayControlActivity extends AppCompatActivity implements PlayContro
     public MusicPlayerApp app;
     private Thread changeSongThread, setInfoThread;
     private PlayControlBottomSheetFragment bottomSheetFragment;
-
     private Status shuffleStatus = Status.OFF;
     private Status loopStatus = Status.OFF;
     private Status favoriteStatus = Status.OFF;
@@ -157,16 +156,28 @@ public class PlayControlActivity extends AppCompatActivity implements PlayContro
                 List<Playlist> playlists = Playlist.listAll(Playlist.class);
                 playlists.get(0).getSongList().add(song);
                 playlists.get(0).save();
+                Log.v("song","FavoriteSize: "+Playlist.listAll(Playlist.class).get(0).getSongList().size());
                 Toast.makeText(this, "Add song to Favorites successfully!",Toast.LENGTH_SHORT).show();
                  break;
             case ON:
                 favoriteBtn.setImageResource(R.drawable.ic_favorite_border);
                 favoriteStatus = Status.OFF;
                 List<Playlist> playlists2 = Playlist.listAll(Playlist.class);
-                playlists2.get(0).getSongList().get(song.getSongId()).delete();
+                int postionSong = getPostionInPlaylist(song, playlists2.get(0));
+                playlists2.get(0).getSongList().remove(postionSong);
+                playlists2.get(0).save();
+                Log.v("song","FavoriteSize: "+Playlist.listAll(Playlist.class).get(0).getSongList().size());
                 Toast.makeText(this, "Remove song from Favorites successfully!",Toast.LENGTH_SHORT).show();
                 break;
         }
+    }
+
+    private int getPostionInPlaylist(Song song, Playlist playlist) {
+        List<String> songUrl = new ArrayList<String>();
+        for(Song songItem:playlist.getSongList()){
+            songUrl.add(songItem.getSongURL());
+        }
+        return songUrl.indexOf(song.getSongURL());
     }
 
     @Override
@@ -324,6 +335,14 @@ public class PlayControlActivity extends AppCompatActivity implements PlayContro
             public void run() {
                 songName.setText(song.getSongName());
                 singerName.setText(song.getSongSinger());
+                if(getPostionInPlaylist(song,Playlist.listAll(Playlist.class).get(0))!=-1){
+                    favoriteBtn.setImageResource(R.drawable.ic_favorite);
+                    favoriteStatus = Status.ON;
+                }
+                else {
+                    favoriteBtn.setImageResource(R.drawable.ic_favorite_border);
+                    favoriteStatus = Status.OFF;
+                }
                 MediaMetadataRetriever mmr = new MediaMetadataRetriever();
                 mmr.setDataSource(song.getSongURL());
                 byte[] artBytes = mmr.getEmbeddedPicture();
