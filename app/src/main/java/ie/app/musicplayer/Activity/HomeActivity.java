@@ -3,15 +3,19 @@ package ie.app.musicplayer.Activity;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 import android.Manifest;
 import android.app.Activity;
+import android.app.Notification;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.media.session.MediaSessionCompat;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -25,6 +29,7 @@ import ie.app.musicplayer.Adapter.SongListAdapter;
 import ie.app.musicplayer.Adapter.ViewPagerAdapter;
 import ie.app.musicplayer.Application.MusicPlayerApp;
 import ie.app.musicplayer.Database.DBManager;
+import ie.app.musicplayer.Model.Song;
 import ie.app.musicplayer.R;
 
 public class HomeActivity extends AppCompatActivity {
@@ -67,4 +72,5 @@ public class HomeActivity extends AppCompatActivity {
         super.onDestroy();
 
     }
+
 }
