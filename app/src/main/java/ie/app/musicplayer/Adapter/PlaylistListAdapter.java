@@ -51,6 +51,7 @@ public class PlaylistListAdapter extends RecyclerView.Adapter<PlaylistListAdapte
         if (playlist == null) return;
         holder.playListName.setText(playlist.getPlaylistName());
         holder.playListImg.setImageResource(playlist.getPlaylistImage());
+        holder.tvNumSong.setText(playlists.get(position).getSongList().size()+" songs");
         holder.ibMenuPlaylist.setOnClickListener(view -> {
             PopupMenu popupMenu = new PopupMenu(context, view);
             popupMenu.getMenuInflater().inflate(R.menu.playlist_option, popupMenu.getMenu());
@@ -60,7 +61,12 @@ public class PlaylistListAdapter extends RecyclerView.Adapter<PlaylistListAdapte
                 public boolean onMenuItemClick(MenuItem menuItem) {
                     switch (menuItem.getItemId()){
                         case R.id.deletePlaylist:
-                            deletePlaylist(position);
+                            if(position!=0) {
+                                deletePlaylist(position);
+                            }
+                            else {
+                                Toast.makeText(context,"Can't delete Favorites Playlist!",Toast.LENGTH_SHORT).show();
+                            }
                     }
                     return  true;
                 }
@@ -84,11 +90,13 @@ public class PlaylistListAdapter extends RecyclerView.Adapter<PlaylistListAdapte
         private ImageView playListImg;
         private TextView playListName;
         private ImageButton ibMenuPlaylist;
+        private TextView tvNumSong;
         public PlaylistViewHolder(@NonNull View itemView) {
             super(itemView);
             playListImg = itemView.findViewById(R.id.imageviewplaylist);
             playListName = itemView.findViewById(R.id.textviewplaylist);
             ibMenuPlaylist = itemView.findViewById(R.id.menuPlaylist);
+            tvNumSong = itemView.findViewById(R.id.numSong);
         }
     }
 
