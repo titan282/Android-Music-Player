@@ -1,6 +1,7 @@
 package ie.app.musicplayer.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
@@ -13,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import ie.app.musicplayer.Adapter.PlaylistListAdapter;
 import ie.app.musicplayer.Adapter.SongListAdapter;
 import ie.app.musicplayer.Database.DBManager;
 import ie.app.musicplayer.Fragment.SongFragment;
@@ -27,20 +29,18 @@ public class PlaylistDetailActivity extends AppCompatActivity {
     int playlistId;
     List<Song> songList= new ArrayList<>();
     List<Playlist> playlists ;
-    Playlist playlist;
-    DBManager dbManager ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        dbManager = new DBManager(PlaylistDetailActivity.this);
+        Intent intent = getIntent();
+        playlistId= intent.getExtras().getInt(PlaylistListAdapter.POSITION);
         setContentView(R.layout.activity_playlist_detail);
-        rvSongList = findViewById(R.id.playlistRecycleView);
+        rvSongList = findViewById(R.id.playlistDetailRecycleView);
         playlistImage = findViewById(R.id.playlistPhoto);
-        playlistId = 2;
         playlists = Playlist.listAll(Playlist.class);
-        songList = playlists.get(0).getSongList();
-        Log.v("song", songList.get(0).getSongName());
-        SongListAdapter adapter = new SongListAdapter(this,new SongListAdapter.ItemClickListener() {
+        songList = playlists.get(playlistId).getSongList();
+        Log.v("song",playlists.get(playlistId).getPlaylistName()+ songList.size());
+        SongListAdapter adapter = new SongListAdapter(PlaylistDetailActivity.this,new SongListAdapter.ItemClickListener() {
             @Override
             public void onItemClick(Song song) {
                 Intent intent = new Intent(PlaylistDetailActivity.this, PlayControlActivity.class);
@@ -51,6 +51,10 @@ public class PlaylistDetailActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        adapter.setData(songList);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        rvSongList.setLayoutManager(linearLayoutManager);
+        rvSongList.setAdapter(adapter);
 
     }
 }

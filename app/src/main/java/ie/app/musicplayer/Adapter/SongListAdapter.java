@@ -64,27 +64,24 @@ public class SongListAdapter extends RecyclerView.Adapter<SongListAdapter.SongVi
         }
         holder.songName.setText(song.getSongName());
         holder.songSinger.setText(song.getSongSinger());
-        holder.menuMore.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                PopupMenu popupMenu = new PopupMenu(context, view);
-                popupMenu.getMenuInflater().inflate(R.menu.popup, popupMenu.getMenu());
-                popupMenu.show();
-                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem menuItem) {
-                        switch (menuItem.getItemId()){
-                            case R.id.AddToPlaylist:
-                                AddToPlaylistDialog addToPlaylistDialog = new AddToPlaylistDialog(context,song);
-                                AppCompatActivity activity = (AppCompatActivity) context;
-                                addToPlaylistDialog.show(activity.getSupportFragmentManager(), "My Manager");
-                                break;
-                        }
-                        return  true;
+        holder.menuMore.setOnClickListener(view -> {
+            PopupMenu popupMenu = new PopupMenu(context, view);
+            popupMenu.getMenuInflater().inflate(R.menu.popup, popupMenu.getMenu());
+            popupMenu.show();
+            popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem menuItem) {
+                    switch (menuItem.getItemId()){
+                        case R.id.AddToPlaylist:
+                            AddToPlaylistDialog addToPlaylistDialog = new AddToPlaylistDialog(context,song);
+                            AppCompatActivity activity = (AppCompatActivity) context;
+                            addToPlaylistDialog.show(activity.getSupportFragmentManager(), "My Manager");
+                            break;
                     }
-                });
-            }
-           });
+                    return  true;
+                }
+            });
+        });
         holder.layoutSongItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

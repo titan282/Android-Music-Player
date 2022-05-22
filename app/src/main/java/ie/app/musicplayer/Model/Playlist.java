@@ -1,21 +1,28 @@
 package ie.app.musicplayer.Model;
+import android.animation.TypeEvaluator;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.Gson;
+import com.google.gson.TypeAdapter;
 import com.orm.SugarRecord;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
-
+import com.google.gson.reflect.TypeToken;
+import com.orm.dsl.Ignore;
 
 public class Playlist extends SugarRecord implements Parcelable {
 
     private int playlistId;
     private String playlistName;
     private int playlistImage;
+    @Ignore
     private List<Song> songList;
-
+    private String songListJSON;
     public List<Song> getSongList() {
+        songList = new Gson().fromJson(this.songListJSON,new TypeToken<ArrayList<Song>>(){}.getType());
         return songList;
     }
 
@@ -94,4 +101,10 @@ public class Playlist extends SugarRecord implements Parcelable {
             return new Playlist[size];
         }
     };
+
+    @Override
+    public long save() {
+        this.songListJSON = new Gson().toJson(songList);
+        return super.save();
+    }
 }

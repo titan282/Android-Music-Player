@@ -49,7 +49,7 @@ import ie.app.musicplayer.R;
 public class PlayControlActivity extends AppCompatActivity implements PlayControlBottomSheetFragment.IOnItemSelectedListener {
     public enum Status {OFF, SINGLE, WHOLE, ON}
 
-    private ImageButton playPauseBtn, previousBtn, nextBtn, loopBtn, shuffleBtn, showBtn,favoriteBtn;
+    private ImageButton playPauseBtn, previousBtn, nextBtn, loopBtn, shuffleBtn, showBtn,favoriteBtn,backBtn;
     private ImageView songPicture;
     private TextView songName, singerName;
     private TextView duration, runtime;
@@ -63,7 +63,6 @@ public class PlayControlActivity extends AppCompatActivity implements PlayContro
     public MusicPlayerApp app;
     private Thread changeSongThread, setInfoThread;
     private PlayControlBottomSheetFragment bottomSheetFragment;
-
 
     private Status shuffleStatus = Status.OFF;
     private Status loopStatus = Status.OFF;
@@ -121,7 +120,9 @@ public class PlayControlActivity extends AppCompatActivity implements PlayContro
         showBtn.setOnClickListener(view -> {
             showPlaylist();
         });
-
+        backBtn.setOnClickListener(view -> {
+            back();
+        });
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
@@ -136,6 +137,10 @@ public class PlayControlActivity extends AppCompatActivity implements PlayContro
                 mediaPlayer.seekTo(seekBar.getProgress());
             }
         });
+    }
+
+    private void back() {
+        onBackPressed();
     }
 
 
@@ -279,6 +284,7 @@ public class PlayControlActivity extends AppCompatActivity implements PlayContro
         runtime = findViewById(R.id.textViewruntime);
         seekBar = findViewById(R.id.seekBartime);
         songPicture = findViewById(R.id.thumnail);
+        backBtn = findViewById(R.id.backBtn);
     }
 
     private int getPosition() {
