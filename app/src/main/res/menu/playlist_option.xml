@@ -6,4 +6,8 @@
         android:title="Delete this playlist"
         android:id="@+id/deletePlaylist"
         app:showAsAction="never" />
+    <item
+        android:title="Delete all songs"
+        android:id="@+id/deleteAll"
+        app:showAsAction="never" />
 </menu>

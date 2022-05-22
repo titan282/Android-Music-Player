@@ -6,6 +6,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +24,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import ie.app.musicplayer.Activity.PlaylistDetailActivity;
 import ie.app.musicplayer.Dialog.AddToPlaylistDialog;
+import ie.app.musicplayer.Model.Playlist;
 import ie.app.musicplayer.Model.Song;
 import ie.app.musicplayer.R;
 
@@ -67,6 +70,15 @@ public class SongListAdapter extends RecyclerView.Adapter<SongListAdapter.SongVi
         holder.menuMore.setOnClickListener(view -> {
             PopupMenu popupMenu = new PopupMenu(context, view);
             popupMenu.getMenuInflater().inflate(R.menu.popup, popupMenu.getMenu());
+            Menu menu = popupMenu.getMenu();
+            MenuItem addItem = menu.findItem(R.id.AddToPlaylist);
+            MenuItem removeItem = menu.findItem(R.id.removeSong);
+            if(!context.getClass().equals(PlaylistDetailActivity.class)) {
+                removeItem.setVisible(false);
+            }
+            else {
+                addItem.setVisible(false);
+            }
             popupMenu.show();
             popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                 @Override
@@ -77,6 +89,7 @@ public class SongListAdapter extends RecyclerView.Adapter<SongListAdapter.SongVi
                             AppCompatActivity activity = (AppCompatActivity) context;
                             addToPlaylistDialog.show(activity.getSupportFragmentManager(), "My Manager");
                             break;
+                        case R.id.removeSong:
                     }
                     return  true;
                 }

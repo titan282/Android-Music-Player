@@ -67,6 +67,9 @@ public class PlaylistListAdapter extends RecyclerView.Adapter<PlaylistListAdapte
                             else {
                                 Toast.makeText(context,"Can't delete Favorites Playlist!",Toast.LENGTH_SHORT).show();
                             }
+                            break;
+                        case R.id.deleteAll:
+                            deleteAllSong(position);
                     }
                     return  true;
                 }
@@ -78,6 +81,13 @@ public class PlaylistListAdapter extends RecyclerView.Adapter<PlaylistListAdapte
             intent.putExtra("cover",playlists.get(position).getPlaylistImage());
             context.startActivity(intent);
         });
+    }
+
+    private void deleteAllSong(int position) {
+        List<Playlist> playlists = Playlist.listAll(Playlist.class);
+        Playlist playlist = playlists.get(position);
+        playlist.getSongList().clear();
+        playlist.save();
     }
 
     @Override

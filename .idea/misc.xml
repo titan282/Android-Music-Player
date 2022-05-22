@@ -57,7 +57,7 @@
         <entry key="..\:/Programming/Android/MusicPlayer/app/src/main/res/layout/fragment_song.xml" value="0.25" />
         <entry key="..\:/Programming/Android/MusicPlayer/app/src/main/res/layout/item_playlist_name.xml" value="0.25" />
         <entry key="..\:/Programming/Android/MusicPlayer/app/src/main/res/layout/media_button.xml" value="0.25" />
-        <entry key="..\:/Programming/Android/MusicPlayer/app/src/main/res/layout/row_playlist.xml" value="0.25" />
+        <entry key="..\:/Programming/Android/MusicPlayer/app/src/main/res/layout/row_playlist.xml" value="0.16" />
         <entry key="..\:/Programming/Android/MusicPlayer/app/src/main/res/layout/row_song.xml" value="0.25" />
         <entry key="..\:/Programming/Android/MusicPlayer/app/src/main/res/menu/playlist_option.xml" value="0.25" />
         <entry key="..\:/Programming/Android/MusicPlayer/app/src/main/res/menu/popup.xml" value="0.25" />
@@ -71,5 +71,12 @@
   </component>
   <component name="ProjectType">
     <option name="id" value="Android" />
+  </component>
+  <component name="VisualizationToolProject">
+    <option name="state">
+      <ProjectState>
+        <option name="scale" value="0.16" />
+      </ProjectState>
+    </option>
   </component>
 </project>

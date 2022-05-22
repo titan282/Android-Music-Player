@@ -65,8 +65,8 @@ public class AddToPlaylistDialog extends AppCompatDialogFragment {
     }
     public void addSongtoPlaylist(int i){
         playlists = Playlist.listAll(Playlist.class);
-        HashSet<Song> hashSongSet = new HashSet<Song>(playlists.get(i).getSongList());
-        if(!hashSongSet.add(song)){
+        List<Song> songList = playlists.get(i).getSongList();
+        if(checkSong(songList)){
             Toast.makeText(context,"This song has been added to "+playlists.get(i).getPlaylistName()+" playlist",Toast.LENGTH_SHORT).show();
             Log.v("song", "Add failed!");
         }
@@ -80,6 +80,15 @@ public class AddToPlaylistDialog extends AppCompatDialogFragment {
         playlists = Playlist.listAll(Playlist.class);
         Log.v("song", "songList"+ playlists.get(i).getSongList().size());
     }
+
+    private boolean checkSong(List<Song> songList) {
+        List<String> songUrl = new ArrayList<String>();
+        for(Song songItem:songList){
+            songUrl.add(songItem.getSongURL());
+        }
+        return songUrl.contains(song.getSongURL());
+    }
+
     public void createNewPlaylist(View view){
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         dismiss();

@@ -6,5 +6,8 @@
         android:title="Add to playlist"
         android:id="@+id/AddToPlaylist"
         app:showAsAction="never" />
-
+    <item
+        android:title="Remove song from playlist"
+        android:id="@+id/removeSong"
+        app:showAsAction="never" />
 </menu>
