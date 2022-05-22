@@ -33,8 +33,10 @@
         <entry key="..\:/Programming/Android/MusicPlayer/app/src/main/res/drawable/bgr_playnhac.xml" value="0.2185" />
         <entry key="..\:/Programming/Android/MusicPlayer/app/src/main/res/drawable/dark.xml" value="0.2555" />
         <entry key="..\:/Programming/Android/MusicPlayer/app/src/main/res/drawable/ic_app_shortcut_last_added.xml" value="0.121" />
+        <entry key="..\:/Programming/Android/MusicPlayer/app/src/main/res/drawable/ic_baseline_keyboard_arrow_left_24.xml" value="0.2045" />
         <entry key="..\:/Programming/Android/MusicPlayer/app/src/main/res/drawable/ic_keyboard_arrow_down.xml" value="0.153" />
         <entry key="..\:/Programming/Android/MusicPlayer/app/src/main/res/drawable/ic_keyboard_arrow_left.xml" value="0.209" />
+        <entry key="..\:/Programming/Android/MusicPlayer/app/src/main/res/drawable/ic_keyboard_arrow_left_black.xml" value="0.2045" />
         <entry key="..\:/Programming/Android/MusicPlayer/app/src/main/res/drawable/ic_search.xml" value="0.1" />
         <entry key="..\:/Programming/Android/MusicPlayer/app/src/main/res/drawable/ic_shuffle.xml" value="0.2185" />
         <entry key="..\:/Programming/Android/MusicPlayer/app/src/main/res/drawable/ic_shuffle_on.xml" value="0.2185" />
@@ -48,6 +50,7 @@
         <entry key="..\:/Programming/Android/MusicPlayer/app/src/main/res/layout/bottom_sheet_fragment_play_control.xml" value="0.25" />
         <entry key="..\:/Programming/Android/MusicPlayer/app/src/main/res/layout/dialog_add_playlist.xml" value="0.25" />
         <entry key="..\:/Programming/Android/MusicPlayer/app/src/main/res/layout/dialog_playlist.xml" value="0.12158054711246201" />
+        <entry key="..\:/Programming/Android/MusicPlayer/app/src/main/res/layout/dialog_playlist_name.xml" value="0.25" />
         <entry key="..\:/Programming/Android/MusicPlayer/app/src/main/res/layout/fragment_album.xml" value="0.264" />
         <entry key="..\:/Programming/Android/MusicPlayer/app/src/main/res/layout/fragment_artist.xml" value="0.264" />
         <entry key="..\:/Programming/Android/MusicPlayer/app/src/main/res/layout/fragment_playlist.xml" value="0.25" />

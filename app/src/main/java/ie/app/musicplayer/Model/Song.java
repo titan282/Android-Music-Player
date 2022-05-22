@@ -134,7 +134,6 @@ public class Song extends SugarRecord implements Parcelable {
             if (artBytes != null) {
                 songEmbeddedPicture = BitmapFactory.decodeByteArray(artBytes, 0, artBytes.length);
             }
-            // if(artBytes == null)
         } catch (Exception e) {
             e.printStackTrace();
         }

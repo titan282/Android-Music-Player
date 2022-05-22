@@ -42,6 +42,7 @@ import ie.app.musicplayer.Application.MusicPlayerApp;
 import ie.app.musicplayer.Database.DBManager;
 import ie.app.musicplayer.Fragment.PlayControlBottomSheetFragment;
 import ie.app.musicplayer.Fragment.SongFragment;
+import ie.app.musicplayer.Model.Playlist;
 import ie.app.musicplayer.Model.Song;
 import ie.app.musicplayer.R;
 
@@ -115,7 +116,7 @@ public class PlayControlActivity extends AppCompatActivity implements PlayContro
             shuffle();
         });
         favoriteBtn.setOnClickListener(view -> {
-            addToFavorite();
+            addToFavorite(songList.get(position));
         });
         showBtn.setOnClickListener(view -> {
             showPlaylist();
@@ -148,15 +149,22 @@ public class PlayControlActivity extends AppCompatActivity implements PlayContro
         bottomSheetFragment = new PlayControlBottomSheetFragment(songList, shuffleStatus, loopStatus);
         bottomSheetFragment.show(getSupportFragmentManager(), bottomSheetFragment.getTag());
     }
-    private void addToFavorite(){
+    private void addToFavorite(Song song){
         switch(favoriteStatus){
             case OFF:
                 favoriteBtn.setImageResource(R.drawable.ic_favorite);
                 favoriteStatus = Status.ON;
-                break;
+                List<Playlist> playlists = Playlist.listAll(Playlist.class);
+                playlists.get(0).getSongList().add(song);
+                playlists.get(0).save();
+                Toast.makeText(this, "Add song to Favorites successfully!",Toast.LENGTH_SHORT).show();
+                 break;
             case ON:
                 favoriteBtn.setImageResource(R.drawable.ic_favorite_border);
                 favoriteStatus = Status.OFF;
+                List<Playlist> playlists2 = Playlist.listAll(Playlist.class);
+                playlists2.get(0).getSongList().get(song.getSongId()).delete();
+                Toast.makeText(this, "Remove song from Favorites successfully!",Toast.LENGTH_SHORT).show();
                 break;
         }
     }

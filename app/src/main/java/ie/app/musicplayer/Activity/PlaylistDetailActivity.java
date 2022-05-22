@@ -4,10 +4,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.Log;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import java.util.ArrayList;
@@ -25,7 +27,9 @@ import ie.app.musicplayer.R;
 public class PlaylistDetailActivity extends AppCompatActivity {
 
     RecyclerView rvSongList;
-    ImageView playlistImage;
+    ImageView ivPlaylistCover;
+    ImageButton ibBackBtn;
+    int playlistCover;
     int playlistId;
     List<Song> songList= new ArrayList<>();
     List<Playlist> playlists ;
@@ -34,9 +38,15 @@ public class PlaylistDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         Intent intent = getIntent();
         playlistId= intent.getExtras().getInt(PlaylistListAdapter.POSITION);
+        playlistCover = intent.getExtras().getInt("cover");
         setContentView(R.layout.activity_playlist_detail);
         rvSongList = findViewById(R.id.playlistDetailRecycleView);
-        playlistImage = findViewById(R.id.playlistPhoto);
+        ivPlaylistCover = findViewById(R.id.playlistCover);
+        ivPlaylistCover.setImageResource(playlistCover);
+        ibBackBtn = findViewById(R.id.backBtnPlaylistDetail);
+        ibBackBtn.setOnClickListener(view -> {
+            onBackPressed();
+        });
         playlists = Playlist.listAll(Playlist.class);
         songList = playlists.get(playlistId).getSongList();
         Log.v("song",playlists.get(playlistId).getPlaylistName()+ songList.size());

@@ -3,6 +3,7 @@ package ie.app.musicplayer.Adapter;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -68,6 +69,7 @@ public class PlaylistListAdapter extends RecyclerView.Adapter<PlaylistListAdapte
         holder.itemView.setOnClickListener(view -> {
             Intent intent = new Intent(context, PlaylistDetailActivity.class);
             intent.putExtra(POSITION,position);
+            intent.putExtra("cover",playlists.get(position).getPlaylistImage());
             context.startActivity(intent);
         });
     }

@@ -13,6 +13,7 @@ import java.util.List;
 import ie.app.musicplayer.Database.DBManager;
 import ie.app.musicplayer.Model.Playlist;
 import ie.app.musicplayer.Model.Song;
+import ie.app.musicplayer.R;
 
 
 public class MusicPlayerApp extends SugarApp {
@@ -23,6 +24,15 @@ public class MusicPlayerApp extends SugarApp {
     public void onCreate() {
         super.onCreate();
         createNotificationChannel();
+        createFavoritePlaylist();
+    }
+
+    private void createFavoritePlaylist() {
+        List<Playlist> playlists = Playlist.listAll(Playlist.class);
+        if(playlists.size()==0){
+            playlists.add(new Playlist("Favorites", R.drawable.favorites,new ArrayList<Song>()));
+            playlists.get(0).save();
+        }
     }
 
     private void createNotificationChannel() {
