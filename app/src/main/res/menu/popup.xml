@@ -7,7 +7,7 @@
         android:id="@+id/AddToPlaylist"
         app:showAsAction="never" />
     <item
-        android:title="Remove song from playlist"
+        android:title="Remove this song from playlist"
         android:id="@+id/removeSong"
         app:showAsAction="never" />
 </menu>

@@ -13,13 +13,23 @@
         android:layout_width="match_parent"
         android:layout_height="46dp"
         android:id="@+id/NavBar"
+        android:weightSum="10"
         >
         <ImageButton
-            android:layout_width="46dp"
+            android:layout_width="0dp"
             android:layout_height="46dp"
             android:src="@drawable/ic_baseline_keyboard_arrow_left_24"
             android:background="@null"
-            android:id="@+id/backBtnPlaylistDetail"/>
+            android:id="@+id/backBtnPlaylistDetail"
+            android:layout_weight="1"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:text="Playlist Name"
+            android:textSize="20dp"
+            android:gravity="center"
+            android:layout_weight="8"
+            android:id="@+id/playlistNamePlaylistDetail"/>
     </LinearLayout>
 
     <ImageView

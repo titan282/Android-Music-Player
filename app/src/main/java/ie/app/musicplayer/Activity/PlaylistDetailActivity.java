@@ -11,6 +11,7 @@ import android.os.Parcelable;
 import android.util.Log;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -31,11 +32,14 @@ public class PlaylistDetailActivity extends AppCompatActivity {
     ImageButton ibBackBtn;
     int playlistCover;
     int playlistId;
+    TextView tvPlaylistName;
     List<Song> songList= new ArrayList<>();
     List<Playlist> playlists ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        playlists = Playlist.listAll(Playlist.class);
+        songList = playlists.get(playlistId).getSongList();
         Intent intent = getIntent();
         playlistId= intent.getExtras().getInt(PlaylistListAdapter.POSITION);
         playlistCover = intent.getExtras().getInt("cover");
@@ -47,8 +51,8 @@ public class PlaylistDetailActivity extends AppCompatActivity {
         ibBackBtn.setOnClickListener(view -> {
             onBackPressed();
         });
-        playlists = Playlist.listAll(Playlist.class);
-        songList = playlists.get(playlistId).getSongList();
+        tvPlaylistName = findViewById(R.id.playlistNamePlaylistDetail);
+        tvPlaylistName.setText(playlists.get(playlistId).getPlaylistName());
         Log.v("song",playlists.get(playlistId).getPlaylistName()+ songList.size());
         SongListAdapter adapter = new SongListAdapter(PlaylistDetailActivity.this,new SongListAdapter.ItemClickListener() {
             @Override
