@@ -101,6 +101,7 @@ public class SongFragment extends Fragment {
         MediaSessionCompat mediaSessionCompat = new MediaSessionCompat(this.getContext(),"tag");
         Notification notification = new NotificationCompat.Builder(this.getContext(), MusicPlayerApp.CHANNEL_ID)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setLargeIcon(song.getSongEmbeddedPicture())
                 .setSubText("MusicPlayer")
                 .setContentTitle(song.getSongName())
@@ -115,7 +116,7 @@ public class SongFragment extends Fragment {
                 .build();
         NotificationManagerCompat managerCompat = NotificationManagerCompat.from(this.getContext());
         Log.v("song", song.toString());
-        managerCompat.notify(1,notification);
+        managerCompat.notify(100,notification);
     }
 
     private void onRequestPermissionResult() {
