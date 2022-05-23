@@ -79,7 +79,7 @@ public class AlbumFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.activity_album_detail, container, false);
+        return inflater.inflate(R.layout.fragment_playlist, container, false);
     }
 
     @Override
