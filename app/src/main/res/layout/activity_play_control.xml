@@ -22,11 +22,11 @@
         android:theme="?attr/actionBarTheme">
 
         <ImageButton
+            android:id="@+id/backBtn"
             android:layout_width="50dp"
             android:layout_height="match_parent"
             android:background="@null"
-            android:src="@drawable/ic_keyboard_arrow_left"
-            android:id="@+id/backBtn"/>
+            android:src="@drawable/ic_keyboard_arrow_left" />
     </androidx.appcompat.widget.Toolbar>
 
     <ImageView
