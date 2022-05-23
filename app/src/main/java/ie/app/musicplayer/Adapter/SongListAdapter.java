@@ -58,11 +58,6 @@ public class SongListAdapter extends RecyclerView.Adapter<SongListAdapter.SongVi
         } else {
             holder.songImage.setImageResource(song.getSongImage());
         }
-
-
-
-
-
         holder.songName.setText(song.getSongName());
         holder.songSinger.setText(song.getSongSinger());
         holder.menuMore.setOnClickListener(view -> {

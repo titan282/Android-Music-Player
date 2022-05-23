@@ -25,6 +25,7 @@
        <activity
             android:name=".Activity.PlaylistDetailActivity"
             android:exported="false" />
+        <activity android:name=".Activity.AlbumDetailActivity"/>
         <activity
             android:name=".Activity.HomeActivity"
             android:exported="true">
