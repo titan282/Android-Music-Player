@@ -1,22 +1,14 @@
 package ie.app.musicplayer.Model;
 
+import java.util.List;
+
 public class Singer {
-    private int singerId;
     private String singerName;
-    private String singerImage;
+    private List<Song> singerSong;
 
-    public Singer(int singerId, String singerName, String singerImage) {
-        this.singerId = singerId;
+    public Singer(String singerName, List<Song> singerSong) {
         this.singerName = singerName;
-        this.singerImage = singerImage;
-    }
-
-    public int getSingerId() {
-        return singerId;
-    }
-
-    public void setSingerId(int singerId) {
-        this.singerId = singerId;
+        this.singerSong = singerSong;
     }
 
     public String getSingerName() {
@@ -27,12 +19,11 @@ public class Singer {
         this.singerName = singerName;
     }
 
-    public String getSingerImage() {
-        return singerImage;
+    public List<Song> getSingerSong() {
+        return singerSong;
     }
 
-    public void setSingerImage(String singerImage) {
-        this.singerImage = singerImage;
+    public void setSingerSong(List<Song> singerSong) {
+        this.singerSong = singerSong;
     }
-
 }

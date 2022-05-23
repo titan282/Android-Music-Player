@@ -22,8 +22,8 @@ import ie.app.musicplayer.R;
 
 public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.AlbumViewHolder> {
 
-    private Context context;
-    private ItemClickListener itemClickListener;
+    private final Context context;
+    private final ItemClickListener itemClickListener;
     private List<Album> albumList = new ArrayList<>();
 
     public interface ItemClickListener {
@@ -73,9 +73,9 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.AlbumViewHol
 
     public class AlbumViewHolder extends RecyclerView.ViewHolder {
 
-        private ImageView albumImage;
-        private TextView albumName;
-        private ConstraintLayout layoutAlbumItem;
+        private final ImageView albumImage;
+        private final TextView albumName;
+        private final ConstraintLayout layoutAlbumItem;
 
         public AlbumViewHolder(@NonNull View itemView) {
             super(itemView);

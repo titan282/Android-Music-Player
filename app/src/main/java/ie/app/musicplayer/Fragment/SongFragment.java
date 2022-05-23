@@ -65,12 +65,7 @@ public class SongFragment extends Fragment {
         app =(MusicPlayerApp) getActivity().getApplication();
         view = inflater.inflate(R.layout.fragment_song, container, false);
         songView = view.findViewById(R.id.songView);
-        songListAdapter = new SongListAdapter(getContext(), new SongListAdapter.ItemClickListener() {
-            @Override
-            public void onItemClick(Song song) {
-                openPlayer(song);
-            }
-        });
+        songListAdapter = new SongListAdapter(getContext(), song -> openPlayer(song));
 
         requestPermissionLauncher = registerForActivityResult(
                 new ActivityResultContracts.RequestPermission(), isGranted -> {
@@ -154,6 +149,10 @@ public class SongFragment extends Fragment {
     }
 
     public void loadSongFromSharedStorage() {
+        if (((MusicPlayerApp)getActivity().getApplication()).songList != null &&
+                !(((MusicPlayerApp)getActivity().getApplication()).songList.isEmpty())) {
+            return;
+        }
         songList = new ArrayList<>();
         temp_album = new HashMap<>();
         temp_singer = new HashMap<>();
@@ -194,7 +193,6 @@ public class SongFragment extends Fragment {
             }
 
             Thread loadAlbumPicThread = new Thread(() -> {
-                Log.v("SongFragment", String.valueOf(songList.size()));
                 for (Song song : songList) {
                     song.loadEmbeddedPicture();
 
