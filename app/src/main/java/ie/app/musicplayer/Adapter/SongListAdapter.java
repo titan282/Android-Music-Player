@@ -38,7 +38,6 @@ public class SongListAdapter extends RecyclerView.Adapter<SongListAdapter.SongVi
         this.songList = list;
         notifyDataSetChanged();
     }
-
     @NonNull
     @Override
     public SongViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

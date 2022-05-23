@@ -22,7 +22,7 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position){
             case 1:
-//                return new PlaylistFragment();
+                return new PlaylistFragment();
             case 2:
                 return new AlbumFragment();
             case 3:
