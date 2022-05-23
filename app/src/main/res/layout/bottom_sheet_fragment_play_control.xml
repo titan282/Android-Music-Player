@@ -10,8 +10,10 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="10dp"
+        android:layout_marginEnd="12dp"
         android:layout_marginStart="10dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="12dp"
         >
 
         <ImageButton
@@ -20,7 +22,8 @@
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_shuffle">
+            app:srcCompat="@drawable/ic_shuffle"
+            >
 
         </ImageButton>
 
@@ -30,27 +33,11 @@
             android:layout_height="wrap_content"
             app:layout_constraintStart_toEndOf="@id/shuffleBtn"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_repeat">>
+            app:srcCompat="@drawable/ic_repeat"
+            android:layout_marginLeft="8dp">
 
         </ImageButton>
 
-<!--        <ImageButton-->
-<!--            android:id="@+id/modifyButton"-->
-<!--            android:layout_width="30dp"-->
-<!--            android:layout_height="30dp"-->
-<!--            app:layout_constraintEnd_toStartOf="@id/deleteButton"-->
-<!--            app:layout_constraintTop_toTopOf="parent">-->
-
-<!--        </ImageButton>-->
-
-<!--        <ImageButton-->
-<!--            android:id="@+id/deleteButton"-->
-<!--            android:layout_width="30dp"-->
-<!--            android:layout_height="30dp"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintTop_toTopOf="parent">-->
-
-<!--        </ImageButton>-->
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
