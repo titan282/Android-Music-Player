@@ -21,8 +21,6 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
         switch (position){
-            case 0:
-                return new SongFragment();
             case 1:
                 return new PlaylistFragment();
             case 2:

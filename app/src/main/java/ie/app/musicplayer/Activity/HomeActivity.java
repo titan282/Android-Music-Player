@@ -1,5 +1,8 @@
 package ie.app.musicplayer.Activity;
 
+import android.content.Intent;
+import android.os.Build;
+import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,11 +23,14 @@ import android.os.Bundle;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.viewpager.widget.ViewPager;
+import com.google.android.material.tabs.TabLayout;
 import android.widget.Toast;
 
 import com.google.android.material.tabs.TabLayout;
@@ -34,7 +40,6 @@ import java.util.List;
 
 import ie.app.musicplayer.Adapter.SongListAdapter;
 import ie.app.musicplayer.Adapter.ViewPagerAdapter;
-import ie.app.musicplayer.Application.MusicPlayerApp;
 import ie.app.musicplayer.Database.DBManager;
 import ie.app.musicplayer.Model.Playlist;
 import ie.app.musicplayer.Model.Song;
@@ -57,6 +62,12 @@ public class HomeActivity extends AppCompatActivity {
         mViewPager = findViewById(R.id.viewPager);
         ivSort = findViewById(R.id.sortBtn);
         ibSearchBtn=findViewById(R.id.search_btn);
+
+        ibSearchBtn.setOnClickListener(view -> {
+            Intent intent = new Intent(this, SearchActivity.class);
+            startActivity(intent);
+        });
+
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager(),
                 FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         mViewPager.setAdapter(adapter);

@@ -3,14 +3,15 @@ package ie.app.musicplayer.Model;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.MediaMetadataRetriever;
+import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 
-import com.orm.SugarRecord;
+import androidx.annotation.RequiresApi;
 
 
-public class Song extends SugarRecord implements Parcelable {
+public class Song implements Parcelable {
     private int songId;
     private String songName;
     private String songAlbum;
@@ -18,6 +19,7 @@ public class Song extends SugarRecord implements Parcelable {
     private String songSinger;
     private String songURL;
     private Bitmap songEmbeddedPicture;
+    private boolean hasPic = false;
 
     public Song(){}
     public Song(int songId, String songName, String songAlbum, int songImage, String songSinger, String songURL) {
@@ -27,15 +29,6 @@ public class Song extends SugarRecord implements Parcelable {
         this.songImage = songImage;
         this.songSinger = songSinger;
         this.songURL = songURL;
-    }
-
-    protected Song(Parcel in) {
-        songId = in.readInt();
-        songName = in.readString();
-        songAlbum = in.readString();
-        songImage = in.readInt();
-        songSinger = in.readString();
-        songURL = in.readString();
     }
 
     public int getSongId() {
@@ -78,18 +71,6 @@ public class Song extends SugarRecord implements Parcelable {
         this.songEmbeddedPicture = songEmbeddedPicture;
     }
 
-    public static final Creator<Song> CREATOR = new Creator<Song>() {
-        @Override
-        public Song createFromParcel(Parcel in) {
-            return new Song(in);
-        }
-
-        @Override
-        public Song[] newArray(int size) {
-            return new Song[size];
-        }
-    };
-
     public String getSongURL() {
         return songURL;
     }
@@ -106,12 +87,42 @@ public class Song extends SugarRecord implements Parcelable {
         this.songURL = songURL;
     }
 
+    public boolean isHasPic() {
+        return this.hasPic;
+    }
+
 
     @Override
     public int describeContents() {
         return 0;
     }
 
+
+    public static final Creator<Song> CREATOR = new Creator<Song>() {
+        @RequiresApi(api = Build.VERSION_CODES.Q)
+        @Override
+        public Song createFromParcel(Parcel in) {
+            return new Song(in);
+        }
+
+        @Override
+        public Song[] newArray(int size) {
+            return new Song[size];
+        }
+    };
+
+    @RequiresApi(api = Build.VERSION_CODES.Q)
+    protected Song(Parcel in) {
+        songId = in.readInt();
+        songName = in.readString();
+        songAlbum = in.readString();
+        songImage = in.readInt();
+        songSinger = in.readString();
+        songURL = in.readString();
+        hasPic = in.readBoolean();
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.Q)
     @Override
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeInt(songId);
@@ -120,24 +131,29 @@ public class Song extends SugarRecord implements Parcelable {
         parcel.writeInt(songImage);
         parcel.writeString(songSinger);
         parcel.writeString(songURL);
+        parcel.writeBoolean(hasPic);
     }
 
     public void loadEmbeddedPicture() {
-        if (songURL == null) {
-            Log.d("loadEmbeddedPicture - Song class", toString());
-        }
-
         MediaMetadataRetriever mmr = new MediaMetadataRetriever();
         try {
             mmr.setDataSource(songURL);
             byte[] artBytes = mmr.getEmbeddedPicture();
             if (artBytes != null) {
+                hasPic = true;
                 songEmbeddedPicture = BitmapFactory.decodeByteArray(artBytes, 0, artBytes.length);
             }
         } catch (Exception e) {
+            Log.v("Song", "catch something");
             e.printStackTrace();
         }
         mmr.release();
+    }
+
+    public void checkPicStatusAndLoad() {
+        if (isHasPic()) {
+            loadEmbeddedPicture();
+        }
     }
 
     @Override
