@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import ie.app.musicplayer.Model.Playlist;
 import ie.app.musicplayer.Model.Song;
 import ie.app.musicplayer.R;
 
