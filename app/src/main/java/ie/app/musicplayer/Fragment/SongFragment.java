@@ -2,10 +2,31 @@ package ie.app.musicplayer.Fragment;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import android.os.Parcelable;
+import android.provider.MediaStore;
+import android.support.v4.media.session.MediaSessionCompat;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -14,21 +35,14 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.os.Parcelable;
-import android.provider.MediaStore;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Toast;
-
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
+import ie.app.musicplayer.Activity.HomeActivity;
 import ie.app.musicplayer.Activity.PlayControlActivity;
 import ie.app.musicplayer.Adapter.SongListAdapter;
 import ie.app.musicplayer.Application.MusicPlayerApp;
-import ie.app.musicplayer.Database.DBManager;
 import ie.app.musicplayer.Model.Song;
 import ie.app.musicplayer.R;
 
@@ -40,6 +54,8 @@ public class SongFragment extends Fragment {
     private SongListAdapter songListAdapter;
     private ActivityResultLauncher<String> requestPermissionLauncher;
     private Thread loadingThread;
+    private HashMap<String, ArrayList<Song>> temp_album = new HashMap<>();
+    private HashMap<String, ArrayList<Song>> temp_singer = new HashMap<>();
 
     public MusicPlayerApp app;
 
@@ -52,12 +68,7 @@ public class SongFragment extends Fragment {
         songListAdapter = new SongListAdapter(getContext(), new SongListAdapter.ItemClickListener() {
             @Override
             public void onItemClick(Song song) {
-                Intent intent = new Intent(SongFragment.this.getActivity(), PlayControlActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putParcelableArrayList("Playlist", (ArrayList<? extends Parcelable>) songList);
-                bundle.putInt("Position", songList.indexOf(song));
-                intent.putExtras(bundle);
-                startActivity(intent);
+                openPlayer(song);
             }
         });
 
@@ -79,6 +90,37 @@ public class SongFragment extends Fragment {
         songView.setAdapter(songListAdapter);
 
         return view;
+    }
+
+    private void openPlayer(Song song) {
+        Intent intent = new Intent(SongFragment.this.getActivity(), PlayControlActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putParcelableArrayList("Playlist", (ArrayList<? extends Parcelable>) songList);
+        bundle.putInt("Position", songList.indexOf(song));
+        intent.putExtras(bundle);
+        startActivity(intent);
+        sendNotificationMedia(song);
+    }
+
+    private void sendNotificationMedia(Song song) {
+        MediaSessionCompat mediaSessionCompat = new MediaSessionCompat(this.getContext(),"tag");
+        Notification notification = new NotificationCompat.Builder(this.getContext(), MusicPlayerApp.CHANNEL_ID)
+                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+                .setLargeIcon(song.getSongEmbeddedPicture())
+                .setSubText("MusicPlayer")
+                .setContentTitle(song.getSongName())
+                .setSubText(song.getSongSinger())
+                .setSmallIcon(R.drawable.ic_music)
+                .addAction(R.drawable.ic_skip_previous, "Previous", null) // #0
+                .addAction(R.drawable.ic_pause, "Pause", null)  // #1
+                .addAction(R.drawable.ic_skip_next, "Next", null)
+                .setStyle(new androidx.media.app.NotificationCompat.MediaStyle()
+                        .setShowActionsInCompactView(1 /* #1: pause button */)
+                        .setMediaSession(mediaSessionCompat.getSessionToken()))
+                .build();
+        NotificationManagerCompat managerCompat = NotificationManagerCompat.from(this.getContext());
+        Log.v("song", song.toString());
+        managerCompat.notify(1,notification);
     }
 
     private void onRequestPermissionResult() {
@@ -113,6 +155,8 @@ public class SongFragment extends Fragment {
 
     public void loadSongFromSharedStorage() {
         songList = new ArrayList<>();
+        temp_album = new HashMap<>();
+        temp_singer = new HashMap<>();
         if (ContextCompat.checkSelfPermission(this.getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 == PackageManager.PERMISSION_GRANTED) {
 
@@ -125,13 +169,10 @@ public class SongFragment extends Fragment {
             };
             String sortOrder = MediaStore.Audio.Media.TITLE + " ASC";
 
-            try (Cursor cursor = this.getContext().getApplicationContext()
-                    .getContentResolver().query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
-                    projection, null, null, sortOrder)) {
-                loadingThread = new Thread() {
-                    @Override
-                    public void run() {
-                        super.run();
+                loadingThread = new Thread(() -> {
+                    try (Cursor cursor = this.getContext().getApplicationContext()
+                            .getContentResolver().query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
+                                    projection, null, null, sortOrder)) {
                         while (cursor.moveToNext()) {
                             int songId = cursor.getInt(0);
                             String songName = cursor.getString(1);
@@ -141,16 +182,34 @@ public class SongFragment extends Fragment {
 
                             Song song = new Song(songId, songName, songAlbum, R.drawable.music_rect, songSinger, songURL);
                             songList.add(song);
-
                         }
+                        ((MusicPlayerApp) getActivity().getApplication()).songList = new ArrayList<>(songList);
                     }
-                };
-                loadingThread.run();
+                });
+            loadingThread.start();
+            try {
+                loadingThread.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
+
             Thread loadAlbumPicThread = new Thread(() -> {
+                Log.v("SongFragment", String.valueOf(songList.size()));
                 for (Song song : songList) {
                     song.loadEmbeddedPicture();
+
+                    if (!temp_album.containsKey(song.getSongAlbum())) {
+                        temp_album.put(song.getSongAlbum(), new ArrayList<>());
+                    }
+                    temp_album.get(song.getSongAlbum()).add(song);
+
+                    if (!temp_singer.containsKey(song.getSongSinger())) {
+                        temp_singer.put(song.getSongSinger(), new ArrayList<>());
+                    }
+                    temp_singer.get(song.getSongSinger()).add(song);
                 }
+                ((MusicPlayerApp)getActivity().getApplication()).album = new HashMap<>(temp_album);
+                ((MusicPlayerApp)getActivity().getApplication()).singer = new HashMap<>(temp_singer);
             });
             loadAlbumPicThread.start();
         }

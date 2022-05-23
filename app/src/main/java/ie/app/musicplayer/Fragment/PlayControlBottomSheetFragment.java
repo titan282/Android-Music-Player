@@ -62,6 +62,8 @@ public class PlayControlBottomSheetFragment extends BottomSheetDialogFragment {
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         BottomSheetDialog bottomSheetDialog = (BottomSheetDialog) super.onCreateDialog(savedInstanceState);
 
+        loadPicture();
+
         View view = LayoutInflater.from(getContext()).inflate(R.layout.bottom_sheet_fragment_play_control, null);
         bottomSheetDialog.setContentView(view);
 
@@ -97,6 +99,16 @@ public class PlayControlBottomSheetFragment extends BottomSheetDialogFragment {
         return  bottomSheetDialog;
     }
 
+    private void loadPicture() {
+        Thread thread = new Thread(() -> {
+            for (Song song : songList) {
+                song.checkPicStatusAndLoad();
+            }
+        });
+
+        thread.start();
+    }
+
     private void loop() {
         switch (loopStatus) {
             case OFF:
@@ -125,8 +137,9 @@ public class PlayControlBottomSheetFragment extends BottomSheetDialogFragment {
     }
 
     public void updateSongListAdapter(List<Song> songList) {
+        this.songList = songList;
         songListAdapter.setData(songList);
-        Log.v("BottomSheet", "Notify dataset changed");
+        loadPicture();
     }
 
     private void setButtonImage() {

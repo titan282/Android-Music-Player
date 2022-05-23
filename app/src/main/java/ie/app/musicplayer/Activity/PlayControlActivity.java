@@ -1,47 +1,29 @@
 package ie.app.musicplayer.Activity;
 
 
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-
-
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.media.AudioManager;
-import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Parcelable;
 import android.util.Log;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Toolbar;
 import androidx.appcompat.app.AppCompatActivity;
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import ie.app.musicplayer.Application.MusicPlayerApp;
-
 import ie.app.musicplayer.Database.DBManager;
 import ie.app.musicplayer.Fragment.PlayControlBottomSheetFragment;
 import ie.app.musicplayer.Fragment.SongFragment;
+import ie.app.musicplayer.Model.Playlist;
 import ie.app.musicplayer.Model.Song;
 import ie.app.musicplayer.R;
 
@@ -49,7 +31,7 @@ import ie.app.musicplayer.R;
 public class PlayControlActivity extends AppCompatActivity implements PlayControlBottomSheetFragment.IOnItemSelectedListener {
     public enum Status {OFF, SINGLE, WHOLE, ON}
 
-    private ImageButton playPauseBtn, previousBtn, nextBtn, loopBtn, shuffleBtn, showBtn,favoriteBtn;
+    private ImageButton playPauseBtn, previousBtn, nextBtn, loopBtn, shuffleBtn, showBtn,favoriteBtn,backBtn;
     private ImageView songPicture;
     private TextView songName, singerName;
     private TextView duration, runtime;
@@ -61,10 +43,8 @@ public class PlayControlActivity extends AppCompatActivity implements PlayContro
     private List<Song> originalSongList;
     private int position = 0;
     public MusicPlayerApp app;
-    private Thread changeSongThread, setInfoThread;
+    private Thread changeSongThread;
     private PlayControlBottomSheetFragment bottomSheetFragment;
-
-
     private Status shuffleStatus = Status.OFF;
     private Status loopStatus = Status.OFF;
     private Status favoriteStatus = Status.OFF;
@@ -93,7 +73,7 @@ public class PlayControlActivity extends AppCompatActivity implements PlayContro
         setContentView(R.layout.activity_play_control);
         init();
         songList = getSongList();
-        originalSongList = new ArrayList<Song>(songList);
+        originalSongList = new ArrayList<>(songList);
         position = getPosition();
         setInfoToLayout(songList.get(position));
         initMediaPlayer(songList.get(position).getSongURL());
@@ -116,12 +96,14 @@ public class PlayControlActivity extends AppCompatActivity implements PlayContro
             shuffle();
         });
         favoriteBtn.setOnClickListener(view -> {
-            addToFavorite();
+            addToFavorite(songList.get(position));
         });
         showBtn.setOnClickListener(view -> {
             showPlaylist();
         });
-
+        backBtn.setOnClickListener(view -> {
+            back();
+        });
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
@@ -138,22 +120,45 @@ public class PlayControlActivity extends AppCompatActivity implements PlayContro
         });
     }
 
+    private void back() {
+        onBackPressed();
+    }
+
 
     private void showPlaylist() {
         bottomSheetFragment = new PlayControlBottomSheetFragment(songList, shuffleStatus, loopStatus);
         bottomSheetFragment.show(getSupportFragmentManager(), bottomSheetFragment.getTag());
     }
-    private void addToFavorite(){
+    private void addToFavorite(Song song){
         switch(favoriteStatus){
             case OFF:
                 favoriteBtn.setImageResource(R.drawable.ic_favorite);
                 favoriteStatus = Status.ON;
-                break;
+                List<Playlist> playlists = Playlist.listAll(Playlist.class);
+                playlists.get(0).getSongList().add(song);
+                playlists.get(0).save();
+                Log.v("song","FavoriteSize: "+Playlist.listAll(Playlist.class).get(0).getSongList().size());
+                Toast.makeText(this, "Add song to Favorites successfully!",Toast.LENGTH_SHORT).show();
+                 break;
             case ON:
                 favoriteBtn.setImageResource(R.drawable.ic_favorite_border);
                 favoriteStatus = Status.OFF;
+                List<Playlist> playlists2 = Playlist.listAll(Playlist.class);
+                int postionSong = getPostionInPlaylist(song, playlists2.get(0));
+                playlists2.get(0).getSongList().remove(postionSong);
+                playlists2.get(0).save();
+                Log.v("song","FavoriteSize: "+Playlist.listAll(Playlist.class).get(0).getSongList().size());
+                Toast.makeText(this, "Remove song from Favorites successfully!",Toast.LENGTH_SHORT).show();
                 break;
         }
+    }
+
+    private int getPostionInPlaylist(Song song, Playlist playlist) {
+        List<String> songUrl = new ArrayList<String>();
+        for(Song songItem:playlist.getSongList()){
+            songUrl.add(songItem.getSongURL());
+        }
+        return songUrl.indexOf(song.getSongURL());
     }
 
     @Override
@@ -221,7 +226,9 @@ public class PlayControlActivity extends AppCompatActivity implements PlayContro
                 Collections.shuffle(songList);
                 position = songList.indexOf(currentSong);
 
-                bottomSheetFragment.updateSongListAdapter(songList);
+                if (bottomSheetFragment != null) {
+                    bottomSheetFragment.updateSongListAdapter(songList);
+                }
                 // Shuffle songList Here
                 break;
             default:
@@ -231,7 +238,9 @@ public class PlayControlActivity extends AppCompatActivity implements PlayContro
                 position = songList.indexOf(currentSong);
                 shuffleBtn.setImageResource(R.drawable.ic_shuffle);
 
-                bottomSheetFragment.updateSongListAdapter(songList);
+                if (bottomSheetFragment != null) {
+                    bottomSheetFragment.updateSongListAdapter(songList);
+                }
                 break;
         }
     }
@@ -279,6 +288,7 @@ public class PlayControlActivity extends AppCompatActivity implements PlayContro
         runtime = findViewById(R.id.textViewruntime);
         seekBar = findViewById(R.id.seekBartime);
         songPicture = findViewById(R.id.thumnail);
+        backBtn = findViewById(R.id.backBtn);
     }
 
     private int getPosition() {
@@ -305,23 +315,23 @@ public class PlayControlActivity extends AppCompatActivity implements PlayContro
     }
 
     private void setInfoToLayout(Song song) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                songName.setText(song.getSongName());
-                singerName.setText(song.getSongSinger());
-                MediaMetadataRetriever mmr = new MediaMetadataRetriever();
-                mmr.setDataSource(song.getSongURL());
-                byte[] artBytes = mmr.getEmbeddedPicture();
-                if (artBytes != null) {
-                    InputStream is = new ByteArrayInputStream(artBytes);
-                    Bitmap bitmap = BitmapFactory.decodeStream(is);
-                    songPicture.setImageBitmap(bitmap);
-                } else {
-                    songPicture.setImageResource(song.getSongImage());
+        runOnUiThread(() -> {
+            songName.setText(song.getSongName());
+            singerName.setText(song.getSongSinger());
+            if (song.isHasPic()) {
+                song.checkPicStatusAndLoad();
+                songPicture.setImageBitmap(song.getSongEmbeddedPicture());
+            } else {
+                songPicture.setImageResource(song.getSongImage());
+                    }
+                if(getPostionInPlaylist(song,Playlist.listAll(Playlist.class).get(0))!=-1){
+                    favoriteBtn.setImageResource(R.drawable.ic_favorite);
+                    favoriteStatus = Status.ON;
                 }
-                mmr.release();
-            }
+                else {
+                    favoriteBtn.setImageResource(R.drawable.ic_favorite_border);
+                    favoriteStatus = Status.OFF;
+                }
         });
     }
 
