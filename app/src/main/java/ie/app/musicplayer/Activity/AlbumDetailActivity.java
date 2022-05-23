@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.Log;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -24,7 +25,7 @@ public class AlbumDetailActivity extends AppCompatActivity {
     private ImageButton addBtn, playBtn;
     private TextView albumName;
     private List<Song> albumData;
-
+    private ImageView ivAlbumCover;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,7 +34,15 @@ public class AlbumDetailActivity extends AppCompatActivity {
         albumData = (List<Song>) getIntent().getExtras().get("Playlist");
         albumName = findViewById(R.id.albumName);
         albumName.setText((String) getIntent().getExtras().get("Name"));
-
+        ivAlbumCover = findViewById(R.id.albumCover);
+        for(Song song:albumData){
+            song.loadEmbeddedPicture();
+        }
+        if (albumData.get(0).isHasPic()) {
+            ivAlbumCover.setImageBitmap(albumData.get(0).getSongEmbeddedPicture());
+        } else {
+            ivAlbumCover.setImageResource(R.drawable.ic_album);
+        }
         albumReCycleView = findViewById(R.id.songAlbumList);
         albumAdapter = new SongListAdapter(AlbumDetailActivity.this, song -> {
             Intent intent = new Intent(AlbumDetailActivity.this, PlayControlActivity.class);

@@ -65,9 +65,11 @@ public class PlaylistDetailActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        for(Song song: songList){
-            song.loadEmbeddedPicture();
-        }
+
+            for (Song song : songList) {
+                song.loadEmbeddedPicture();
+            }
+
         adapter.setData(songList);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         rvSongList.setLayoutManager(linearLayoutManager);
