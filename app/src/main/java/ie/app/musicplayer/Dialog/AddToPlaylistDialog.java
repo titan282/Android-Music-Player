@@ -2,6 +2,7 @@ package ie.app.musicplayer.Dialog;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -71,6 +72,7 @@ public class AddToPlaylistDialog extends AppCompatDialogFragment {
             Log.v("song", "Add failed!");
         }
         else {
+//            song = convertToDefaultAlbumPicture(song);
             playlists.get(i).getSongList().add(song);
             playlists.get(i).save();
             Toast.makeText(context,"Add song to "+playlists.get(i).getPlaylistName()+ " playlist successfully!",Toast.LENGTH_SHORT).show();
@@ -79,6 +81,11 @@ public class AddToPlaylistDialog extends AppCompatDialogFragment {
         Log.v("song", "Add "+playlists.get(i).getPlaylistName()+ " "+song.getSongName());
         playlists = Playlist.listAll(Playlist.class);
         Log.v("song", "songList"+ playlists.get(i).getSongList().size());
+    }
+
+    private Song covertToDefaultAlbumPicture(Song song) {
+        song.setSongEmbeddedPicture(BitmapFactory.decodeResource(getResources(),R.drawable.music_rect));
+        return song;
     }
 
     private boolean checkSong(List<Song> songList) {
@@ -104,7 +111,8 @@ public class AddToPlaylistDialog extends AppCompatDialogFragment {
                         Log.v("song",song.getSongName());
                         Toast.makeText(context, "Create playlist successfully!", Toast.LENGTH_SHORT).show();
                         Toast.makeText(context, "Add song to "+playlistName.getText()+ " playlist successfully!", Toast.LENGTH_SHORT).show();
-                        new Playlist(playlistName.getText().toString(),R.drawable.music_rect, songList).save();
+                        playlists = Playlist.listAll(Playlist.class);
+                        new Playlist(playlistName.getText().toString(),R.drawable.img_playlist_default, songList).save();
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {

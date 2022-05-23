@@ -39,9 +39,9 @@ public class PlaylistDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         playlists = Playlist.listAll(Playlist.class);
-        songList = playlists.get(playlistId).getSongList();
         Intent intent = getIntent();
         playlistId= intent.getExtras().getInt(PlaylistListAdapter.POSITION);
+        songList = playlists.get(playlistId).getSongList();
         playlistCover = intent.getExtras().getInt("cover");
         setContentView(R.layout.activity_playlist_detail);
         rvSongList = findViewById(R.id.playlistDetailRecycleView);
