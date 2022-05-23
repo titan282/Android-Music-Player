@@ -7,8 +7,10 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 
+import com.orm.SugarRecord;
 
-public class Song implements Parcelable {
+
+public class Song extends SugarRecord implements Parcelable {
     private int songId;
     private String songName;
     private String songAlbum;

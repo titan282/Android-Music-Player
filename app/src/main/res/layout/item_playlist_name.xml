@@ -6,8 +6,8 @@
     <ImageView
         android:layout_width="50dp"
         android:layout_height="match_parent"
-        android:src="@drawable/music_rect"
-        android:layout_gravity="left"/>
+        android:layout_gravity="left"
+        android:id="@+id/playlistCover"/>
     <TextView
         android:id="@+id/playlistName"
         android:layout_width="wrap_content"

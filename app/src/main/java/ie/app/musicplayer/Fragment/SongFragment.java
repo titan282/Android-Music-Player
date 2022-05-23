@@ -2,13 +2,18 @@ package ie.app.musicplayer.Fragment;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -16,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Parcelable;
 import android.provider.MediaStore;
+import android.support.v4.media.session.MediaSessionCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +31,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import ie.app.musicplayer.Activity.HomeActivity;
 import ie.app.musicplayer.Activity.PlayControlActivity;
 import ie.app.musicplayer.Adapter.SongListAdapter;
 import ie.app.musicplayer.Application.MusicPlayerApp;
@@ -52,12 +59,7 @@ public class SongFragment extends Fragment {
         songListAdapter = new SongListAdapter(getContext(), new SongListAdapter.ItemClickListener() {
             @Override
             public void onItemClick(Song song) {
-                Intent intent = new Intent(SongFragment.this.getActivity(), PlayControlActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putParcelableArrayList("Playlist", (ArrayList<? extends Parcelable>) songList);
-                bundle.putInt("Position", songList.indexOf(song));
-                intent.putExtras(bundle);
-                startActivity(intent);
+                openPlayer(song);
             }
         });
 
@@ -79,6 +81,37 @@ public class SongFragment extends Fragment {
         songView.setAdapter(songListAdapter);
 
         return view;
+    }
+
+    private void openPlayer(Song song) {
+        Intent intent = new Intent(SongFragment.this.getActivity(), PlayControlActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putParcelableArrayList("Playlist", (ArrayList<? extends Parcelable>) songList);
+        bundle.putInt("Position", songList.indexOf(song));
+        intent.putExtras(bundle);
+        startActivity(intent);
+        sendNotificationMedia(song);
+    }
+
+    private void sendNotificationMedia(Song song) {
+        MediaSessionCompat mediaSessionCompat = new MediaSessionCompat(this.getContext(),"tag");
+        Notification notification = new NotificationCompat.Builder(this.getContext(), MusicPlayerApp.CHANNEL_ID)
+                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+                .setLargeIcon(song.getSongEmbeddedPicture())
+                .setSubText("MusicPlayer")
+                .setContentTitle(song.getSongName())
+                .setSubText(song.getSongSinger())
+                .setSmallIcon(R.drawable.ic_music)
+                .addAction(R.drawable.ic_skip_previous, "Previous", null) // #0
+                .addAction(R.drawable.ic_pause, "Pause", null)  // #1
+                .addAction(R.drawable.ic_skip_next, "Next", null)
+                .setStyle(new androidx.media.app.NotificationCompat.MediaStyle()
+                        .setShowActionsInCompactView(1 /* #1: pause button */)
+                        .setMediaSession(mediaSessionCompat.getSessionToken()))
+                .build();
+        NotificationManagerCompat managerCompat = NotificationManagerCompat.from(this.getContext());
+        Log.v("song", song.toString());
+        managerCompat.notify(1,notification);
     }
 
     private void onRequestPermissionResult() {
