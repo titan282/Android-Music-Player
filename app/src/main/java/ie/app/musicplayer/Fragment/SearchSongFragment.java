@@ -5,6 +5,7 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,7 @@ import java.util.List;
 import ie.app.musicplayer.Activity.PlayControlActivity;
 import ie.app.musicplayer.Activity.SearchActivity;
 import ie.app.musicplayer.Adapter.SongListAdapter;
+import ie.app.musicplayer.Application.MusicPlayerApp;
 import ie.app.musicplayer.Model.Song;
 import ie.app.musicplayer.R;
 
@@ -55,7 +57,7 @@ public class SearchSongFragment extends Fragment {
         songRecycleView.setLayoutManager(linearLayoutManager);
 
         songRecycleView.setAdapter(songListAdapter);
-        ((SearchActivity) getActivity()).updateSongFragment();
+        songListAdapter.setData(((MusicPlayerApp)getActivity().getApplication()).songList);
     }
 
     public void updateSongListAdapter(List<Song> songList) {

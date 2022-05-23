@@ -3,6 +3,7 @@ package ie.app.musicplayer.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,44 +15,46 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 import ie.app.musicplayer.Activity.AlbumDetailActivity;
-import ie.app.musicplayer.Adapter.AlbumAdapter;
-import ie.app.musicplayer.Model.Album;
+import ie.app.musicplayer.Activity.SearchActivity;
+import ie.app.musicplayer.Adapter.SingerAdapter;
+import ie.app.musicplayer.Application.MusicPlayerApp;
+import ie.app.musicplayer.Model.Singer;
 import ie.app.musicplayer.R;
 
-public class SearchAlbumFragment extends Fragment {
+public class SearchSingerFragment extends Fragment {
 
-    private List<Album> albumList;
-    private AlbumAdapter albumListAdapter;
-    private RecyclerView albumRecycleView;
+    private List<Singer> singerList;
+    private SingerAdapter singerAdapter;
+    private RecyclerView singerRecycleView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_album, container, false);
+        return inflater.inflate(R.layout.fragment_singer, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        albumRecycleView = view.findViewById(R.id.albumView);
-        albumListAdapter = new AlbumAdapter(getContext(), album -> {
+        singerRecycleView = view.findViewById(R.id.singerView);
+        singerAdapter = new SingerAdapter(getContext(), singer -> {
             Intent intent = new Intent(getContext(), AlbumDetailActivity.class);
             Bundle bundle = new Bundle();
-            bundle.putParcelableArrayList("Playlist", (ArrayList<? extends Parcelable>) album.getAlbumData());
-            bundle.putString("Name", album.getAlbumName());
+            bundle.putParcelableArrayList("Playlist", (ArrayList<? extends Parcelable>) singer.getSingerSong());
+            bundle.putString("Name", singer.getSingerName());
             intent.putExtras(bundle);
             startActivity(intent);
 
         });
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        albumRecycleView.setLayoutManager(linearLayoutManager);
+        singerRecycleView.setLayoutManager(linearLayoutManager);
 
-        albumRecycleView.setAdapter(albumListAdapter);
+        singerRecycleView.setAdapter(singerAdapter);
     }
 
-    public void updateAlbumList(List<Album> albumList) {
-        albumListAdapter.setData(albumList);
-        this.albumList = albumList;
+    public void updateSingerList(List<Singer> singerList) {
+        singerAdapter.setData(singerList);
+        this.singerList = singerList;
     }
 }

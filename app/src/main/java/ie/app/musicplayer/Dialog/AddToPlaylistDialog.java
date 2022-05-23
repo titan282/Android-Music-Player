@@ -58,7 +58,7 @@ public class AddToPlaylistDialog extends AppCompatDialogFragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 addSongtoPlaylist(i);
-            }
+                }
         });
         return view;
 

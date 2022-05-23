@@ -51,8 +51,8 @@
         android:layout_height="50dp"
         android:layout_alignBottom="@id/albumBackground"
         android:layout_marginStart="80dp"
-        app:srcCompat="@drawable/ic_app_shortcut_last_added_white"
-        android:background="@null"/>
+        android:background="@null"
+        app:srcCompat="@drawable/ic_app_shortcut_last_added_white" />
 
     <ImageButton
         android:id="@+id/imageButton"
@@ -61,8 +61,8 @@
         android:layout_alignEnd="@id/albumBackground"
         android:layout_alignBottom="@id/albumBackground"
         android:layout_marginEnd="80dp"
-        app:srcCompat="@android:drawable/stat_sys_download"
-        android:background="@null"/>
+        android:background="@null"
+        app:srcCompat="@android:drawable/stat_sys_download" />
 
     <Button
         android:id="@+id/playButton"

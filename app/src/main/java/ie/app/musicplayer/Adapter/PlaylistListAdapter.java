@@ -18,8 +18,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
-
-import ie.app.musicplayer.Dialog.AddToPlaylistDialog;
 import ie.app.musicplayer.Model.Playlist;
 import ie.app.musicplayer.Activity.PlaylistDetailActivity;
 import ie.app.musicplayer.R;

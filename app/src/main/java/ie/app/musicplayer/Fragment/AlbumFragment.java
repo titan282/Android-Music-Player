@@ -1,13 +1,27 @@
 package ie.app.musicplayer.Fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import ie.app.musicplayer.Activity.PlayControlActivity;
+import ie.app.musicplayer.Adapter.PlaylistListAdapter;
+import ie.app.musicplayer.Adapter.SongListAdapter;
+import ie.app.musicplayer.Model.Song;
 import ie.app.musicplayer.R;
 
 /**
@@ -25,6 +39,10 @@ public class AlbumFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private RecyclerView albumReCycleView;
+    private SongListAdapter albumAdapter;
+    private ImageButton addBtn, playBtn;
+    private List<Song> albumData;
 
     public AlbumFragment() {
         // Required empty public constructor
@@ -61,6 +79,11 @@ public class AlbumFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_album, container, false);
+        return inflater.inflate(R.layout.activity_album_detail, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
     }
 }
