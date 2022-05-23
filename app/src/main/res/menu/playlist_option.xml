@@ -3,11 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:title="Add to playlist"
-        android:id="@+id/AddToPlaylist"
+        android:title="Delete this playlist"
+        android:id="@+id/deletePlaylist"
         app:showAsAction="never" />
     <item
-        android:title="Remove this song from playlist"
-        android:id="@+id/removeSong"
+        android:title="Delete all songs"
+        android:id="@+id/deleteAll"
         app:showAsAction="never" />
 </menu>

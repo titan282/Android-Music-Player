@@ -28,12 +28,41 @@
             android:id="@+id/textviewplaylist"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
             android:maxLines="2"
             android:text="textview"
-            android:textColor="#B6B6B6"
+            android:textColor="@color/card_shadow_1"
             android:textStyle="bold"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            android:layout_weight="8"
+            android:layout_marginLeft="4dp"
+            android:gravity="center"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="10"
+            android:paddingBottom="4dp"
+            android:paddingTop="4dp">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="0 songs"
+                android:gravity="center"
+                android:textSize="16dp"
+                android:textColor="#B6B6B6"
+                android:id="@+id/numSong"
+                android:layout_weight="8"/>
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:src="@drawable/icon_more_white"
+                android:background="@null"
+                android:layout_weight="2"
+                android:id="@+id/menuPlaylist"
+                />
+        </LinearLayout>
+
+
 
     </LinearLayout>
 

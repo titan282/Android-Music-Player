@@ -22,6 +22,8 @@ import java.util.List;
 import ie.app.musicplayer.Application.MusicPlayerApp;
 import ie.app.musicplayer.Database.DBManager;
 import ie.app.musicplayer.Fragment.PlayControlBottomSheetFragment;
+import ie.app.musicplayer.Fragment.SongFragment;
+import ie.app.musicplayer.Model.Playlist;
 import ie.app.musicplayer.Model.Song;
 import ie.app.musicplayer.R;
 
@@ -29,7 +31,7 @@ import ie.app.musicplayer.R;
 public class PlayControlActivity extends AppCompatActivity implements PlayControlBottomSheetFragment.IOnItemSelectedListener {
     public enum Status {OFF, SINGLE, WHOLE, ON}
 
-    private ImageButton playPauseBtn, previousBtn, nextBtn, loopBtn, shuffleBtn, showBtn,favoriteBtn;
+    private ImageButton playPauseBtn, previousBtn, nextBtn, loopBtn, shuffleBtn, showBtn,favoriteBtn,backBtn;
     private ImageView songPicture;
     private TextView songName, singerName;
     private TextView duration, runtime;
@@ -43,8 +45,6 @@ public class PlayControlActivity extends AppCompatActivity implements PlayContro
     public MusicPlayerApp app;
     private Thread changeSongThread;
     private PlayControlBottomSheetFragment bottomSheetFragment;
-
-
     private Status shuffleStatus = Status.OFF;
     private Status loopStatus = Status.OFF;
     private Status favoriteStatus = Status.OFF;
@@ -96,12 +96,14 @@ public class PlayControlActivity extends AppCompatActivity implements PlayContro
             shuffle();
         });
         favoriteBtn.setOnClickListener(view -> {
-            addToFavorite();
+            addToFavorite(songList.get(position));
         });
         showBtn.setOnClickListener(view -> {
             showPlaylist();
         });
-
+        backBtn.setOnClickListener(view -> {
+            back();
+        });
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
@@ -118,22 +120,45 @@ public class PlayControlActivity extends AppCompatActivity implements PlayContro
         });
     }
 
+    private void back() {
+        onBackPressed();
+    }
+
 
     private void showPlaylist() {
         bottomSheetFragment = new PlayControlBottomSheetFragment(songList, shuffleStatus, loopStatus);
         bottomSheetFragment.show(getSupportFragmentManager(), bottomSheetFragment.getTag());
     }
-    private void addToFavorite(){
+    private void addToFavorite(Song song){
         switch(favoriteStatus){
             case OFF:
                 favoriteBtn.setImageResource(R.drawable.ic_favorite);
                 favoriteStatus = Status.ON;
-                break;
+                List<Playlist> playlists = Playlist.listAll(Playlist.class);
+                playlists.get(0).getSongList().add(song);
+                playlists.get(0).save();
+                Log.v("song","FavoriteSize: "+Playlist.listAll(Playlist.class).get(0).getSongList().size());
+                Toast.makeText(this, "Add song to Favorites successfully!",Toast.LENGTH_SHORT).show();
+                 break;
             case ON:
                 favoriteBtn.setImageResource(R.drawable.ic_favorite_border);
                 favoriteStatus = Status.OFF;
+                List<Playlist> playlists2 = Playlist.listAll(Playlist.class);
+                int postionSong = getPostionInPlaylist(song, playlists2.get(0));
+                playlists2.get(0).getSongList().remove(postionSong);
+                playlists2.get(0).save();
+                Log.v("song","FavoriteSize: "+Playlist.listAll(Playlist.class).get(0).getSongList().size());
+                Toast.makeText(this, "Remove song from Favorites successfully!",Toast.LENGTH_SHORT).show();
                 break;
         }
+    }
+
+    private int getPostionInPlaylist(Song song, Playlist playlist) {
+        List<String> songUrl = new ArrayList<String>();
+        for(Song songItem:playlist.getSongList()){
+            songUrl.add(songItem.getSongURL());
+        }
+        return songUrl.indexOf(song.getSongURL());
     }
 
     @Override
@@ -263,6 +288,7 @@ public class PlayControlActivity extends AppCompatActivity implements PlayContro
         runtime = findViewById(R.id.textViewruntime);
         seekBar = findViewById(R.id.seekBartime);
         songPicture = findViewById(R.id.thumnail);
+        backBtn = findViewById(R.id.backBtn);
     }
 
     private int getPosition() {
@@ -297,7 +323,15 @@ public class PlayControlActivity extends AppCompatActivity implements PlayContro
                 songPicture.setImageBitmap(song.getSongEmbeddedPicture());
             } else {
                 songPicture.setImageResource(song.getSongImage());
-            }
+                    }
+                if(getPostionInPlaylist(song,Playlist.listAll(Playlist.class).get(0))!=-1){
+                    favoriteBtn.setImageResource(R.drawable.ic_favorite);
+                    favoriteStatus = Status.ON;
+                }
+                else {
+                    favoriteBtn.setImageResource(R.drawable.ic_favorite_border);
+                    favoriteStatus = Status.OFF;
+                }
         });
     }
 

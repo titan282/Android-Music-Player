@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -43,7 +44,10 @@ public class PlaylistDialogAdapter extends BaseAdapter {
         LayoutInflater layoutInflater = ((Activity)context).getLayoutInflater();
         view = layoutInflater.inflate(R.layout.item_playlist_name,null);
         TextView tvPlaylistName = view.findViewById(R.id.playlistName);
+        ImageView ivPlaylistCover = view.findViewById(R.id.playlistCover);
+        ivPlaylistCover.setImageResource(playlists.get(i).getPlaylistImage());
         tvPlaylistName.setText(playlists.get(i).getPlaylistName());
+
         return view;
     }
 }

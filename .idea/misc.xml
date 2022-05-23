@@ -46,26 +46,33 @@
         <entry key="..\:/Programming/Android/MusicPlayer/app/src/main/res/drawable/bgr_playnhac.xml" value="0.2185" />
         <entry key="..\:/Programming/Android/MusicPlayer/app/src/main/res/drawable/dark.xml" value="0.2555" />
         <entry key="..\:/Programming/Android/MusicPlayer/app/src/main/res/drawable/ic_app_shortcut_last_added.xml" value="0.121" />
+        <entry key="..\:/Programming/Android/MusicPlayer/app/src/main/res/drawable/ic_baseline_keyboard_arrow_left_24.xml" value="0.2045" />
+        <entry key="..\:/Programming/Android/MusicPlayer/app/src/main/res/drawable/ic_keyboard_arrow_down.xml" value="0.153" />
+        <entry key="..\:/Programming/Android/MusicPlayer/app/src/main/res/drawable/ic_keyboard_arrow_left.xml" value="0.209" />
+        <entry key="..\:/Programming/Android/MusicPlayer/app/src/main/res/drawable/ic_keyboard_arrow_left_black.xml" value="0.2045" />
         <entry key="..\:/Programming/Android/MusicPlayer/app/src/main/res/drawable/ic_search.xml" value="0.1" />
         <entry key="..\:/Programming/Android/MusicPlayer/app/src/main/res/drawable/ic_shuffle.xml" value="0.2185" />
         <entry key="..\:/Programming/Android/MusicPlayer/app/src/main/res/drawable/ic_shuffle_on.xml" value="0.2185" />
         <entry key="..\:/Programming/Android/MusicPlayer/app/src/main/res/drawable/icon_more.xml" value="0.216" />
+        <entry key="..\:/Programming/Android/MusicPlayer/app/src/main/res/drawable/icon_more_white.xml" value="0.2335" />
         <entry key="..\:/Programming/Android/MusicPlayer/app/src/main/res/font/aclonica.xml" value="0.28020833333333334" />
         <entry key="..\:/Programming/Android/MusicPlayer/app/src/main/res/font/molengo.xml" value="0.28020833333333334" />
         <entry key="..\:/Programming/Android/MusicPlayer/app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="..\:/Programming/Android/MusicPlayer/app/src/main/res/layout/activity_play_control.xml" value="0.264" />
-        <entry key="..\:/Programming/Android/MusicPlayer/app/src/main/res/layout/activity_playlist_detail.xml" value="0.23097826086956522" />
+        <entry key="..\:/Programming/Android/MusicPlayer/app/src/main/res/layout/activity_playlist_detail.xml" value="0.4" />
         <entry key="..\:/Programming/Android/MusicPlayer/app/src/main/res/layout/bottom_sheet_fragment_play_control.xml" value="0.25" />
         <entry key="..\:/Programming/Android/MusicPlayer/app/src/main/res/layout/dialog_add_playlist.xml" value="0.25" />
         <entry key="..\:/Programming/Android/MusicPlayer/app/src/main/res/layout/dialog_playlist.xml" value="0.12158054711246201" />
+        <entry key="..\:/Programming/Android/MusicPlayer/app/src/main/res/layout/dialog_playlist_name.xml" value="0.25" />
         <entry key="..\:/Programming/Android/MusicPlayer/app/src/main/res/layout/fragment_album.xml" value="0.264" />
         <entry key="..\:/Programming/Android/MusicPlayer/app/src/main/res/layout/fragment_artist.xml" value="0.264" />
         <entry key="..\:/Programming/Android/MusicPlayer/app/src/main/res/layout/fragment_playlist.xml" value="0.25" />
         <entry key="..\:/Programming/Android/MusicPlayer/app/src/main/res/layout/fragment_song.xml" value="0.25" />
         <entry key="..\:/Programming/Android/MusicPlayer/app/src/main/res/layout/item_playlist_name.xml" value="0.25" />
         <entry key="..\:/Programming/Android/MusicPlayer/app/src/main/res/layout/media_button.xml" value="0.25" />
-        <entry key="..\:/Programming/Android/MusicPlayer/app/src/main/res/layout/row_playlist.xml" value="0.25" />
+        <entry key="..\:/Programming/Android/MusicPlayer/app/src/main/res/layout/row_playlist.xml" value="0.16" />
         <entry key="..\:/Programming/Android/MusicPlayer/app/src/main/res/layout/row_song.xml" value="0.25" />
+        <entry key="..\:/Programming/Android/MusicPlayer/app/src/main/res/menu/playlist_option.xml" value="0.25" />
         <entry key="..\:/Programming/Android/MusicPlayer/app/src/main/res/menu/popup.xml" value="0.25" />
         <entry key="..\:/Programming/Android/MusicPlayer/app/src/main/res/menu/sort.xml" value="0.264" />
         <entry key="..\:/Programming/Android/MusicPlayer/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.1" />
@@ -77,5 +84,12 @@
   </component>
   <component name="ProjectType">
     <option name="id" value="Android" />
+  </component>
+  <component name="VisualizationToolProject">
+    <option name="state">
+      <ProjectState>
+        <option name="scale" value="0.4" />
+      </ProjectState>
+    </option>
   </component>
 </project>
