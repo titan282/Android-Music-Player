@@ -149,8 +149,6 @@ public class SearchActivity extends AppCompatActivity {
     public void updateSingerFragment() {
         SearchSingerFragment searchSingerFragment = (SearchSingerFragment) ((SearchViewPagerAdapter)
                 sViewPager.getAdapter()).getItem(2);
-
-        Log.v("SearchActivity - updateSinger", String.valueOf(searchSingerFragment));
         searchSingerFragment.updateSingerList(singerList);
     }
 }

@@ -14,11 +14,15 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
 import ie.app.musicplayer.Activity.AlbumDetailActivity;
 import ie.app.musicplayer.Activity.SearchActivity;
 import ie.app.musicplayer.Adapter.SingerAdapter;
 import ie.app.musicplayer.Application.MusicPlayerApp;
+import ie.app.musicplayer.Model.Album;
 import ie.app.musicplayer.Model.Singer;
+import ie.app.musicplayer.Model.Song;
 import ie.app.musicplayer.R;
 
 public class SearchSingerFragment extends Fragment {
@@ -56,5 +60,16 @@ public class SearchSingerFragment extends Fragment {
     public void updateSingerList(List<Singer> singerList) {
         singerAdapter.setData(singerList);
         this.singerList = singerList;
+    }
+
+    public void getFullSinger() {
+        singerList = new ArrayList<>();
+        Thread loading = new Thread(() -> {
+            for (Map.Entry<String, ArrayList<Song>> entry : ((MusicPlayerApp) getActivity().getApplication()).singer.entrySet()) {
+                singerList.add(new Singer(entry.getKey(), entry.getValue()));
+            }
+        });
+        loading.run();
+        singerAdapter.setData(singerList);
     }
 }

@@ -1,52 +1,37 @@
 package ie.app.musicplayer.Activity;
 
+import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.viewpager.widget.ViewPager;
-import android.Manifest;
-import android.app.Activity;
-import android.app.Dialog;
-import android.app.Notification;
-import android.content.Context;
-import android.content.pm.PackageManager;
-import android.graphics.Color;
-import android.os.Build;
-import android.os.Bundle;
-import android.support.v4.media.session.MediaSessionCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
+import android.widget.Toast;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 import com.google.android.material.tabs.TabLayout;
-import android.widget.Toast;
-
-import com.google.android.material.tabs.TabLayout;
-
 import java.util.ArrayList;
 import java.util.List;
-
-import ie.app.musicplayer.Adapter.SongListAdapter;
 import ie.app.musicplayer.Adapter.ViewPagerAdapter;
 import ie.app.musicplayer.Database.DBManager;
+import ie.app.musicplayer.Fragment.AlbumFragment;
+import ie.app.musicplayer.Fragment.PlaylistFragment;
+import ie.app.musicplayer.Fragment.SearchAlbumFragment;
+import ie.app.musicplayer.Fragment.SearchSingerFragment;
 import ie.app.musicplayer.Model.Playlist;
 import ie.app.musicplayer.Model.Song;
 import ie.app.musicplayer.R;
 
 public class HomeActivity extends AppCompatActivity {
 
+    private int tabPosition = 0;
     private TabLayout mTabLayout;
     private ViewPager mViewPager;
     private ImageButton ibSearchBtn;
@@ -76,12 +61,29 @@ public class HomeActivity extends AppCompatActivity {
         mTabLayout.getTabAt(1).setText("Playlists");
         mTabLayout.getTabAt(2).setText("Albums");
         mTabLayout.getTabAt(3).setText("Artists");
-        ivSort.setOnClickListener(new View.OnClickListener() {
+        ivSort.setOnClickListener(view -> {
+            PopupMenu popupMenu = new PopupMenu(HomeActivity.this, view);
+            popupMenu.getMenuInflater().inflate(R.menu.sort, popupMenu.getMenu());
+            popupMenu.show();
+        });
+
+        mViewPager.setOffscreenPageLimit(adapter.getCount());
+
+        mTabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
-            public void onClick(View view) {
-                PopupMenu popupMenu = new PopupMenu(HomeActivity.this, view);
-                popupMenu.getMenuInflater().inflate(R.menu.sort, popupMenu.getMenu());
-                popupMenu.show();
+            public void onTabSelected(TabLayout.Tab tab) {
+                tabPosition = tab.getPosition();
+                updateTab();
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
             }
         });
     }
@@ -116,5 +118,23 @@ public class HomeActivity extends AppCompatActivity {
             songUrl.add(songItem.getSongURL());
         }
         return songUrl.contains(song.getSongURL());
+    }
+
+    private void updateTab() {
+        ViewPagerAdapter tempAdapter = (ViewPagerAdapter) mViewPager.getAdapter();
+        Fragment tempFragment = tempAdapter.getItem(tabPosition);
+        switch (tabPosition) {
+            case 1:
+                ((PlaylistFragment) tempFragment).updatePlaylist();
+                break;
+            case 2:
+                ((SearchAlbumFragment) tempFragment).getFullAlbum();
+                break;
+            case 3:
+                ((SearchSingerFragment) tempFragment).getFullSinger();
+                break;
+            default:
+
+        }
     }
 }
