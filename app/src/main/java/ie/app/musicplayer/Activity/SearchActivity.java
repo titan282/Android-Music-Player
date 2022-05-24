@@ -71,7 +71,6 @@ public class SearchActivity extends AppCompatActivity {
         sTabLayout.getTabAt(0).setText("Song");
         sTabLayout.getTabAt(1).setText("Album");
         sTabLayout.getTabAt(2).setText("Singer");
-        sViewPager.setOffscreenPageLimit(0);
         sTabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener(){
             @Override
             public void onTabSelected(TabLayout.Tab tab){

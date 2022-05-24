@@ -30,7 +30,7 @@ import ie.app.musicplayer.R;
 
 public class SearchSongFragment extends Fragment {
 
-    private List<Song> songList;
+    private List<Song> songList = new ArrayList<>();
     private SongListAdapter songListAdapter;
     private RecyclerView songRecycleView;
 
@@ -43,6 +43,7 @@ public class SearchSongFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        Log.v("SearchSongFrag", "First");
         songRecycleView = view.findViewById(R.id.songView);
         songListAdapter = new SongListAdapter(getContext(), song -> {
             Intent intent = new Intent(SearchSongFragment.this.getActivity(), PlayControlActivity.class);
@@ -56,11 +57,12 @@ public class SearchSongFragment extends Fragment {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         songRecycleView.setLayoutManager(linearLayoutManager);
 
+        updateSongListAdapter(((MusicPlayerApp)getActivity().getApplication()).songList);
         songRecycleView.setAdapter(songListAdapter);
-        songListAdapter.setData(((MusicPlayerApp)getActivity().getApplication()).songList);
     }
 
     public void updateSongListAdapter(List<Song> songList) {
+        Log.v("SearchSongFrag", "Second");
         songListAdapter.setData(songList);
         this.songList = songList;
     }

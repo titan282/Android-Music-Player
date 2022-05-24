@@ -47,7 +47,6 @@ public class SearchAlbumFragment extends Fragment {
             intent.putExtras(bundle);
             startActivity(intent);
             getFullAlbum();
-            Log.v("Search Album Fragment", "Created");
         });
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
