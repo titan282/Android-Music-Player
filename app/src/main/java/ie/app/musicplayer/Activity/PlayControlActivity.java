@@ -189,6 +189,7 @@ public class PlayControlActivity extends AppCompatActivity implements PlayContro
         }
 
         changeSong();
+        playPauseBtn.setImageResource(R.drawable.ic_pause);
     }
 
     private void previous() {
