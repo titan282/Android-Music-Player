@@ -39,9 +39,10 @@ public class PlaylistFragment extends Fragment {
         playlistListAdapter = new PlaylistListAdapter(this.getContext());
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this.getContext(), 2);
         playlistReCycleView.setLayoutManager(gridLayoutManager);
-        playlistListAdapter.setData(Playlist.listAll(Playlist.class));
         playlistReCycleView.setAdapter(playlistListAdapter);
-        playlistListAdapter.notifyDataSetChanged();
+    }
 
+    public void updatePlaylist() {
+        playlistListAdapter.setData(Playlist.listAll(Playlist.class));
     }
 }

@@ -195,7 +195,12 @@ public class SongFragment extends Fragment {
             Thread loadAlbumPicThread = new Thread(() -> {
                 for (Song song : songList) {
                     song.loadEmbeddedPicture();
+                }
+            });
+            loadAlbumPicThread.start();
 
+            Thread loadAlbum = new Thread(() -> {
+                for (Song song : songList) {
                     if (!temp_album.containsKey(song.getSongAlbum())) {
                         temp_album.put(song.getSongAlbum(), new ArrayList<>());
                     }
@@ -209,7 +214,7 @@ public class SongFragment extends Fragment {
                 ((MusicPlayerApp)getActivity().getApplication()).album = new HashMap<>(temp_album);
                 ((MusicPlayerApp)getActivity().getApplication()).singer = new HashMap<>(temp_singer);
             });
-            loadAlbumPicThread.start();
+            loadAlbum.start();
         }
     }
 }
