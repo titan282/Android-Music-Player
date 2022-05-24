@@ -114,7 +114,14 @@ public class SongFragment extends Fragment{
                         songListAdapter.setData(temp);
                         return true;
                     case R.id.date_added:
-                        songListAdapter.setData(songList);
+                        Collections.sort(temp, new Comparator<Song>() {
+                            @Override
+                            public int compare(Song song, Song t1) {
+                                return song.getAddedDate().compareTo(t1.getAddedDate());
+                            }
+                        });
+                        Collections.reverse(temp);
+                        songListAdapter.setData(temp);
                         return true;
                     default:
                       return false;
@@ -205,6 +212,7 @@ public class SongFragment extends Fragment{
                     MediaStore.Audio.Media.ALBUM,
                     MediaStore.Audio.Media.ARTIST,
                     MediaStore.Audio.Media.DATA,
+                    MediaStore.Audio.Media.DATE_ADDED,
             };
             String sortOrder = MediaStore.Audio.Media.TITLE + " ASC";
 
@@ -218,7 +226,8 @@ public class SongFragment extends Fragment{
                             String songAlbum = cursor.getString(2);
                             String songSinger = cursor.getString(3);
                             String songURL = cursor.getString(4);
-                            Song song = new Song(songId, songName, songAlbum, R.drawable.music_rect, songSinger, songURL);
+                            String addedDate = cursor.getString(5);
+                            Song song = new Song(songId, songName, songAlbum, R.drawable.music_rect, songSinger, songURL, addedDate);
                             songList.add(song);
                         }
                         ((MusicPlayerApp) getActivity().getApplication()).songList = new ArrayList<>(songList);
