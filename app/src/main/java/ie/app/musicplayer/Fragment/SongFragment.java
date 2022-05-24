@@ -24,8 +24,11 @@ import android.provider.MediaStore;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.PopupMenu;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -36,6 +39,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
@@ -46,7 +51,7 @@ import ie.app.musicplayer.Application.MusicPlayerApp;
 import ie.app.musicplayer.Model.Song;
 import ie.app.musicplayer.R;
 
-public class SongFragment extends Fragment {
+public class SongFragment extends Fragment{
 
     private View view;
     private RecyclerView songView;
@@ -83,6 +88,41 @@ public class SongFragment extends Fragment {
         songView.setLayoutManager(linearLayoutManager);
 
         songView.setAdapter(songListAdapter);
+
+        ((ImageButton) view.findViewById(R.id.sortBtn)).setOnClickListener(view -> {
+            PopupMenu popupMenu = new PopupMenu(this.getContext(), view);
+            popupMenu.setOnMenuItemClickListener(menuItem -> {
+                List<Song> temp = new ArrayList<>(songList);
+                switch (menuItem.getItemId()) {
+                    case R.id.ascending:
+                        Collections.sort(temp, new Comparator<Song>() {
+                            @Override
+                            public int compare(Song song, Song t1) {
+                                return song.getSongName().compareTo(t1.getSongName());
+                            }
+                        });
+                        songListAdapter.setData(temp);
+                        return true;
+                    case R.id.descending:
+                        Collections.sort(temp, new Comparator<Song>() {
+                            @Override
+                            public int compare(Song song, Song t1) {
+                                return song.getSongName().compareTo(t1.getSongName());
+                            }
+                        });
+                        Collections.reverse(temp);
+                        songListAdapter.setData(temp);
+                        return true;
+                    case R.id.date_added:
+                        songListAdapter.setData(songList);
+                        return true;
+                    default:
+                      return false;
+                }
+            });
+            popupMenu.inflate(R.menu.sort);
+            popupMenu.show();
+        });
 
         return view;
     }
@@ -178,7 +218,6 @@ public class SongFragment extends Fragment {
                             String songAlbum = cursor.getString(2);
                             String songSinger = cursor.getString(3);
                             String songURL = cursor.getString(4);
-
                             Song song = new Song(songId, songName, songAlbum, R.drawable.music_rect, songSinger, songURL);
                             songList.add(song);
                         }
