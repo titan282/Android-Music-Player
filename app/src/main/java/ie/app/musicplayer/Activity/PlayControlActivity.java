@@ -1,6 +1,8 @@
 package ie.app.musicplayer.Activity;
 
 
+import android.media.AudioAttributes;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
@@ -347,6 +349,12 @@ public class PlayControlActivity extends AppCompatActivity implements PlayContro
                 mediaPlayer.pause();
             }
             mediaPlayer.setDataSource(URL);
+            mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+            mediaPlayer.setAudioAttributes(
+                    new AudioAttributes
+                            .Builder()
+                            .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                            .build());
             mediaPlayer.setOnPreparedListener(mediaPlayer -> {
                 mediaPlayer.start();
             });
