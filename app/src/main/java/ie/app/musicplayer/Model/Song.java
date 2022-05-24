@@ -18,17 +18,28 @@ public class Song implements Parcelable {
     private int songImage;
     private String songSinger;
     private String songURL;
+    private String addedDate;
     private Bitmap songEmbeddedPicture;
     private boolean hasPic = false;
 
     public Song(){}
-    public Song(int songId, String songName, String songAlbum, int songImage, String songSinger, String songURL) {
+
+    public Song(int songId, String songName, String songAlbum, int songImage, String songSinger, String songURL, String addedDate) {
         this.songId = songId;
         this.songName = songName;
         this.songAlbum = songAlbum;
         this.songImage = songImage;
         this.songSinger = songSinger;
         this.songURL = songURL;
+        this.addedDate = addedDate;
+    }
+
+    public String getAddedDate() {
+        return addedDate;
+    }
+
+    public void setAddedDate(String addedDate) {
+        this.addedDate = addedDate;
     }
 
     public int getSongId() {
@@ -119,6 +130,7 @@ public class Song implements Parcelable {
         songImage = in.readInt();
         songSinger = in.readString();
         songURL = in.readString();
+        addedDate = in.readString();
         hasPic = in.readBoolean();
     }
 
@@ -131,6 +143,7 @@ public class Song implements Parcelable {
         parcel.writeInt(songImage);
         parcel.writeString(songSinger);
         parcel.writeString(songURL);
+        parcel.writeString(addedDate);
         parcel.writeBoolean(hasPic);
     }
 
