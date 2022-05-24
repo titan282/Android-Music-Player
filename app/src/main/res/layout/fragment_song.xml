@@ -21,7 +21,9 @@
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_shuffle">
+            app:srcCompat="@drawable/ic_shuffle"
+            android:background="@color/card_shadow_1"
+            android:padding="8dp">
 
         </ImageButton>
 
@@ -31,7 +33,9 @@
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_sort">
+            app:srcCompat="@drawable/ic_sort"
+            android:background="@color/card_shadow_1"
+            android:padding="8dp">
 
         </ImageButton>
     </androidx.constraintlayout.widget.ConstraintLayout>
