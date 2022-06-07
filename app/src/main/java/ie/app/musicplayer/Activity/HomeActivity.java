@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -63,10 +64,19 @@ public class HomeActivity extends AppCompatActivity {
         mTabLayout.getTabAt(3).setText("Artists");
         ivSort.setOnClickListener(view -> {
             PopupMenu popupMenu = new PopupMenu(HomeActivity.this, view);
-            popupMenu.getMenuInflater().inflate(R.menu.sort, popupMenu.getMenu());
+            popupMenu.getMenuInflater().inflate(R.menu.option, popupMenu.getMenu());
             popupMenu.show();
+            popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem menuItem) {
+                    switch (menuItem.getItemId()) {
+                        case R.id.refresh:
+                            updateTab();
+                    }
+                return true;
+                }
+            });
         });
-
         mViewPager.setOffscreenPageLimit(adapter.getCount());
 
         mTabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {

@@ -83,6 +83,8 @@ public class SongListAdapter extends RecyclerView.Adapter<SongListAdapter.SongVi
                             break;
 
                         case R.id.removeSong:
+                            List<Playlist> playlist = Playlist.listAll(Playlist.class);
+
                     }
                     return  true;
                 }

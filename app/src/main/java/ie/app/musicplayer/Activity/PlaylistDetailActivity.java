@@ -76,4 +76,7 @@ public class PlaylistDetailActivity extends AppCompatActivity {
         rvSongList.setAdapter(adapter);
 
     }
+    public void deleteSong(Song song){
+
+    }
 }
