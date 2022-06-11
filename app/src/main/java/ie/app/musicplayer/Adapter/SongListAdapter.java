@@ -101,12 +101,10 @@ public class SongListAdapter extends RecyclerView.Adapter<SongListAdapter.SongVi
                                     playlist.save();
                                     Log.d("Debug","....");
                                     update();
-                                    Toast.makeText(context, "Delete successfully!",Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(context, "Xóa thành công!",Toast.LENGTH_SHORT).show();
                                     break;
                                 }
                             }
-                            break;
-
 
                     }
                     return  true;

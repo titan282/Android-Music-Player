@@ -63,11 +63,11 @@ public class PlaylistListAdapter extends RecyclerView.Adapter<PlaylistListAdapte
                                 deletePlaylist(position);
                             }
                             else {
-                                Toast.makeText(context,"Can't delete Favorites Playlist!",Toast.LENGTH_SHORT).show();
+                                Toast.makeText(context,"Không thể xóa Favorite Playlist!",Toast.LENGTH_SHORT).show();
                             }
                             break;
-                        case R.id.deleteAll:
-                            deleteAllSong(position);
+//                        case R.id.deleteAll:
+//                            deleteAllSong(position);
                     }
                     return  true;
                 }
@@ -112,11 +112,15 @@ public class PlaylistListAdapter extends RecyclerView.Adapter<PlaylistListAdapte
         List<Playlist> playlists = Playlist.listAll(Playlist.class);
         Playlist playlist = playlists.get(positon);
         if(playlist.delete()){
-            Toast.makeText(context,"Delete successfully!",Toast.LENGTH_SHORT).show();
+            Toast.makeText(context,"Xóa thành công!",Toast.LENGTH_SHORT).show();
         }
         else {
-            Toast.makeText(context,"Delete failed!",Toast.LENGTH_SHORT).show();
+            Toast.makeText(context,"Xóa thất bại!",Toast.LENGTH_SHORT).show();
         }
-        notifyDataSetChanged();
+        update(playlists);
+    }
+    public void update(List<Playlist> playlists){
+        playlists.clear();
+        setData(Playlist.listAll(Playlist.class));
     }
 }

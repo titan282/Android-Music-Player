@@ -7,6 +7,7 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.BoringLayout;
 import android.util.Log;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -81,7 +82,7 @@ public class PlayControlActivity extends AppCompatActivity implements PlayContro
         initMediaPlayer(songList.get(position).getSongURL());
         setTimeTotal();
         updateTimeSong();
-
+        checkShuffle();
         playPauseBtn.setOnClickListener(view -> {
             playpause();
         });
@@ -120,6 +121,14 @@ public class PlayControlActivity extends AppCompatActivity implements PlayContro
                 mediaPlayer.seekTo(seekBar.getProgress());
             }
         });
+    }
+
+    private void checkShuffle() {
+        Bundle bundle = getIntent().getExtras();
+        Boolean isShuffle = bundle.getBoolean("Random");
+        if(isShuffle){
+            shuffle();
+        }
     }
 
     private void back() {

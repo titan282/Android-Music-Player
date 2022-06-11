@@ -1,6 +1,7 @@
 package ie.app.musicplayer.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -19,7 +20,11 @@ import java.util.List;
 
 import ie.app.musicplayer.Adapter.PlaylistListAdapter;
 import ie.app.musicplayer.Adapter.SongListAdapter;
+import ie.app.musicplayer.Adapter.ViewPagerAdapter;
 import ie.app.musicplayer.Database.DBManager;
+import ie.app.musicplayer.Fragment.PlaylistFragment;
+import ie.app.musicplayer.Fragment.SearchAlbumFragment;
+import ie.app.musicplayer.Fragment.SearchSingerFragment;
 import ie.app.musicplayer.Fragment.SongFragment;
 import ie.app.musicplayer.Model.Playlist;
 import ie.app.musicplayer.Model.Song;
