@@ -1,6 +1,7 @@
 package ie.app.musicplayer.Adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -9,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -29,11 +31,16 @@ public class SongListAdapter extends RecyclerView.Adapter<SongListAdapter.SongVi
     private Context context;
     private List<Song> songList;
     private ItemClickListener itemClickListener;
+    private int playlistID;
     public SongListAdapter(Context context, ItemClickListener itemClickListener) {
         this.context = context;
         this.itemClickListener = itemClickListener;
     }
-
+    public SongListAdapter(Context context, ItemClickListener itemClickListener,int playlistID) {
+        this.context = context;
+        this.itemClickListener = itemClickListener;
+        this.playlistID=playlistID;
+    }
     public void setData(List<Song> list) {
         this.songList = list;
         notifyDataSetChanged();
@@ -83,7 +90,23 @@ public class SongListAdapter extends RecyclerView.Adapter<SongListAdapter.SongVi
                             break;
 
                         case R.id.removeSong:
-                            List<Playlist> playlist = Playlist.listAll(Playlist.class);
+                            List<Playlist> playlists = Playlist.listAll(Playlist.class);
+                            List<Song> songList = playlists.get(playlistID).getSongList();
+                            Playlist playlist = playlists.get(playlistID);
+                            for(Song songItem:songList){
+                                Log.d("Debug", String.valueOf("1. " +songItem.getSongName() +" & "+ song.getSongName() +" ss="
+                                        +song.getSongURL()==songItem.getSongURL()));
+                                if(songItem.getSongName()==songItem.getSongName()){
+                                    songList.remove(songItem);
+                                    playlist.save();
+                                    Log.d("Debug","....");
+                                    update();
+                                    Toast.makeText(context, "Delete successfully!",Toast.LENGTH_SHORT).show();
+                                    break;
+                                }
+                            }
+                            break;
+
 
                     }
                     return  true;
@@ -135,4 +158,8 @@ public class SongListAdapter extends RecyclerView.Adapter<SongListAdapter.SongVi
         void onItemClick(Song song);
     }
 
+    public void update(){
+        songList.clear();
+        setData(Playlist.listAll(Playlist.class).get(playlistID).getSongList());
+    }
 }

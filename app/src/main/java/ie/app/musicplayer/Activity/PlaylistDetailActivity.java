@@ -64,7 +64,7 @@ public class PlaylistDetailActivity extends AppCompatActivity {
                 intent.putExtras(bundle);
                 startActivity(intent);
             }
-        });
+        },playlistId);
 
             for (Song song : songList) {
                 song.loadEmbeddedPicture();
@@ -74,9 +74,6 @@ public class PlaylistDetailActivity extends AppCompatActivity {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         rvSongList.setLayoutManager(linearLayoutManager);
         rvSongList.setAdapter(adapter);
-
-    }
-    public void deleteSong(Song song){
 
     }
 }
