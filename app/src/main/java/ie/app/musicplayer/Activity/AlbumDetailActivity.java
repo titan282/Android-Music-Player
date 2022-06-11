@@ -22,7 +22,7 @@ public class AlbumDetailActivity extends AppCompatActivity {
 
     private RecyclerView albumReCycleView;
     private SongListAdapter albumAdapter;
-    private ImageButton addBtn, playBtn;
+    private ImageButton addBtn, playBtn,backBtn;
     private TextView albumName;
     private List<Song> albumData;
     private ImageView ivAlbumCover;
@@ -35,6 +35,7 @@ public class AlbumDetailActivity extends AppCompatActivity {
         albumName = findViewById(R.id.albumName);
         albumName.setText((String) getIntent().getExtras().get("Name"));
         ivAlbumCover = findViewById(R.id.albumCover);
+        backBtn = findViewById(R.id.backButton);
         for(Song song:albumData){
             song.loadEmbeddedPicture();
         }
@@ -57,6 +58,9 @@ public class AlbumDetailActivity extends AppCompatActivity {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(AlbumDetailActivity.this);
         albumReCycleView.setLayoutManager(linearLayoutManager);
         albumReCycleView.setAdapter(albumAdapter);
+        backBtn.setOnClickListener(view -> {
+            onBackPressed();
+        });
     }
 
 }
