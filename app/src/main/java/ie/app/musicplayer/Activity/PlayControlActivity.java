@@ -359,6 +359,12 @@ public class PlayControlActivity extends AppCompatActivity implements PlayContro
             mediaPlayer.setOnPreparedListener(mediaPlayer -> {
                 mediaPlayer.start();
             });
+            mediaPlayer.setAudioAttributes(
+                    new AudioAttributes
+                            .Builder()
+                            .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                            .setUsage(AudioAttributes.USAGE_MEDIA)
+                            .build());
             mediaPlayer.prepare();
 
         } catch (IOException e) {

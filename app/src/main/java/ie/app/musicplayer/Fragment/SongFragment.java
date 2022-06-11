@@ -141,29 +141,9 @@ public class SongFragment extends Fragment{
         bundle.putInt("Position", songList.indexOf(song));
         intent.putExtras(bundle);
         startActivity(intent);
-        sendNotificationMedia(song);
     }
 
-    private void sendNotificationMedia(Song song) {
-        MediaSessionCompat mediaSessionCompat = new MediaSessionCompat(this.getContext(),"tag");
-        Notification notification = new NotificationCompat.Builder(this.getContext(), MusicPlayerApp.CHANNEL_ID)
-                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-                .setLargeIcon(song.getSongEmbeddedPicture())
-                .setSubText("MusicPlayer")
-                .setContentTitle(song.getSongName())
-                .setSubText(song.getSongSinger())
-                .setSmallIcon(R.drawable.ic_music)
-                .addAction(R.drawable.ic_skip_previous, "Previous", null) // #0
-                .addAction(R.drawable.ic_pause, "Pause", null)  // #1
-                .addAction(R.drawable.ic_skip_next, "Next", null)
-                .setStyle(new androidx.media.app.NotificationCompat.MediaStyle()
-                        .setShowActionsInCompactView(1 /* #1: pause button */)
-                        .setMediaSession(mediaSessionCompat.getSessionToken()))
-                .build();
-        NotificationManagerCompat managerCompat = NotificationManagerCompat.from(this.getContext());
-        Log.v("song", song.toString());
-        managerCompat.notify(1,notification);
-    }
+
 
     private void onRequestPermissionResult() {
         if (ContextCompat.checkSelfPermission(this.getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
