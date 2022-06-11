@@ -2,10 +2,16 @@ package ie.app.musicplayer.Application;
 
 
 import android.app.Application;
+import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.content.Context;
 import android.os.Build;
 import android.support.v4.media.session.MediaSessionCompat;
+import android.util.Log;
+
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
 import com.orm.SugarApp;
 import java.util.ArrayList;
@@ -46,6 +52,27 @@ public class MusicPlayerApp extends SugarApp {
                 manager.createNotificationChannel(channel);
             }
         }
+    }
+    public static void sendNotificationMedia(Song song, Context context) {
+        MediaSessionCompat mediaSessionCompat = new MediaSessionCompat(context,"tag");
+        Notification notification = new NotificationCompat.Builder(context, MusicPlayerApp.CHANNEL_ID)
+                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setLargeIcon(song.getSongEmbeddedPicture())
+                .setSubText("MusicPlayer")
+                .setContentTitle(song.getSongName())
+                .setSubText(song.getSongSinger())
+                .setSmallIcon(R.drawable.ic_music)
+                .addAction(R.drawable.ic_skip_previous, "Previous", null) // #0
+                .addAction(R.drawable.ic_pause, "Pause", null)  // #1
+                .addAction(R.drawable.ic_skip_next, "Next", null)
+                .setStyle(new androidx.media.app.NotificationCompat.MediaStyle()
+                        .setShowActionsInCompactView(1 /* #1: pause button */)
+                        .setMediaSession(mediaSessionCompat.getSessionToken()))
+                .build();
+        NotificationManagerCompat managerCompat = NotificationManagerCompat.from(context);
+        Log.v("song", song.toString());
+        managerCompat.notify(100,notification);
     }
 
 }
