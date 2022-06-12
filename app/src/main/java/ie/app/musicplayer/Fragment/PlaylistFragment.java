@@ -48,11 +48,11 @@ public class PlaylistFragment extends Fragment {
         playlistListAdapter.setData(Playlist.listAll(Playlist.class));
     }
 
-//    @Override
-//    public void onResume() {
-//        super.onResume();
-////        updatePlaylist();
-//    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        updatePlaylist();
+    }
 
 //    @Override
 //    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {

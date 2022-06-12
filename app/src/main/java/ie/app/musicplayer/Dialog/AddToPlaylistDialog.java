@@ -68,14 +68,14 @@ public class AddToPlaylistDialog extends AppCompatDialogFragment {
         playlists = Playlist.listAll(Playlist.class);
         List<Song> songList = playlists.get(i).getSongList();
         if(checkSong(songList)){
-            Toast.makeText(context,"This song has been added to "+playlists.get(i).getPlaylistName()+" playlist",Toast.LENGTH_SHORT).show();
+            Toast.makeText(context,"Bài hát này đã có trong "+playlists.get(i).getPlaylistName()+" playlist!",Toast.LENGTH_SHORT).show();
             Log.v("song", "Add failed!");
         }
         else {
 //            song = convertToDefaultAlbumPicture(song);
             playlists.get(i).getSongList().add(song);
             playlists.get(i).save();
-            Toast.makeText(context,"Add song to "+playlists.get(i).getPlaylistName()+ " playlist successfully!",Toast.LENGTH_SHORT).show();
+            Toast.makeText(context,"Thêm bài hát vào "+playlists.get(i).getPlaylistName()+ " playlist thành công!",Toast.LENGTH_SHORT).show();
         }
         dismiss();
         Log.v("song", "Add "+playlists.get(i).getPlaylistName()+ " "+song.getSongName());
@@ -109,20 +109,23 @@ public class AddToPlaylistDialog extends AppCompatDialogFragment {
                         List<Song> songList = new ArrayList<Song>();
                         songList.add(song);
                         Log.v("song",song.getSongName());
-                        Toast.makeText(context, "Tạo Playlist thành công!", Toast.LENGTH_SHORT).show();
-                        Toast.makeText(context, "Thêm bài hàt vào "+playlistName.getText()+ " playlist thành công!", Toast.LENGTH_SHORT).show();
+
                         playlists = Playlist.listAll(Playlist.class);
                         boolean isHavePlaylist = false;
                         for(Playlist playlist:playlists){
-                            if(playlistName.getText().toString()==playlist.getPlaylistName()){
+                            if(playlistName.getText().toString().equals(playlist.getPlaylistName())){
                                 isHavePlaylist = true;
+                                break;
                             }
+                            Log.d("Debug",(playlistName.getText().toString().equals(playlist.getPlaylistName()))+"");
                         }
                         if(!isHavePlaylist){
                             new Playlist(playlistName.getText().toString(),R.drawable.img_playlist_default, songList).save();
+                            Toast.makeText(context, "Tạo Playlist thành công!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, "Thêm bài hàt vào "+playlistName.getText()+ " playlist thành công!", Toast.LENGTH_SHORT).show();
                         }
                         else {
-                            Toast.makeText(context,"Đã có Playlist này !",Toast.LENGTH_SHORT);
+                            Toast.makeText(context,"Đã có Playlist này !",Toast.LENGTH_SHORT).show();
                         }
                     }
                 })

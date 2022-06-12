@@ -71,7 +71,7 @@ public class HomeActivity extends AppCompatActivity {
                 public boolean onMenuItemClick(MenuItem menuItem) {
                     switch (menuItem.getItemId()) {
                         case R.id.refresh:
-//                            updateTab();
+                            updateTab();
                     }
                 return true;
                 }
