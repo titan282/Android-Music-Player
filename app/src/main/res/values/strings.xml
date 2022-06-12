@@ -11,8 +11,8 @@
     <string name="totaltime">--:--</string>
     <string name="runtime">--:--</string>
     <string name="love">Love</string>
-    <string name="single">---</string>
-    <string name="title">------</string>
+    <string name="single">Singer Name</string>
+    <string name="title">Song Name</string>
     <string name="gredientbg">TODO</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

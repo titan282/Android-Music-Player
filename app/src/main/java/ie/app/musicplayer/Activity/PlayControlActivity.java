@@ -1,6 +1,7 @@
 package ie.app.musicplayer.Activity;
 
 
+import android.content.Intent;
 import android.media.AudioAttributes;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
@@ -8,6 +9,10 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.BoringLayout;
+import android.text.TextUtils;
+import android.text.method.LinkMovementMethod;
+import android.text.method.ScrollingMovementMethod;
+import android.text.method.TransformationMethod;
 import android.util.Log;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -132,6 +137,7 @@ public class PlayControlActivity extends AppCompatActivity implements PlayContro
     }
 
     private void back() {
+
         onBackPressed();
     }
 
@@ -149,7 +155,7 @@ public class PlayControlActivity extends AppCompatActivity implements PlayContro
                 playlists.get(0).getSongList().add(song);
                 playlists.get(0).save();
                 Log.v("song","FavoriteSize: "+Playlist.listAll(Playlist.class).get(0).getSongList().size());
-                Toast.makeText(this, "Add song to Favorites successfully!",Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Đã thêm bài hát vào Favortite!",Toast.LENGTH_SHORT).show();
                  break;
             case ON:
                 favoriteBtn.setImageResource(R.drawable.ic_favorite_border);
@@ -159,7 +165,7 @@ public class PlayControlActivity extends AppCompatActivity implements PlayContro
                 playlists2.get(0).getSongList().remove(postionSong);
                 playlists2.get(0).save();
                 Log.v("song","FavoriteSize: "+Playlist.listAll(Playlist.class).get(0).getSongList().size());
-                Toast.makeText(this, "Remove song from Favorites successfully!",Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Đã xóa bài hát khỏi Favorite!",Toast.LENGTH_SHORT).show();
                 break;
         }
     }
@@ -177,6 +183,8 @@ public class PlayControlActivity extends AppCompatActivity implements PlayContro
         super.onDestroy();
 //        dbManager.close();
         mediaPlayer.stop();
+        setResult(RESULT_OK);
+        finish();
 //        mediaPlayer.release();
     }
 
@@ -260,11 +268,13 @@ public class PlayControlActivity extends AppCompatActivity implements PlayContro
     private void playMusic() {
         mediaPlayer.start();
         playPauseBtn.setImageResource(R.drawable.ic_pause);
+//        songName.setSelected(true);
     }
 
     private void pauseMusic() {
         mediaPlayer.pause();
         playPauseBtn.setImageResource(R.drawable.ic_play_arrow);
+//        songName.setSelected(false);
     }
 
     private void changeSong() {
@@ -295,6 +305,9 @@ public class PlayControlActivity extends AppCompatActivity implements PlayContro
         showBtn = findViewById(R.id.showPlaylist);
         favoriteBtn = findViewById(R.id.favoriteBtn);
         songName = findViewById(R.id.songName);
+        songName.setSelected(true);
+        songName.setMovementMethod(new ScrollingMovementMethod());
+        songName.setHorizontallyScrolling(true);
         singerName = findViewById(R.id.singerName);
         duration = findViewById(R.id.textViewtimetotal);
         runtime = findViewById(R.id.textViewruntime);
@@ -329,6 +342,8 @@ public class PlayControlActivity extends AppCompatActivity implements PlayContro
     private void setInfoToLayout(Song song) {
         runOnUiThread(() -> {
             songName.setText(song.getSongName());
+            songName.setEllipsize(TextUtils.TruncateAt.MARQUEE);
+            Log.d("Debug","songName= "+song.getSongName());
             singerName.setText(song.getSongSinger());
             if (song.isHasPic()) {
                 song.checkPicStatusAndLoad();

@@ -72,18 +72,19 @@ public class SongFragment extends Fragment{
         view = inflater.inflate(R.layout.fragment_song, container, false);
         songView = view.findViewById(R.id.songView);
         songListAdapter = new SongListAdapter(getContext(), song -> openPlayer(song));
-
-        requestPermissionLauncher = registerForActivityResult(
-                new ActivityResultContracts.RequestPermission(), isGranted -> {
-                    if (isGranted) {
-                        loadSongFromSharedStorage();
-                        songListAdapter.setData(songList);
-                    } else {
-                        onRequestPermissionResult();
-                    }
-                });
-
-        requestPermissionLauncher.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        songList = app.songList;
+        songListAdapter.setData(songList);
+//        requestPermissionLauncher = registerForActivityResult(
+//                new ActivityResultContracts.RequestPermission(), isGranted -> {
+//                    if (isGranted) {
+//                        loadSongFromSharedStorage();
+//                        songListAdapter.setData(songList);
+//                    } else {
+//                        onRequestPermissionResult();
+//                    }
+//                });
+//
+//        requestPermissionLauncher.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         songView.setLayoutManager(linearLayoutManager);
@@ -103,6 +104,7 @@ public class SongFragment extends Fragment{
                             }
                         });
                         songListAdapter.setData(temp);
+                        songList=temp;
                         return true;
                     case R.id.descending:
                         Collections.sort(temp, new Comparator<Song>() {
@@ -112,6 +114,7 @@ public class SongFragment extends Fragment{
                             }
                         });
                         Collections.reverse(temp);
+                        songList=temp;
                         songListAdapter.setData(temp);
                         return true;
                     case R.id.date_added:
@@ -122,6 +125,7 @@ public class SongFragment extends Fragment{
                             }
                         });
                         Collections.reverse(temp);
+                        songList=temp;
                         songListAdapter.setData(temp);
                         return true;
                     default:
@@ -160,104 +164,104 @@ public class SongFragment extends Fragment{
 
 
 
-    private void onRequestPermissionResult() {
-        if (ContextCompat.checkSelfPermission(this.getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                == PackageManager.PERMISSION_GRANTED) {
-            loadSongFromSharedStorage();
-            songListAdapter.setData(songList);
-        } else if (shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-            // In an educational UI, explain to the user why your app requires this
-            // permission for a specific feature to behave as expected.
-            AlertDialog.Builder alertDialog = new AlertDialog.Builder(this.getContext());
-            alertDialog.setTitle("Requesting Permission");
-            alertDialog.setMessage("Allow us to fetch songs form your device");
+//    private void onRequestPermissionResult() {
+//        if (ContextCompat.checkSelfPermission(this.getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
+//                == PackageManager.PERMISSION_GRANTED) {
+//            loadSongFromSharedStorage();
+//            songListAdapter.setData(songList);
+//        } else if (shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+//            // In an educational UI, explain to the user why your app requires this
+//            // permission for a specific feature to behave as expected.
+//            AlertDialog.Builder alertDialog = new AlertDialog.Builder(this.getContext());
+//            alertDialog.setTitle("Requesting Permission");
+//            alertDialog.setMessage("Allow us to fetch songs form your device");
+//
+//            alertDialog.setPositiveButton("Allow", (dialogInterface, i) -> {
+//                //request permission again
+//                requestPermissionLauncher.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+//            });
+//
+//            alertDialog.setNegativeButton("Not Allow", (dialogInterface, i) -> {
+//                //request permission again
+//                Toast.makeText(this.getContext(), "You denied to fetch songs", Toast.LENGTH_SHORT).show();
+//                dialogInterface.dismiss();
+//            });
+//
+//            alertDialog.show();
+//        } else {
+//            Toast.makeText(this.getContext(), "You denied to fetch songs", Toast.LENGTH_SHORT).show();
+//            //We can close our application here
+//        }
+//    }
 
-            alertDialog.setPositiveButton("Allow", (dialogInterface, i) -> {
-                //request permission again
-                requestPermissionLauncher.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-            });
-
-            alertDialog.setNegativeButton("Not Allow", (dialogInterface, i) -> {
-                //request permission again
-                Toast.makeText(this.getContext(), "You denied to fetch songs", Toast.LENGTH_SHORT).show();
-                dialogInterface.dismiss();
-            });
-
-            alertDialog.show();
-        } else {
-            Toast.makeText(this.getContext(), "You denied to fetch songs", Toast.LENGTH_SHORT).show();
-            //We can close our application here
-        }
-    }
-
-    public void loadSongFromSharedStorage() {
-        if (((MusicPlayerApp)getActivity().getApplication()).songList != null &&
-                !(((MusicPlayerApp)getActivity().getApplication()).songList.isEmpty())) {
-            return;
-        }
-        songList = new ArrayList<>();
-        temp_album = new HashMap<>();
-        temp_singer = new HashMap<>();
-        if (ContextCompat.checkSelfPermission(this.getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                == PackageManager.PERMISSION_GRANTED) {
-
-            String projection[] = new String[]{
-                    MediaStore.Audio.Media._ID,
-                    MediaStore.Audio.Media.TITLE,
-                    MediaStore.Audio.Media.ALBUM,
-                    MediaStore.Audio.Media.ARTIST,
-                    MediaStore.Audio.Media.DATA,
-                    MediaStore.Audio.Media.DATE_ADDED,
-            };
-            String sortOrder = MediaStore.Audio.Media.TITLE + " ASC";
-
-                loadingThread = new Thread(() -> {
-                    try (Cursor cursor = this.getContext().getApplicationContext()
-                            .getContentResolver().query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
-                                    projection, null, null, sortOrder)) {
-                        while (cursor.moveToNext()) {
-                            int songId = cursor.getInt(0);
-                            String songName = cursor.getString(1);
-                            String songAlbum = cursor.getString(2);
-                            String songSinger = cursor.getString(3);
-                            String songURL = cursor.getString(4);
-                            String addedDate = cursor.getString(5);
-                            Song song = new Song(songId, songName, songAlbum, R.drawable.music_rect, songSinger, songURL, addedDate);
-                            songList.add(song);
-                        }
-                        ((MusicPlayerApp) getActivity().getApplication()).songList = new ArrayList<>(songList);
-                    }
-                });
-            loadingThread.start();
-            try {
-                loadingThread.join();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
-            Thread loadAlbumPicThread = new Thread(() -> {
-                for (Song song : songList) {
-                    song.loadEmbeddedPicture();
-                }
-            });
-            loadAlbumPicThread.start();
-
-            Thread loadAlbum = new Thread(() -> {
-                for (Song song : songList) {
-                    if (!temp_album.containsKey(song.getSongAlbum())) {
-                        temp_album.put(song.getSongAlbum(), new ArrayList<>());
-                    }
-                    temp_album.get(song.getSongAlbum()).add(song);
-
-                    if (!temp_singer.containsKey(song.getSongSinger())) {
-                        temp_singer.put(song.getSongSinger(), new ArrayList<>());
-                    }
-                    temp_singer.get(song.getSongSinger()).add(song);
-                }
-                ((MusicPlayerApp)getActivity().getApplication()).album = new HashMap<>(temp_album);
-                ((MusicPlayerApp)getActivity().getApplication()).singer = new HashMap<>(temp_singer);
-            });
-            loadAlbum.start();
-        }
-    }
+//    public void loadSongFromSharedStorage() {
+//        if (((MusicPlayerApp)getActivity().getApplication()).songList != null &&
+//                !(((MusicPlayerApp)getActivity().getApplication()).songList.isEmpty())) {
+//            return;
+//        }
+//        songList = new ArrayList<>();
+//        temp_album = new HashMap<>();
+//        temp_singer = new HashMap<>();
+//        if (ContextCompat.checkSelfPermission(this.getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
+//                == PackageManager.PERMISSION_GRANTED) {
+//
+//            String projection[] = new String[]{
+//                    MediaStore.Audio.Media._ID,
+//                    MediaStore.Audio.Media.TITLE,
+//                    MediaStore.Audio.Media.ALBUM,
+//                    MediaStore.Audio.Media.ARTIST,
+//                    MediaStore.Audio.Media.DATA,
+//                    MediaStore.Audio.Media.DATE_ADDED,
+//            };
+//            String sortOrder = MediaStore.Audio.Media.TITLE + " ASC";
+//
+//                loadingThread = new Thread(() -> {
+//                    try (Cursor cursor = this.getContext().getApplicationContext()
+//                            .getContentResolver().query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
+//                                    projection, null, null, sortOrder)) {
+//                        while (cursor.moveToNext()) {
+//                            int songId = cursor.getInt(0);
+//                            String songName = cursor.getString(1);
+//                            String songAlbum = cursor.getString(2);
+//                            String songSinger = cursor.getString(3);
+//                            String songURL = cursor.getString(4);
+//                            String addedDate = cursor.getString(5);
+//                            Song song = new Song(songId, songName, songAlbum, R.drawable.music_rect, songSinger, songURL, addedDate);
+//                            songList.add(song);
+//                        }
+//                        ((MusicPlayerApp) getActivity().getApplication()).songList = new ArrayList<>(songList);
+//                    }
+//                });
+//            loadingThread.start();
+//            try {
+//                loadingThread.join();
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//
+//            Thread loadAlbumPicThread = new Thread(() -> {
+//                for (Song song : songList) {
+//                    song.loadEmbeddedPicture();
+//                }
+//            });
+//            loadAlbumPicThread.start();
+//
+//            Thread loadAlbum = new Thread(() -> {
+//                for (Song song : songList) {
+//                    if (!temp_album.containsKey(song.getSongAlbum())) {
+//                        temp_album.put(song.getSongAlbum(), new ArrayList<>());
+//                    }
+//                    temp_album.get(song.getSongAlbum()).add(song);
+//
+//                    if (!temp_singer.containsKey(song.getSongSinger())) {
+//                        temp_singer.put(song.getSongSinger(), new ArrayList<>());
+//                    }
+//                    temp_singer.get(song.getSongSinger()).add(song);
+//                }
+//                ((MusicPlayerApp)getActivity().getApplication()).album = new HashMap<>(temp_album);
+//                ((MusicPlayerApp)getActivity().getApplication()).singer = new HashMap<>(temp_singer);
+//            });
+//            loadAlbum.start();
+//        }
+//    }
 }
