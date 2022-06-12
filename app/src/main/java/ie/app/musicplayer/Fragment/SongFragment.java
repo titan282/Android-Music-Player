@@ -103,6 +103,7 @@ public class SongFragment extends Fragment{
                             }
                         });
                         songListAdapter.setData(temp);
+                        songList=temp;
                         return true;
                     case R.id.descending:
                         Collections.sort(temp, new Comparator<Song>() {
@@ -112,6 +113,7 @@ public class SongFragment extends Fragment{
                             }
                         });
                         Collections.reverse(temp);
+                        songList=temp;
                         songListAdapter.setData(temp);
                         return true;
                     case R.id.date_added:
@@ -122,6 +124,7 @@ public class SongFragment extends Fragment{
                             }
                         });
                         Collections.reverse(temp);
+                        songList=temp;
                         songListAdapter.setData(temp);
                         return true;
                     default:
