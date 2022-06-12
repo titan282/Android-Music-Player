@@ -39,6 +39,8 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.button.MaterialButton;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -136,8 +138,11 @@ public class SongFragment extends Fragment{
             popupMenu.inflate(R.menu.sort);
             popupMenu.show();
         });
-        ((ImageButton) view.findViewById(R.id.randomBtn)).setOnClickListener(view -> {
+        ((MaterialButton) view.findViewById(R.id.randomBtn)).setOnClickListener(view -> {
             openRandomPlayer();
+        });
+        ((MaterialButton) view.findViewById(R.id.playall)).setOnClickListener(view ->{
+            openPlayer(songList.get(0));
         });
         return view;
     }
