@@ -1,5 +1,6 @@
 package ie.app.musicplayer.Adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -53,7 +54,7 @@ public class SongListAdapter extends RecyclerView.Adapter<SongListAdapter.SongVi
     }
 
     @Override
-    public void onBindViewHolder(@NonNull SongViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull SongViewHolder holder, @SuppressLint("RecyclerView") int position) {
         Song song = songList.get(position);
         if (song == null) {
             return;
@@ -90,21 +91,15 @@ public class SongListAdapter extends RecyclerView.Adapter<SongListAdapter.SongVi
                             break;
 
                         case R.id.removeSong:
+                            Log.d("Debug","2.Position= "+position);
                             List<Playlist> playlists = Playlist.listAll(Playlist.class);
                             List<Song> songList = playlists.get(playlistID).getSongList();
                             Playlist playlist = playlists.get(playlistID);
-                            for(Song songItem:songList){
-                                Log.d("Debug", String.valueOf("1. " +songItem.getSongName() +" & "+ song.getSongName() +" ss="
-                                        +song.getSongURL()==songItem.getSongURL()));
-                                if(songItem.getSongName()==songItem.getSongName()){
-                                    songList.remove(songItem);
-                                    playlist.save();
-                                    Log.d("Debug","....");
-                                    update();
-                                    Toast.makeText(context, "Xóa thành công!",Toast.LENGTH_SHORT).show();
-                                    break;
-                                }
-                            }
+                            songList.remove(position);
+                            playlist.save();
+                            update();
+                            Toast.makeText(context, "Xóa thành công!",Toast.LENGTH_SHORT).show();
+                            break;
 
                     }
                     return  true;

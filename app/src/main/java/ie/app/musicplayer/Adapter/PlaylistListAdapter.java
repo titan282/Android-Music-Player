@@ -119,7 +119,7 @@ public class PlaylistListAdapter extends RecyclerView.Adapter<PlaylistListAdapte
         }
         update(playlists);
     }
-    public void update(List<Playlist> playlists){
+    public void update(@NonNull List<Playlist> playlists){
         playlists.clear();
         setData(Playlist.listAll(Playlist.class));
     }
