@@ -1,6 +1,8 @@
 package ie.app.musicplayer.Fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,12 +45,19 @@ public class PlaylistFragment extends Fragment {
     }
 
     public void updatePlaylist() {
-        playlistListAdapter.update(playlists);
+        playlistListAdapter.setData(Playlist.listAll(Playlist.class));
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        updatePlaylist();
-    }
+//    @Override
+//    public void onResume() {
+//        super.onResume();
+////        updatePlaylist();
+//    }
+
+//    @Override
+//    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        Log.d("Debug","Trở về Playlist Fragment");
+//        updatePlaylist();
+//    }
 }

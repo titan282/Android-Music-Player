@@ -1,5 +1,6 @@
 package ie.app.musicplayer.Activity;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -40,6 +41,7 @@ public class PlaylistDetailActivity extends AppCompatActivity {
     TextView tvPlaylistName;
     List<Song> songList= new ArrayList<>();
     List<Playlist> playlists ;
+    SongListAdapter adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,7 +61,7 @@ public class PlaylistDetailActivity extends AppCompatActivity {
         tvPlaylistName = findViewById(R.id.playlistNamePlaylistDetail);
         tvPlaylistName.setText(playlists.get(playlistId).getPlaylistName());
         Log.v("song",playlists.get(playlistId).getPlaylistName()+ songList.size());
-        SongListAdapter adapter = new SongListAdapter(PlaylistDetailActivity.this,new SongListAdapter.ItemClickListener() {
+        adapter = new SongListAdapter(PlaylistDetailActivity.this,new SongListAdapter.ItemClickListener() {
             @Override
             public void onItemClick(Song song) {
                 Intent intent = new Intent(PlaylistDetailActivity.this, PlayControlActivity.class);
@@ -67,7 +69,7 @@ public class PlaylistDetailActivity extends AppCompatActivity {
                 bundle.putParcelableArrayList("Playlist", (ArrayList<? extends Parcelable>) songList);
                 bundle.putInt("Position", songList.indexOf(song));
                 intent.putExtras(bundle);
-                startActivity(intent);
+                startActivityForResult(intent,1);
             }
         },playlistId);
 
@@ -81,4 +83,18 @@ public class PlaylistDetailActivity extends AppCompatActivity {
         rvSongList.setAdapter(adapter);
 
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.d("Debug","Result PlaylistDetailActivity");
+//        adapter.update();
+    }
+
+
 }
