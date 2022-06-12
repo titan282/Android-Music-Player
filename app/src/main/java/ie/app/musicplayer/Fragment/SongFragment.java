@@ -1,6 +1,7 @@
 package ie.app.musicplayer.Fragment;
 
 import android.Manifest;
+import android.app.ActivityOptions;
 import android.app.AlertDialog;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -37,6 +38,8 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.button.MaterialButton;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -135,8 +138,11 @@ public class SongFragment extends Fragment{
             popupMenu.inflate(R.menu.sort);
             popupMenu.show();
         });
-        ((ImageButton) view.findViewById(R.id.randomBtn)).setOnClickListener(view -> {
+        ((MaterialButton) view.findViewById(R.id.randomBtn)).setOnClickListener(view -> {
             openRandomPlayer();
+        });
+        ((MaterialButton) view.findViewById(R.id.playall)).setOnClickListener(view ->{
+            openPlayer(songList.get(0));
         });
         return view;
     }
@@ -151,6 +157,7 @@ public class SongFragment extends Fragment{
         bundle.putBoolean("Random",true);
         intent.putExtras(bundle);
         startActivity(intent);
+        getActivity().overridePendingTransition(R.anim.slide_up, R.anim.no_animation);
     }
 
     private void openPlayer(Song song) {
@@ -160,6 +167,7 @@ public class SongFragment extends Fragment{
         bundle.putInt("Position", songList.indexOf(song));
         intent.putExtras(bundle);
         startActivity(intent);
+        getActivity().overridePendingTransition(R.anim.slide_up, R.anim.no_animation);
     }
 
 

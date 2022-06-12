@@ -33,14 +33,15 @@
             android:layout_weight="8"
             android:gravity="center"
             android:text="Music Player"
+            android:fontFamily="@font/sans"
             android:textColor="@color/black"
-            android:textSize="16dp" />
+            android:textSize="20dp" />
 
         <ImageView
             android:id="@+id/sortBtn"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_weight="0"
             android:src="@drawable/icon_more" />
     </LinearLayout>
 

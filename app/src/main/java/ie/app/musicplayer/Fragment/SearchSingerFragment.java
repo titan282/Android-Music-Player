@@ -1,5 +1,6 @@
 package ie.app.musicplayer.Fragment;
 
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -47,8 +48,7 @@ public class SearchSingerFragment extends Fragment {
             bundle.putParcelableArrayList("Playlist", (ArrayList<? extends Parcelable>) singer.getSingerSong());
             bundle.putString("Name", singer.getSingerName());
             intent.putExtras(bundle);
-            startActivity(intent);
-
+            startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle());
         });
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());

@@ -70,6 +70,7 @@ public class PlaylistDetailActivity extends AppCompatActivity {
                 bundle.putInt("Position", songList.indexOf(song));
                 intent.putExtras(bundle);
                 startActivityForResult(intent,1);
+                overridePendingTransition(R.anim.slide_up, R.anim.no_animation);
             }
         },playlistId);
 

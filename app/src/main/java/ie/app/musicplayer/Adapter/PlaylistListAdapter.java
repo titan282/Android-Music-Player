@@ -2,6 +2,7 @@ package ie.app.musicplayer.Adapter;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.media.Image;
@@ -85,7 +86,7 @@ public class PlaylistListAdapter extends RecyclerView.Adapter<PlaylistListAdapte
             Intent intent = new Intent(context, PlaylistDetailActivity.class);
             intent.putExtra(POSITION,position);
             intent.putExtra("cover",playlists.get(position).getPlaylistImage());
-            ((Activity)context).startActivityForResult(intent,1);
+            ((Activity)context).startActivityForResult(intent,1, ActivityOptions.makeSceneTransitionAnimation((Activity) context).toBundle());
         });
 
     }

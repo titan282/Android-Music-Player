@@ -77,6 +77,7 @@ public class PlayControlActivity extends AppCompatActivity implements PlayContro
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         app = (MusicPlayerApp)getApplication();
         setContentView(R.layout.activity_play_control);
         init();
@@ -137,8 +138,10 @@ public class PlayControlActivity extends AppCompatActivity implements PlayContro
     }
 
     private void back() {
-
+        finish();
+        overridePendingTransition(R.anim.no_animation, R.anim.slide_down);
         onBackPressed();
+
     }
 
 
@@ -181,13 +184,21 @@ public class PlayControlActivity extends AppCompatActivity implements PlayContro
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        overridePendingTransition(R.anim.no_animation, R.anim.slide_down);
 //        dbManager.close();
         mediaPlayer.stop();
         setResult(RESULT_OK);
         finish();
+        overridePendingTransition(R.anim.no_animation, R.anim.slide_down);
 //        mediaPlayer.release();
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+        overridePendingTransition(R.anim.no_animation, R.anim.slide_down);
+    }
 
     private void playpause() {
         if (mediaPlayer.isPlaying()) {

@@ -71,6 +71,9 @@ public class SearchActivity extends AppCompatActivity {
         sTabLayout.getTabAt(0).setText("Song");
         sTabLayout.getTabAt(1).setText("Album");
         sTabLayout.getTabAt(2).setText("Singer");
+        sTabLayout.getTabAt(0).setIcon(R.drawable.ic_music);
+        sTabLayout.getTabAt(1).setIcon(R.drawable.ic_album);
+        sTabLayout.getTabAt(2).setIcon(R.drawable.ic_artist);
         sTabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener(){
             @Override
             public void onTabSelected(TabLayout.Tab tab){

@@ -1,5 +1,6 @@
 package ie.app.musicplayer.Fragment;
 
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -45,7 +46,7 @@ public class SearchAlbumFragment extends Fragment {
             bundle.putParcelableArrayList("Playlist", (ArrayList<? extends Parcelable>) album.getAlbumData());
             bundle.putString("Name", album.getAlbumName());
             intent.putExtras(bundle);
-            startActivity(intent);
+            startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle());
             getFullAlbum();
         });
 
