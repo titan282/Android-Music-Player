@@ -1,6 +1,8 @@
 package ie.app.musicplayer.Adapter;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.media.Image;
@@ -16,21 +18,28 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 import ie.app.musicplayer.Model.Playlist;
 import ie.app.musicplayer.Activity.PlaylistDetailActivity;
+import ie.app.musicplayer.Model.Song;
 import ie.app.musicplayer.R;
 
 public class PlaylistListAdapter extends RecyclerView.Adapter<PlaylistListAdapter.PlaylistViewHolder> {
     public static final String POSITION = "position";
     private Context context;
     private List<Playlist> playlists;
-
+    private ItemClickListener itemClickListener;
+    private ConstraintLayout layoutPlaylistFramgment;
     public PlaylistListAdapter(Context context) {
         this.context = context;
     }
-
+    public PlaylistListAdapter(Context context, ItemClickListener itemClickListener){
+        this.itemClickListener = itemClickListener;
+        this.context = context;
+    }
     public void setData(List<Playlist> playlists) {
         this.playlists = playlists;
         notifyDataSetChanged();
@@ -77,8 +86,9 @@ public class PlaylistListAdapter extends RecyclerView.Adapter<PlaylistListAdapte
             Intent intent = new Intent(context, PlaylistDetailActivity.class);
             intent.putExtra(POSITION,position);
             intent.putExtra("cover",playlists.get(position).getPlaylistImage());
-            context.startActivity(intent);
+            ((Activity)context).startActivityForResult(intent,1, ActivityOptions.makeSceneTransitionAnimation((Activity) context).toBundle());
         });
+
     }
 
     private void deleteAllSong(int position) {
@@ -105,6 +115,7 @@ public class PlaylistListAdapter extends RecyclerView.Adapter<PlaylistListAdapte
             playListName = itemView.findViewById(R.id.textviewplaylist);
             ibMenuPlaylist = itemView.findViewById(R.id.menuPlaylist);
             tvNumSong = itemView.findViewById(R.id.numSong);
+            layoutPlaylistFramgment = itemView.findViewById(R.id.layoutPlaylistFragment);
         }
     }
 
@@ -122,5 +133,8 @@ public class PlaylistListAdapter extends RecyclerView.Adapter<PlaylistListAdapte
     public void update(@NonNull List<Playlist> playlists){
         playlists.clear();
         setData(Playlist.listAll(Playlist.class));
+    }
+    public interface ItemClickListener {
+        void onItemClick(Song song);
     }
 }

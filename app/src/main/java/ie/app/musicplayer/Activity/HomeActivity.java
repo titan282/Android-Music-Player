@@ -1,5 +1,6 @@
 package ie.app.musicplayer.Activity;
 
+import android.app.ActivityOptions;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -51,7 +52,7 @@ public class HomeActivity extends AppCompatActivity {
 
         ibSearchBtn.setOnClickListener(view -> {
             Intent intent = new Intent(this, SearchActivity.class);
-            startActivity(intent);
+            startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
         });
 
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager(),
@@ -62,6 +63,10 @@ public class HomeActivity extends AppCompatActivity {
         mTabLayout.getTabAt(1).setText("Playlists");
         mTabLayout.getTabAt(2).setText("Albums");
         mTabLayout.getTabAt(3).setText("Artists");
+        mTabLayout.getTabAt(0).setIcon(R.drawable.ic_music);
+        mTabLayout.getTabAt(1).setIcon(R.drawable.ic_queue_music);
+        mTabLayout.getTabAt(2).setIcon(R.drawable.ic_album);
+        mTabLayout.getTabAt(3).setIcon(R.drawable.ic_artist);
         ivSort.setOnClickListener(view -> {
             PopupMenu popupMenu = new PopupMenu(HomeActivity.this, view);
             popupMenu.getMenuInflater().inflate(R.menu.option, popupMenu.getMenu());

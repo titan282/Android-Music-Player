@@ -4,7 +4,8 @@
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+
     <application
         android:name=".Application.MusicPlayerApp"
         android:allowBackup="true"
@@ -13,21 +14,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MusicPlayer">
-
-        <meta-data android:name="DATABASE" android:value="musicplayer.db" />
-        <meta-data android:name="VERSION" android:value="3" />
-        <meta-data android:name="QUERY_LOG" android:value="true" />
-        <meta-data android:name="DOMAIN_PACKAGE_NAME" android:value="ie.app.musicplayer" />
         <activity
-            android:name=".Activity.PlayControlActivity"
-            />
-        <activity android:name=".Activity.SearchActivity"/>
-       <activity
-            android:name=".Activity.PlaylistDetailActivity"
-            android:exported="false" />
-        <activity android:name=".Activity.AlbumDetailActivity"/>
-        <activity
-            android:name=".Activity.HomeActivity"
+            android:name=".Activity.SplashActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -35,8 +23,35 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <service android:name=".Service.PlayControlService"></service>
         <receiver android:name=".Service.ReceiverActionBroadcast"></receiver>
+
+
+        <meta-data
+            android:name="DATABASE"
+            android:value="musicplayer.db" />
+        <meta-data
+            android:name="VERSION"
+            android:value="3" />
+        <meta-data
+            android:name="QUERY_LOG"
+            android:value="true" />
+        <meta-data
+            android:name="DOMAIN_PACKAGE_NAME"
+            android:value="ie.app.musicplayer" />
+
+        <activity android:name=".Activity.PlayControlActivity" />
+        <activity android:name=".Activity.SearchActivity" />
+        <activity
+            android:name=".Activity.PlaylistDetailActivity"
+            android:exported="false" />
+        <activity android:name=".Activity.AlbumDetailActivity" />
+        <activity
+            android:name=".Activity.HomeActivity"
+            android:exported="true">
+        </activity>
+
     </application>
 
 </manifest>
