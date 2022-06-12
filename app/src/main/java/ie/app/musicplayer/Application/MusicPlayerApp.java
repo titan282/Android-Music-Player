@@ -17,7 +17,6 @@ import com.orm.SugarApp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
 import ie.app.musicplayer.Model.Playlist;
 import ie.app.musicplayer.Model.Song;
 import ie.app.musicplayer.R;
@@ -29,6 +28,7 @@ public class MusicPlayerApp extends SugarApp {
     public HashMap<String, ArrayList<Song>> singer = new HashMap<>();
     public static final String CHANNEL_ID = "CHANNEL_MUSIC_APP";
     public List<Song> songList = new ArrayList<>();
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -47,6 +47,7 @@ public class MusicPlayerApp extends SugarApp {
     private void createNotificationChannel() {
         if(Build.VERSION.SDK_INT>= Build.VERSION_CODES.O){
             NotificationChannel channel = new NotificationChannel(CHANNEL_ID, "Channel music", NotificationManager.IMPORTANCE_DEFAULT);
+            channel.setSound(null,null);
             NotificationManager manager = getSystemService(NotificationManager.class);
             if(manager!=null){
                 manager.createNotificationChannel(channel);
@@ -55,7 +56,7 @@ public class MusicPlayerApp extends SugarApp {
     }
     public static void sendNotificationMedia(Song song, Context context) {
         MediaSessionCompat mediaSessionCompat = new MediaSessionCompat(context,"tag");
-        Notification notification = new NotificationCompat.Builder(context, MusicPlayerApp.CHANNEL_ID)
+        NotificationCompat.Builder notification = new NotificationCompat.Builder(context, MusicPlayerApp.CHANNEL_ID)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setLargeIcon(song.getSongEmbeddedPicture())
@@ -69,10 +70,9 @@ public class MusicPlayerApp extends SugarApp {
                 .setStyle(new androidx.media.app.NotificationCompat.MediaStyle()
                         .setShowActionsInCompactView(1 /* #1: pause button */)
                         .setMediaSession(mediaSessionCompat.getSessionToken()))
-                .build();
+                .setOngoing(true);
         NotificationManagerCompat managerCompat = NotificationManagerCompat.from(context);
         Log.v("song", song.toString());
-        managerCompat.notify(100,notification);
+        managerCompat.notify(100,notification.build());
     }
-
 }

@@ -2,10 +2,7 @@ package ie.app.musicplayer.Fragment;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageButton;
@@ -18,22 +15,20 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
-import ie.app.musicplayer.Activity.PlayControlActivity;
 import ie.app.musicplayer.Adapter.SongListAdapter;
 import ie.app.musicplayer.Model.Song;
 import ie.app.musicplayer.R;
+import ie.app.musicplayer.Utility.Constant;
 
 public class PlayControlBottomSheetFragment extends BottomSheetDialogFragment {
 
     private ImageButton shuffleBtn, loopBtn;
     private List<Song> songList;
     private IOnItemSelectedListener iOnItemSelectedListener;
-    private PlayControlActivity.Status shuffleStatus = PlayControlActivity.Status.OFF;
-    private PlayControlActivity.Status loopStatus = PlayControlActivity.Status.OFF;
+    private Constant.Status shuffleStatus = Constant.Status.OFF;
+    private Constant.Status loopStatus = Constant.Status.OFF;
     private SongListAdapter songListAdapter;
     private RecyclerView recyclerViewData;
     public interface IOnItemSelectedListener {
@@ -44,8 +39,8 @@ public class PlayControlBottomSheetFragment extends BottomSheetDialogFragment {
         void getLoopStatus();
     }
 
-    public PlayControlBottomSheetFragment(List<Song> songList, PlayControlActivity.Status shuffleStatus,
-                                          PlayControlActivity.Status loopStatus) {
+    public PlayControlBottomSheetFragment(List<Song> songList, Constant.Status shuffleStatus,
+                                          Constant.Status loopStatus) {
         this.songList = songList;
         this.shuffleStatus = shuffleStatus;
         this.loopStatus = loopStatus;
@@ -112,27 +107,27 @@ public class PlayControlBottomSheetFragment extends BottomSheetDialogFragment {
     private void loop() {
         switch (loopStatus) {
             case OFF:
-                loopStatus = PlayControlActivity.Status.WHOLE;
+                loopStatus = Constant.Status.WHOLE;
                 loopBtn.setImageResource(R.drawable.ic_repeat_whole);
                 break;
             case WHOLE:
-                loopStatus = PlayControlActivity.Status.SINGLE;
+                loopStatus = Constant.Status.SINGLE;
                 loopBtn.setImageResource(R.drawable.ic_repeat_one);
                 break;
             default:
-                loopStatus = PlayControlActivity.Status.OFF;
+                loopStatus = Constant.Status.OFF;
                 loopBtn.setImageResource(R.drawable.ic_repeat);
                 break;
         }
     }
 
     private void shuffle() {
-        if (shuffleStatus == PlayControlActivity.Status.OFF) {
-            shuffleStatus = PlayControlActivity.Status.ON;
+        if (shuffleStatus == Constant.Status.OFF) {
+            shuffleStatus = Constant.Status.ON;
             shuffleBtn.setImageResource(R.drawable.ic_shuffle_on);
         } else {
-            shuffleStatus = PlayControlActivity.Status.OFF;
-            shuffleBtn.setImageResource(R.drawable.ic_shuffle);
+            shuffleStatus = Constant.Status.OFF;
+            shuffleBtn.setImageResource(R.drawable.ic_shuffle_off);
         }
     }
 
@@ -143,8 +138,8 @@ public class PlayControlBottomSheetFragment extends BottomSheetDialogFragment {
     }
 
     private void setButtonImage() {
-        if (shuffleStatus == PlayControlActivity.Status.OFF) {
-            shuffleBtn.setImageResource(R.drawable.ic_shuffle);
+        if (shuffleStatus == Constant.Status.OFF) {
+            shuffleBtn.setImageResource(R.drawable.ic_shuffle_off);
         } else {
             shuffleBtn.setImageResource(R.drawable.ic_shuffle_on);
         }

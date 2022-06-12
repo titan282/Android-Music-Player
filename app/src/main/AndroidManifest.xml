@@ -24,6 +24,10 @@
             </intent-filter>
         </activity>
 
+        <service android:name=".Service.PlayControlService"></service>
+        <receiver android:name=".Service.ReceiverActionBroadcast"></receiver>
+
+
         <meta-data
             android:name="DATABASE"
             android:value="musicplayer.db" />
@@ -47,6 +51,7 @@
             android:name=".Activity.HomeActivity"
             android:exported="true">
         </activity>
+
     </application>
 
 </manifest>

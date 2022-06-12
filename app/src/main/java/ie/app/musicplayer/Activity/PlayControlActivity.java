@@ -1,13 +1,18 @@
 package ie.app.musicplayer.Activity;
 
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+
 import android.media.AudioAttributes;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+
 import android.text.BoringLayout;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
@@ -21,23 +26,24 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Toolbar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
+import ie.app.musicplayer.Utility.Constant;
 import ie.app.musicplayer.Application.MusicPlayerApp;
 import ie.app.musicplayer.Database.DBManager;
 import ie.app.musicplayer.Fragment.PlayControlBottomSheetFragment;
-import ie.app.musicplayer.Fragment.SongFragment;
 import ie.app.musicplayer.Model.Playlist;
 import ie.app.musicplayer.Model.Song;
 import ie.app.musicplayer.R;
+import ie.app.musicplayer.Service.PlayControlService;
 
 
 public class PlayControlActivity extends AppCompatActivity implements PlayControlBottomSheetFragment.IOnItemSelectedListener {
-    public enum Status {OFF, SINGLE, WHOLE, ON}
 
     private ImageButton playPauseBtn, previousBtn, nextBtn, loopBtn, shuffleBtn, showBtn,favoriteBtn,backBtn;
     private ImageView songPicture;
@@ -53,10 +59,33 @@ public class PlayControlActivity extends AppCompatActivity implements PlayContro
     public MusicPlayerApp app;
     private Thread changeSongThread;
     private PlayControlBottomSheetFragment bottomSheetFragment;
-    private Status shuffleStatus = Status.OFF;
-    private Status loopStatus = Status.OFF;
-    private Status favoriteStatus = Status.OFF;
-  
+    private Constant.Status shuffleStatus = Constant.Status.OFF;
+    private Constant.Status loopStatus = Constant.Status.OFF;
+    private Constant.Status favoriteStatus = Constant.Status.OFF;
+    private Constant.Status playStatus = Constant.Status.ON;
+
+    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Bundle bundle = intent.getExtras();
+
+            if (bundle.containsKey("Next") && (boolean) bundle.get("Next")) {
+                next();
+                return;
+            }
+
+            if (bundle.containsKey("Previous") && (boolean) bundle.get("Previous")) {
+                previous();
+                return;
+            }
+
+            if (bundle.containsKey("Play Status")) {
+                playStatus = (Constant.Status) bundle.get("Play Status");
+                playpause();
+            }
+        }
+    };
+
     @Override
     public void getSong(Song song) {
         position = songList.indexOf(song);
@@ -89,6 +118,13 @@ public class PlayControlActivity extends AppCompatActivity implements PlayContro
         setTimeTotal();
         updateTimeSong();
         checkShuffle();
+
+        LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver,
+                new IntentFilter("To PlayControlActivity"));
+
+        //Send notification
+        updateNotificationService();
+
         playPauseBtn.setOnClickListener(view -> {
             playpause();
         });
@@ -129,6 +165,13 @@ public class PlayControlActivity extends AppCompatActivity implements PlayContro
         });
     }
 
+    private void updateNotificationService() {
+        Intent notificationIntent = new Intent(this, PlayControlService.class);
+        notificationIntent.putExtra("Song", songList.get(position));
+        notificationIntent.putExtra("Play Status", playStatus);
+        startService(notificationIntent);
+    }
+
     private void checkShuffle() {
         Bundle bundle = getIntent().getExtras();
         Boolean isShuffle = bundle.getBoolean("Random");
@@ -153,7 +196,7 @@ public class PlayControlActivity extends AppCompatActivity implements PlayContro
         switch(favoriteStatus){
             case OFF:
                 favoriteBtn.setImageResource(R.drawable.ic_favorite);
-                favoriteStatus = Status.ON;
+                favoriteStatus = Constant.Status.ON;
                 List<Playlist> playlists = Playlist.listAll(Playlist.class);
                 playlists.get(0).getSongList().add(song);
                 playlists.get(0).save();
@@ -162,10 +205,10 @@ public class PlayControlActivity extends AppCompatActivity implements PlayContro
                  break;
             case ON:
                 favoriteBtn.setImageResource(R.drawable.ic_favorite_border);
-                favoriteStatus = Status.OFF;
+                favoriteStatus = Constant.Status.OFF;
                 List<Playlist> playlists2 = Playlist.listAll(Playlist.class);
-                int postionSong = getPostionInPlaylist(song, playlists2.get(0));
-                playlists2.get(0).getSongList().remove(postionSong);
+                int positionSong = getPostionInPlaylist(song, playlists2.get(0));
+                playlists2.get(0).getSongList().remove(positionSong);
                 playlists2.get(0).save();
                 Log.v("song","FavoriteSize: "+Playlist.listAll(Playlist.class).get(0).getSongList().size());
                 Toast.makeText(this, "Đã xóa bài hát khỏi Favorite!",Toast.LENGTH_SHORT).show();
@@ -184,8 +227,9 @@ public class PlayControlActivity extends AppCompatActivity implements PlayContro
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        overridePendingTransition(R.anim.no_animation, R.anim.slide_down);
-//        dbManager.close();
+        Intent intent = new Intent(this, PlayControlService.class);
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(broadcastReceiver);
+        stopService(intent);
         mediaPlayer.stop();
         setResult(RESULT_OK);
         finish();
@@ -203,9 +247,12 @@ public class PlayControlActivity extends AppCompatActivity implements PlayContro
     private void playpause() {
         if (mediaPlayer.isPlaying()) {
             pauseMusic();
+            playStatus = Constant.Status.OFF;
         } else {
             playMusic();
+            playStatus = Constant.Status.ON;
         }
+        updateNotificationService();
     }
 
     private void next() {
@@ -234,46 +281,43 @@ public class PlayControlActivity extends AppCompatActivity implements PlayContro
     private void loop() {
         switch (loopStatus) {
             case OFF:
-                loopStatus = Status.WHOLE;
+                loopStatus = Constant.Status.WHOLE;
                 loopBtn.setImageResource(R.drawable.ic_repeat_whole);
                 break;
             case WHOLE:
-                loopStatus = Status.SINGLE;
+                loopStatus = Constant.Status.SINGLE;
                 loopBtn.setImageResource(R.drawable.ic_repeat_one);
                 break;
             default:
-                loopStatus = Status.OFF;
+                loopStatus = Constant.Status.OFF;
                 loopBtn.setImageResource(R.drawable.ic_repeat);
                 break;
         }
+        updateNotificationService();
     }
 
     private void shuffle() {
-        switch (shuffleStatus) {
-            case OFF:
-                shuffleStatus = Status.ON;
-                shuffleBtn.setImageResource(R.drawable.ic_shuffle_on);
-                Song currentSong = songList.get(position);
-                Collections.shuffle(songList);
-                position = songList.indexOf(currentSong);
+        if (shuffleStatus == Constant.Status.OFF) {
+            shuffleStatus = Constant.Status.ON;
+            shuffleBtn.setImageResource(R.drawable.ic_shuffle_on);
+            Song currentSong = songList.get(position);
+            Collections.shuffle(songList);
+            position = songList.indexOf(currentSong);
 
-                if (bottomSheetFragment != null) {
-                    bottomSheetFragment.updateSongListAdapter(songList);
-                }
-                // Shuffle songList Here
-                break;
-            default:
-                shuffleStatus = Status.OFF;
-                currentSong = songList.get(position);
-                songList = new ArrayList<>(originalSongList);
-                position = songList.indexOf(currentSong);
-                shuffleBtn.setImageResource(R.drawable.ic_shuffle);
+            // Shuffle songList Here
+        } else {
+            Song currentSong;
+            shuffleStatus = Constant.Status.OFF;
+            currentSong = songList.get(position);
+            songList = new ArrayList<>(originalSongList);
+            position = songList.indexOf(currentSong);
+            shuffleBtn.setImageResource(R.drawable.ic_shuffle_off);
 
-                if (bottomSheetFragment != null) {
-                    bottomSheetFragment.updateSongListAdapter(songList);
-                }
-                break;
         }
+        if (bottomSheetFragment != null) {
+            bottomSheetFragment.updateSongListAdapter(songList);
+        }
+        updateNotificationService();
     }
 
     private void playMusic() {
@@ -302,6 +346,9 @@ public class PlayControlActivity extends AppCompatActivity implements PlayContro
                 setTimeTotal();
                 setInfoToLayout(songList.get(position));
                 mediaPlayer.start();
+                playStatus = Constant.Status.ON;
+                updateNotificationService();
+                playPauseBtn.setImageResource(R.drawable.ic_pause);
             }
         };
         changeSongThread.run();
@@ -364,11 +411,11 @@ public class PlayControlActivity extends AppCompatActivity implements PlayContro
                     }
                 if(getPostionInPlaylist(song,Playlist.listAll(Playlist.class).get(0))!=-1){
                     favoriteBtn.setImageResource(R.drawable.ic_favorite);
-                    favoriteStatus = Status.ON;
+                    favoriteStatus = Constant.Status.ON;
                 }
                 else {
                     favoriteBtn.setImageResource(R.drawable.ic_favorite_border);
-                    favoriteStatus = Status.OFF;
+                    favoriteStatus = Constant.Status.OFF;
                 }
         });
     }
@@ -417,7 +464,6 @@ public class PlayControlActivity extends AppCompatActivity implements PlayContro
                 mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                     @Override
                     public void onCompletion(MediaPlayer mediaPlayer) {
-                        Toast.makeText(PlayControlActivity.this,"Next",Toast.LENGTH_SHORT).show();
                         next();
                     }
                 });

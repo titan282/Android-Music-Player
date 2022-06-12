@@ -3,35 +3,18 @@ package ie.app.musicplayer.Fragment;
 import android.Manifest;
 import android.app.ActivityOptions;
 import android.app.AlertDialog;
-import android.app.Notification;
-import android.app.NotificationManager;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
-
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.os.Parcelable;
 import android.provider.MediaStore;
-import android.support.v4.media.session.MediaSessionCompat;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.PopupMenu;
 import android.widget.Toast;
-
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.core.content.ContextCompat;
@@ -47,8 +30,6 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
-
-import ie.app.musicplayer.Activity.HomeActivity;
 import ie.app.musicplayer.Activity.PlayControlActivity;
 import ie.app.musicplayer.Adapter.SongListAdapter;
 import ie.app.musicplayer.Application.MusicPlayerApp;
