@@ -107,7 +107,8 @@ public class PlayControlService extends Service {
                 .addAction(R.drawable.ic_skip_next, "Next", sendNextCommand())
                 .setStyle(new androidx.media.app.NotificationCompat.MediaStyle()
                         .setShowActionsInCompactView(1 /* #1: pause button */)
-                        .setMediaSession(mediaSessionCompat.getSessionToken()));
+                        .setMediaSession(mediaSessionCompat.getSessionToken()))
+                .setSound(null);
 
         mediaSessionCompat.setMetadata
                 (new MediaMetadataCompat.Builder()
