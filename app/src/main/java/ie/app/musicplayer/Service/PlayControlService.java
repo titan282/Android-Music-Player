@@ -6,10 +6,14 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.media.MediaMetadata;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.util.Log;
 import android.widget.RelativeLayout;
@@ -19,6 +23,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
+import androidx.core.content.ContextCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import java.net.URI;
@@ -97,16 +102,28 @@ public class PlayControlService extends Service {
                 .setContentTitle(song.getSongName())
                 .setSubText(song.getSongSinger())
                 .setSmallIcon(R.drawable.ic_music)
-                .addAction(R.drawable.ic_skip_previous, "Previous", sendNextCommand()) // #0
+                .addAction(R.drawable.ic_skip_previous, "Previous", sendPrevCommand()) // #0
                 .addAction(pauseImageId, "Pause", sendPlayStatus())  // #1
-                .addAction(R.drawable.ic_skip_next, "Next", sendPrevCommand())
+                .addAction(R.drawable.ic_skip_next, "Next", sendNextCommand())
                 .setStyle(new androidx.media.app.NotificationCompat.MediaStyle()
                         .setShowActionsInCompactView(1 /* #1: pause button */)
                         .setMediaSession(mediaSessionCompat.getSessionToken()));
 
+        mediaSessionCompat.setMetadata
+                (new MediaMetadataCompat.Builder()
+                        .putBitmap(MediaMetadataCompat.METADATA_KEY_ALBUM_ART,song.getSongEmbeddedPicture())
+                        .putString(MediaMetadata.METADATA_KEY_TITLE, song.getSongName())
+                        .putString(MediaMetadata.METADATA_KEY_ARTIST, song.getSongSinger())
+                        .build()
+                );
+
         if (song.isHasPic()) {
             song.loadEmbeddedPicture();
             notification.setLargeIcon(song.getSongEmbeddedPicture());
+        } else {
+            Log.e("PlayControlService", "Dảk");
+            notification.setLargeIcon(BitmapFactory.decodeResource(this.getResources(),
+                    R.drawable.ic_pause));
         }
         startForeground(Constant.NOTIFICATION_ID, notification.build());
 //        managerCompat.notify(Constant.NOTIFICATION_ID,notification.build());
