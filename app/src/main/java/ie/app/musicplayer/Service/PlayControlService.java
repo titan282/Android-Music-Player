@@ -21,6 +21,8 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
+import java.net.URI;
+
 import ie.app.musicplayer.Application.MusicPlayerApp;
 import ie.app.musicplayer.Model.Song;
 import ie.app.musicplayer.R;
@@ -53,40 +55,59 @@ public class PlayControlService extends Service {
     public void sendNotificationMedia(Song song) {
         MediaSessionCompat mediaSessionCompat = new MediaSessionCompat(this,"tag");
 
-        RemoteViews remoteViews = new RemoteViews(getPackageName(), R.layout.notification_layout);
-        remoteViews.setTextViewText(R.id.songName, song.getSongName());
-
-//        if (song.isHasPic()) {
-//            remoteViews.setImageViewBitmap(R.id.imageBackground, song.getSongEmbeddedPicture());
-//            Log.e("PlayControlService", "setImageBitmap");
+//        RemoteViews remoteViews = new RemoteViews(getPackageName(), R.layout.notification_layout);
+//        remoteViews.setTextViewText(R.id.songName, song.getSongName());
+//        remoteViews.setOnClickPendingIntent(R.id.playPauseBtn, sendPlayStatus());
+//        remoteViews.setOnClickPendingIntent(R.id.nextBtn, sendNextCommand());
+//        remoteViews.setOnClickPendingIntent(R.id.previousBtn, sendPrevCommand());
+//
+//        remoteViews.setImageViewResource(R.id.nextBtn, R.drawable.ic_skip_next);
+//        remoteViews.setImageViewResource(R.id.previousBtn, R.drawable.ic_skip_previous);
+//        if(playStatus == Constant.Status.OFF) {
+//            remoteViews.setImageViewResource(R.id.playPauseBtn, R.drawable.ic_play_arrow);
 //        } else {
-//            remoteViews.setImageViewResource(R.id.imageBackground, R.color.black);
+//            remoteViews.setImageViewResource(R.id.playPauseBtn, R.drawable.ic_pause);
 //        }
-        remoteViews.setOnClickPendingIntent(R.id.playPauseBtn, sendPlayStatus());
-        remoteViews.setOnClickPendingIntent(R.id.nextBtn, sendNextCommand());
-        remoteViews.setOnClickPendingIntent(R.id.previousBtn, sendPrevCommand());
+//
+//
+//                NotificationCompat.Builder notification = new NotificationCompat.Builder(this, MusicPlayerApp.CHANNEL_ID)
+//                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+//                .setPriority(Notification.PRIORITY_MAX)
+//                .setSubText("MusicPlayer")
+//                .setContentTitle(song.getSongName())
+//                .setSubText(song.getSongSinger())
+//                .setSmallIcon(R.drawable.ic_music)
+//                .setCustomContentView(remoteViews);
+//
+//        if (song.isHasPic()) {
+//            song.loadEmbeddedPicture();
+//            notification.setLargeIcon(song.getSongEmbeddedPicture());
+//        }
 
-        remoteViews.setImageViewResource(R.id.nextBtn, R.drawable.ic_skip_next);
-        remoteViews.setImageViewResource(R.id.previousBtn, R.drawable.ic_skip_previous);
-        if(playStatus == Constant.Status.OFF) {
-            remoteViews.setImageViewResource(R.id.playPauseBtn, R.drawable.ic_play_arrow);
+        int pauseImageId;
+        if (playStatus == Constant.Status.OFF) {
+            pauseImageId = R.drawable.ic_play_arrow;
         } else {
-            remoteViews.setImageViewResource(R.id.playPauseBtn, R.drawable.ic_pause);
+            pauseImageId = R.drawable.ic_pause;
         }
-
-
-                NotificationCompat.Builder notification = new NotificationCompat.Builder(this, MusicPlayerApp.CHANNEL_ID)
+        NotificationCompat.Builder notification = new NotificationCompat.Builder(this, MusicPlayerApp.CHANNEL_ID)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setSubText("MusicPlayer")
                 .setContentTitle(song.getSongName())
                 .setSubText(song.getSongSinger())
                 .setSmallIcon(R.drawable.ic_music)
-                .setCustomContentView(remoteViews);
+                .addAction(R.drawable.ic_skip_previous, "Previous", sendNextCommand()) // #0
+                .addAction(pauseImageId, "Pause", sendPlayStatus())  // #1
+                .addAction(R.drawable.ic_skip_next, "Next", sendPrevCommand())
+                .setStyle(new androidx.media.app.NotificationCompat.MediaStyle()
+                        .setShowActionsInCompactView(1 /* #1: pause button */)
+                        .setMediaSession(mediaSessionCompat.getSessionToken()));
 
-        NotificationManagerCompat managerCompat = NotificationManagerCompat.from(this);
-        Log.v("PlayControlService", song.toString());
-
+        if (song.isHasPic()) {
+            song.loadEmbeddedPicture();
+            notification.setLargeIcon(song.getSongEmbeddedPicture());
+        }
         startForeground(Constant.NOTIFICATION_ID, notification.build());
 //        managerCompat.notify(Constant.NOTIFICATION_ID,notification.build());
     }
