@@ -61,8 +61,21 @@ public class PlayControlActivity extends AppCompatActivity implements PlayContro
         @Override
         public void onReceive(Context context, Intent intent) {
             Bundle bundle = intent.getExtras();
-            playStatus = (Constant.Status) bundle.get("Play Status");
-            playpause();
+
+            if (bundle.containsKey("Next") && (boolean) bundle.get("Next")) {
+                next();
+                return;
+            }
+
+            if (bundle.containsKey("Previous") && (boolean) bundle.get("Previous")) {
+                previous();
+                return;
+            }
+
+            if (bundle.containsKey("Play Status")) {
+                playStatus = (Constant.Status) bundle.get("Play Status");
+                playpause();
+            }
         }
     };
 
@@ -203,6 +216,9 @@ public class PlayControlActivity extends AppCompatActivity implements PlayContro
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        Intent intent = new Intent(this, PlayControlService.class);
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(broadcastReceiver);
+        stopService(intent);
 //        dbManager.close();
         mediaPlayer.stop();
 //        mediaPlayer.release();
@@ -311,6 +327,7 @@ public class PlayControlActivity extends AppCompatActivity implements PlayContro
                 mediaPlayer.start();
                 playStatus = Constant.Status.ON;
                 updateNotificationService();
+                playPauseBtn.setImageResource(R.drawable.ic_pause);
             }
         };
         changeSongThread.run();
@@ -421,7 +438,6 @@ public class PlayControlActivity extends AppCompatActivity implements PlayContro
                 mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                     @Override
                     public void onCompletion(MediaPlayer mediaPlayer) {
-                        Toast.makeText(PlayControlActivity.this,"Next",Toast.LENGTH_SHORT).show();
                         next();
                     }
                 });
