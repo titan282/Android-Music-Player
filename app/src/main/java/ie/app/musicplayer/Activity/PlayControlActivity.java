@@ -155,7 +155,7 @@ public class PlayControlActivity extends AppCompatActivity implements PlayContro
                 playlists.get(0).getSongList().add(song);
                 playlists.get(0).save();
                 Log.v("song","FavoriteSize: "+Playlist.listAll(Playlist.class).get(0).getSongList().size());
-                Toast.makeText(this, "Add song to Favorites successfully!",Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Đã thêm bài hát vào Favortite!",Toast.LENGTH_SHORT).show();
                  break;
             case ON:
                 favoriteBtn.setImageResource(R.drawable.ic_favorite_border);
@@ -165,7 +165,7 @@ public class PlayControlActivity extends AppCompatActivity implements PlayContro
                 playlists2.get(0).getSongList().remove(postionSong);
                 playlists2.get(0).save();
                 Log.v("song","FavoriteSize: "+Playlist.listAll(Playlist.class).get(0).getSongList().size());
-                Toast.makeText(this, "Remove song from Favorites successfully!",Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Đã xóa bài hát khỏi Favorite!",Toast.LENGTH_SHORT).show();
                 break;
         }
     }
