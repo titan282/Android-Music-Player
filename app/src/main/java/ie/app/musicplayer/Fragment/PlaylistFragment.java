@@ -43,6 +43,12 @@ public class PlaylistFragment extends Fragment {
     }
 
     public void updatePlaylist() {
-        playlistListAdapter.setData(Playlist.listAll(Playlist.class));
+        playlistListAdapter.update(playlists);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        updatePlaylist();
     }
 }

@@ -102,20 +102,31 @@ public class AddToPlaylistDialog extends AppCompatDialogFragment {
         View view1 = getActivity().getLayoutInflater().inflate(R.layout.dialog_playlist_name,null);
         EditText playlistName = view1.findViewById(R.id.etPlaylistName);
         builder.setView(view1)
-                .setTitle("Add Playlist")
-                .setPositiveButton("Add", new DialogInterface.OnClickListener() {
+                .setTitle("Tạo Playlist")
+                .setPositiveButton("Tạo", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         List<Song> songList = new ArrayList<Song>();
                         songList.add(song);
                         Log.v("song",song.getSongName());
-                        Toast.makeText(context, "Create playlist successfully!", Toast.LENGTH_SHORT).show();
-                        Toast.makeText(context, "Add song to "+playlistName.getText()+ " playlist successfully!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "Tạo Playlist thành công!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "Thêm bài hàt vào "+playlistName.getText()+ " playlist thành công!", Toast.LENGTH_SHORT).show();
                         playlists = Playlist.listAll(Playlist.class);
-                        new Playlist(playlistName.getText().toString(),R.drawable.img_playlist_default, songList).save();
+                        boolean isHavePlaylist = false;
+                        for(Playlist playlist:playlists){
+                            if(playlistName.getText().toString()==playlist.getPlaylistName()){
+                                isHavePlaylist = true;
+                            }
+                        }
+                        if(!isHavePlaylist){
+                            new Playlist(playlistName.getText().toString(),R.drawable.img_playlist_default, songList).save();
+                        }
+                        else {
+                            Toast.makeText(context,"Đã có Playlist này !",Toast.LENGTH_SHORT);
+                        }
                     }
                 })
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                .setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
 

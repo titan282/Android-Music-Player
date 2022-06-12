@@ -3,15 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:title="Ascending"
+        android:title="Từ A-Z"
         android:id="@+id/ascending"
         app:showAsAction="never" />
     <item
-        android:title="Descending"
+        android:title="Từ Z-A"
         android:id="@+id/descending"
         app:showAsAction="never" />
     <item
-        android:title="Date added"
+        android:title="Ngày được thêm vào"
         android:id="@+id/date_added"
         app:showAsAction="never" />
 </menu>

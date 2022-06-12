@@ -43,6 +43,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 
 import ie.app.musicplayer.Activity.HomeActivity;
 import ie.app.musicplayer.Activity.PlayControlActivity;
@@ -130,8 +131,22 @@ public class SongFragment extends Fragment{
             popupMenu.inflate(R.menu.sort);
             popupMenu.show();
         });
-
+        ((ImageButton) view.findViewById(R.id.randomBtn)).setOnClickListener(view -> {
+            openRandomPlayer();
+        });
         return view;
+    }
+
+    private void openRandomPlayer() {
+        Intent intent = new Intent(SongFragment.this.getActivity(), PlayControlActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putParcelableArrayList("Playlist", (ArrayList<? extends Parcelable>) songList);
+        Random random = new Random();
+        int randomNumber = random.nextInt(songList.size()-1);
+        bundle.putInt("Position",songList.indexOf(songList.get(randomNumber)));
+        bundle.putBoolean("Random",true);
+        intent.putExtras(bundle);
+        startActivity(intent);
     }
 
     private void openPlayer(Song song) {
