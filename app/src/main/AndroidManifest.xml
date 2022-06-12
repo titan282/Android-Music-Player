@@ -35,6 +35,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <service android:name=".Service.PlayControlService"></service>
+        <receiver android:name=".Service.ReceiverActionBroadcast"></receiver>
     </application>
 
 </manifest>

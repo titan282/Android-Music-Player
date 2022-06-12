@@ -21,7 +21,7 @@
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_shuffle"
+            app:srcCompat="@drawable/ic_shuffle_off"
             android:background="@color/card_shadow_1"
             android:padding="8dp">
 
