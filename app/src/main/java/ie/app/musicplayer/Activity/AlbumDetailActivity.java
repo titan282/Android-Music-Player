@@ -52,6 +52,7 @@ public class AlbumDetailActivity extends AppCompatActivity {
             bundle.putInt("Position", albumData.indexOf(song));
             intent.putExtras(bundle);
             startActivity(intent);
+            overridePendingTransition(R.anim.slide_up, R.anim.no_animation);
         });
 
         albumAdapter.setData(albumData);
@@ -63,4 +64,9 @@ public class AlbumDetailActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);
+    }
 }

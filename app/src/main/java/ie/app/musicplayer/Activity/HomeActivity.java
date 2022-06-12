@@ -1,5 +1,6 @@
 package ie.app.musicplayer.Activity;
 
+import android.app.ActivityOptions;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -51,7 +52,7 @@ public class HomeActivity extends AppCompatActivity {
 
         ibSearchBtn.setOnClickListener(view -> {
             Intent intent = new Intent(this, SearchActivity.class);
-            startActivity(intent);
+            startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
         });
 
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager(),

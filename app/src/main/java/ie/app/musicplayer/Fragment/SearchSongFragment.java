@@ -36,7 +36,12 @@ public class SearchSongFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_song, container, false);
+        View view = inflater.inflate(R.layout.fragment_song, container, false);
+        View toolbar = view.findViewById(R.id.tool_bar_song);
+        ((ViewGroup)toolbar.getParent()).removeView(toolbar);
+
+
+        return view;
     }
 
     @Override
@@ -52,6 +57,7 @@ public class SearchSongFragment extends Fragment {
             bundle.putInt("Position", songList.indexOf(song));
             intent.putExtras(bundle);
             startActivity(intent);
+            getActivity().overridePendingTransition(R.anim.slide_up, R.anim.no_animation);
         });
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());

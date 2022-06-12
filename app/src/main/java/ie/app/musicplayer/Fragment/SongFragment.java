@@ -1,6 +1,7 @@
 package ie.app.musicplayer.Fragment;
 
 import android.Manifest;
+import android.app.ActivityOptions;
 import android.app.AlertDialog;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -151,6 +152,7 @@ public class SongFragment extends Fragment{
         bundle.putBoolean("Random",true);
         intent.putExtras(bundle);
         startActivity(intent);
+        getActivity().overridePendingTransition(R.anim.slide_up, R.anim.no_animation);
     }
 
     private void openPlayer(Song song) {
@@ -160,6 +162,7 @@ public class SongFragment extends Fragment{
         bundle.putInt("Position", songList.indexOf(song));
         intent.putExtras(bundle);
         startActivity(intent);
+        getActivity().overridePendingTransition(R.anim.slide_up, R.anim.no_animation);
     }
 
 
