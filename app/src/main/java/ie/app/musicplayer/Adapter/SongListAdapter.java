@@ -97,7 +97,7 @@ public class SongListAdapter extends RecyclerView.Adapter<SongListAdapter.SongVi
                             Playlist playlist = playlists.get(playlistID);
                             songList.remove(position);
                             playlist.save();
-                            update();
+                            update(song);
                             Toast.makeText(context, "Xóa thành công!",Toast.LENGTH_SHORT).show();
                             break;
 
@@ -151,8 +151,8 @@ public class SongListAdapter extends RecyclerView.Adapter<SongListAdapter.SongVi
         void onItemClick(Song song);
     }
 
-    public void update(){
-        songList.clear();
-        setData(Playlist.listAll(Playlist.class).get(playlistID).getSongList());
+    public void update(Song song){
+        songList.remove(song);
+        notifyDataSetChanged();
     }
 }
