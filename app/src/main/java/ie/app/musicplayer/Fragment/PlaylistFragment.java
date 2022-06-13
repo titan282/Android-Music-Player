@@ -1,8 +1,6 @@
 package ie.app.musicplayer.Fragment;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +17,6 @@ import java.util.List;
 import ie.app.musicplayer.Adapter.PlaylistListAdapter;
 import ie.app.musicplayer.Database.DBManager;
 import ie.app.musicplayer.Model.Playlist;
-import ie.app.musicplayer.Model.Song;
 import ie.app.musicplayer.R;
 
 public class PlaylistFragment extends Fragment {
@@ -28,6 +25,7 @@ public class PlaylistFragment extends Fragment {
     private PlaylistListAdapter playlistListAdapter;
     private DBManager dbManager;
     private List<Playlist> playlists = new ArrayList<Playlist>();
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -45,7 +43,9 @@ public class PlaylistFragment extends Fragment {
     }
 
     public void updatePlaylist() {
-        playlistListAdapter.setData(Playlist.listAll(Playlist.class));
+        if (playlistListAdapter != null) {
+            playlistListAdapter.setData(Playlist.listAll(Playlist.class));
+        }
     }
 
     @Override

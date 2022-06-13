@@ -13,11 +13,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 
-import android.text.BoringLayout;
 import android.text.TextUtils;
-import android.text.method.LinkMovementMethod;
 import android.text.method.ScrollingMovementMethod;
-import android.text.method.TransformationMethod;
 import android.util.Log;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -69,18 +66,18 @@ public class PlayControlActivity extends AppCompatActivity implements PlayContro
         public void onReceive(Context context, Intent intent) {
             Bundle bundle = intent.getExtras();
 
-            if (bundle.containsKey("Next") && (boolean) bundle.get("Next")) {
+            if (bundle.containsKey(Constant.NEXT_KEY) && (boolean) bundle.get(Constant.NEXT_KEY)) {
                 next();
                 return;
             }
 
-            if (bundle.containsKey("Previous") && (boolean) bundle.get("Previous")) {
+            if (bundle.containsKey(Constant.PREV_KEY) && (boolean) bundle.get(Constant.PREV_KEY)) {
                 previous();
                 return;
             }
 
-            if (bundle.containsKey("Play Status")) {
-                playStatus = (Constant.Status) bundle.get("Play Status");
+            if (bundle.containsKey(Constant.PLAY_KEY)) {
+                playStatus = (Constant.Status) bundle.get(Constant.PLAY_KEY);
                 playpause();
             }
         }
@@ -120,7 +117,7 @@ public class PlayControlActivity extends AppCompatActivity implements PlayContro
         checkShuffle();
 
         LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver,
-                new IntentFilter("To PlayControlActivity"));
+                new IntentFilter(Constant.SEND_TO_PLAY_CONTROL_ACTIVITY));
 
         //Send notification
         updateNotificationService();
@@ -167,14 +164,14 @@ public class PlayControlActivity extends AppCompatActivity implements PlayContro
 
     private void updateNotificationService() {
         Intent notificationIntent = new Intent(this, PlayControlService.class);
-        notificationIntent.putExtra("Song", songList.get(position));
-        notificationIntent.putExtra("Play Status", playStatus);
+        notificationIntent.putExtra(Constant.SONG_KEY, songList.get(position));
+        notificationIntent.putExtra(Constant.PLAY_KEY, playStatus);
         startService(notificationIntent);
     }
 
     private void checkShuffle() {
         Bundle bundle = getIntent().getExtras();
-        Boolean isShuffle = bundle.getBoolean("Random");
+        Boolean isShuffle = bundle.getBoolean(Constant.RANDOM_KEY);
         if(isShuffle){
             shuffle();
         }
@@ -379,7 +376,7 @@ public class PlayControlActivity extends AppCompatActivity implements PlayContro
         if (bundle == null) {
             return 0;
         }
-        position = (int) bundle.get("Position");
+        position = (int) bundle.get(Constant.POSITION_KEY);
         return position;
     }
 
@@ -388,7 +385,7 @@ public class PlayControlActivity extends AppCompatActivity implements PlayContro
         if (bundle == null) {
             return null;
         }
-        return (List<Song>) bundle.get("Playlist");
+        return (List<Song>) bundle.get(Constant.PLAYLIST_KEY);
     }
 
     private void setTimeTotal() {

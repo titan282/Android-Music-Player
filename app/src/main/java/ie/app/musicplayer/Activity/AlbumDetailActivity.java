@@ -3,7 +3,6 @@ package ie.app.musicplayer.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.util.Log;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -17,6 +16,7 @@ import java.util.List;
 import ie.app.musicplayer.Adapter.SongListAdapter;
 import ie.app.musicplayer.Model.Song;
 import ie.app.musicplayer.R;
+import ie.app.musicplayer.Utility.Constant;
 
 public class AlbumDetailActivity extends AppCompatActivity {
 
@@ -31,13 +31,15 @@ public class AlbumDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_album_detail);
 
-        albumData = (List<Song>) getIntent().getExtras().get("Playlist");
+        albumData = (List<Song>) getIntent().getExtras().get(Constant.PLAYLIST_KEY);
         albumName = findViewById(R.id.albumName);
-        albumName.setText((String) getIntent().getExtras().get("Name"));
+        albumName.setText((String) getIntent().getExtras().get(Constant.NAME_KEY));
         ivAlbumCover = findViewById(R.id.albumCover);
         backBtn = findViewById(R.id.backButton);
         for(Song song:albumData){
-            song.loadEmbeddedPicture();
+            if (song.isHasPic()) {
+                song.loadEmbeddedPicture();
+            }
         }
         if (albumData.get(0).isHasPic()) {
             ivAlbumCover.setImageBitmap(albumData.get(0).getSongEmbeddedPicture());
@@ -48,8 +50,8 @@ public class AlbumDetailActivity extends AppCompatActivity {
         albumAdapter = new SongListAdapter(AlbumDetailActivity.this, song -> {
             Intent intent = new Intent(AlbumDetailActivity.this, PlayControlActivity.class);
             Bundle bundle = new Bundle();
-            bundle.putParcelableArrayList("Playlist", (ArrayList<? extends Parcelable>) albumData);
-            bundle.putInt("Position", albumData.indexOf(song));
+            bundle.putParcelableArrayList(Constant.PLAYLIST_KEY, (ArrayList<? extends Parcelable>) albumData);
+            bundle.putInt(Constant.POSITION_KEY, albumData.indexOf(song));
             intent.putExtras(bundle);
             startActivity(intent);
             overridePendingTransition(R.anim.slide_up, R.anim.no_animation);

@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
-import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,18 +16,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 import ie.app.musicplayer.Model.Playlist;
 import ie.app.musicplayer.Activity.PlaylistDetailActivity;
 import ie.app.musicplayer.Model.Song;
 import ie.app.musicplayer.R;
+import ie.app.musicplayer.Utility.Constant;
 
 public class PlaylistListAdapter extends RecyclerView.Adapter<PlaylistListAdapter.PlaylistViewHolder> {
-    public static final String POSITION = "position";
     private Context context;
     private List<Playlist> playlists;
     private ItemClickListener itemClickListener;
@@ -84,8 +81,8 @@ public class PlaylistListAdapter extends RecyclerView.Adapter<PlaylistListAdapte
         });
         holder.itemView.setOnClickListener(view -> {
             Intent intent = new Intent(context, PlaylistDetailActivity.class);
-            intent.putExtra(POSITION,position);
-            intent.putExtra("cover",playlists.get(position).getPlaylistImage());
+            intent.putExtra(Constant.POSITION_KEY,position);
+            intent.putExtra(Constant.COVER_KEY,playlists.get(position).getPlaylistImage());
             ((Activity)context).startActivityForResult(intent,1, ActivityOptions.makeSceneTransitionAnimation((Activity) context).toBundle());
         });
 

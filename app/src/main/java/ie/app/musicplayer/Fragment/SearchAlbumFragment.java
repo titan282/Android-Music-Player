@@ -23,6 +23,7 @@ import ie.app.musicplayer.Application.MusicPlayerApp;
 import ie.app.musicplayer.Model.Album;
 import ie.app.musicplayer.Model.Song;
 import ie.app.musicplayer.R;
+import ie.app.musicplayer.Utility.Constant;
 
 public class SearchAlbumFragment extends Fragment {
 
@@ -43,8 +44,8 @@ public class SearchAlbumFragment extends Fragment {
         albumListAdapter = new AlbumAdapter(getContext(), album -> {
             Intent intent = new Intent(getContext(), AlbumDetailActivity.class);
             Bundle bundle = new Bundle();
-            bundle.putParcelableArrayList("Playlist", (ArrayList<? extends Parcelable>) album.getAlbumData());
-            bundle.putString("Name", album.getAlbumName());
+            bundle.putParcelableArrayList(Constant.PLAYLIST_KEY, (ArrayList<? extends Parcelable>) album.getAlbumData());
+            bundle.putString(Constant.NAME_KEY, album.getAlbumName());
             intent.putExtras(bundle);
             startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle());
             getFullAlbum();

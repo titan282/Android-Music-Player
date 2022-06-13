@@ -25,6 +25,7 @@ import ie.app.musicplayer.Model.Album;
 import ie.app.musicplayer.Model.Singer;
 import ie.app.musicplayer.Model.Song;
 import ie.app.musicplayer.R;
+import ie.app.musicplayer.Utility.Constant;
 
 public class SearchSingerFragment extends Fragment {
 
@@ -45,8 +46,8 @@ public class SearchSingerFragment extends Fragment {
         singerAdapter = new SingerAdapter(getContext(), singer -> {
             Intent intent = new Intent(getContext(), AlbumDetailActivity.class);
             Bundle bundle = new Bundle();
-            bundle.putParcelableArrayList("Playlist", (ArrayList<? extends Parcelable>) singer.getSingerSong());
-            bundle.putString("Name", singer.getSingerName());
+            bundle.putParcelableArrayList(Constant.PLAYLIST_KEY, (ArrayList<? extends Parcelable>) singer.getSingerSong());
+            bundle.putString(Constant.NAME_KEY, singer.getSingerName());
             intent.putExtras(bundle);
             startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle());
         });
