@@ -76,7 +76,8 @@ public class SearchSingerFragment extends Fragment {
         Collections.sort(singerList, new Comparator<Singer>() {
             @Override
             public int compare(Singer singer, Singer t1) {
-                return singer.getSingerName().compareTo(t1.getSingerName());
+                return Constant.sorting.generator(singer.getSingerName()).compareTo(
+                        Constant.sorting.generator(t1.getSingerName()));
             }
         });
         singerAdapter.setData(singerList);

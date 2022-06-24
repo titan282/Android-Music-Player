@@ -22,6 +22,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 import ie.app.musicplayer.Adapter.SongListAdapter;
 import ie.app.musicplayer.Application.MusicPlayerApp;
@@ -35,8 +37,8 @@ public class SplashActivity extends AppCompatActivity {
     private SongListAdapter songListAdapter;
     private ActivityResultLauncher<String> requestPermissionLauncher;
     private Thread loadingThread;
-    private HashMap<String, ArrayList<Song>> temp_album = new HashMap<>();
-    private HashMap<String, ArrayList<Song>> temp_singer = new HashMap<>();
+    private Map<String, ArrayList<Song>> temp_album = new HashMap<>();
+    private Map<String, ArrayList<Song>> temp_singer = new HashMap<>();
     public MusicPlayerApp app;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,8 +127,9 @@ public class SplashActivity extends AppCompatActivity {
                     }
                     temp_singer.get(song.getSongSinger()).add(song);
                 }
-                ((MusicPlayerApp)getApplication()).album = new HashMap<>(temp_album);
-                ((MusicPlayerApp)getApplication()).singer = new HashMap<>(temp_singer);
+                ((MusicPlayerApp)getApplication()).album = new TreeMap<>(temp_album);
+                ((MusicPlayerApp)getApplication()).singer = new TreeMap<>(temp_singer);
+
             });
             loadAlbum.start();
         }

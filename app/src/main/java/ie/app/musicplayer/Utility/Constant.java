@@ -14,4 +14,6 @@ public class Constant {
     public static String PLAY_KEY = "play status";
     public static String RANDOM_KEY = "random";
     public static String SEND_TO_PLAY_CONTROL_ACTIVITY = "toPlayControl";
+
+    public static Sorting sorting = new Sorting();
 }

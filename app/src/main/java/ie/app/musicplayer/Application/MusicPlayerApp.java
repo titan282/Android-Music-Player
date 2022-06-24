@@ -1,22 +1,21 @@
 package ie.app.musicplayer.Application;
 
 
-import android.app.Application;
-import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.os.Build;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.util.Log;
-
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
-
 import com.orm.SugarApp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+
 import ie.app.musicplayer.Model.Playlist;
 import ie.app.musicplayer.Model.Song;
 import ie.app.musicplayer.R;
@@ -24,8 +23,8 @@ import ie.app.musicplayer.R;
 
 public class MusicPlayerApp extends SugarApp {
 
-    public HashMap<String, ArrayList<Song>> album = new HashMap<>();
-    public HashMap<String, ArrayList<Song>> singer = new HashMap<>();
+    public Map<String, ArrayList<Song>> album = new TreeMap<>();
+    public Map<String, ArrayList<Song>> singer = new TreeMap<>();
     public static final String CHANNEL_ID = "CHANNEL_MUSIC_APP";
     public List<Song> songList = new ArrayList<>();
 
