@@ -8,12 +8,16 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
@@ -60,17 +64,21 @@ public class SearchSingerFragment extends Fragment {
 
     public void updateSingerList(List<Singer> singerList) {
         singerAdapter.setData(singerList);
+
         this.singerList = singerList;
     }
 
     public void getFullSinger() {
         singerList = new ArrayList<>();
-        Thread loading = new Thread(() -> {
-            for (Map.Entry<String, ArrayList<Song>> entry : ((MusicPlayerApp) getActivity().getApplication()).singer.entrySet()) {
-                singerList.add(new Singer(entry.getKey(), entry.getValue()));
+        for (Map.Entry<String, ArrayList<Song>> entry : ((MusicPlayerApp) getActivity().getApplication()).singer.entrySet()) {
+            singerList.add(new Singer(entry.getKey(), entry.getValue()));
+        }
+        Collections.sort(singerList, new Comparator<Singer>() {
+            @Override
+            public int compare(Singer singer, Singer t1) {
+                return singer.getSingerName().compareTo(t1.getSingerName());
             }
         });
-        loading.run();
         singerAdapter.setData(singerList);
     }
 }

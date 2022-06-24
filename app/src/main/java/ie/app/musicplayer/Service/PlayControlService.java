@@ -1,32 +1,20 @@
 package ie.app.musicplayer.Service;
 
-import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.media.MediaMetadata;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.util.Log;
-import android.widget.RelativeLayout;
-import android.widget.RemoteViews;
 
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
-import androidx.core.content.ContextCompat;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-
-import java.net.URI;
 
 import ie.app.musicplayer.Application.MusicPlayerApp;
 import ie.app.musicplayer.Model.Song;
@@ -80,6 +68,7 @@ public class PlayControlService extends Service {
                         .setShowActionsInCompactView(1 /* #1: pause button */)
                         .setMediaSession(mediaSessionCompat.getSessionToken()))
                 .setSound(null);
+        notification.setOngoing(true);
 
         mediaSessionCompat.setMetadata
                 (new MediaMetadataCompat.Builder()
