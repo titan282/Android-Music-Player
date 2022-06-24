@@ -29,6 +29,7 @@ import ie.app.musicplayer.Adapter.SongListAdapter;
 import ie.app.musicplayer.Application.MusicPlayerApp;
 import ie.app.musicplayer.Model.Song;
 import ie.app.musicplayer.R;
+import ie.app.musicplayer.Utility.Constant;
 
 public class SplashActivity extends AppCompatActivity {
     private View view;
@@ -98,6 +99,7 @@ public class SplashActivity extends AppCompatActivity {
                         Song song = new Song(songId, songName, songAlbum, R.drawable.music_rect, songSinger, songURL, addedDate);
                         songList.add(song);
                     }
+                    Collections.sort(songList, Constant.songComparator);
                     ((MusicPlayerApp)getApplication()).songList = new ArrayList<>(songList);
                 }
             });

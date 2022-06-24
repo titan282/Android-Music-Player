@@ -156,31 +156,4 @@ public class Sorting {
         }
         return result.toString();
     }
-
-    public static void main(String[] args) {
-        Sorting sorting = new Sorting();
-
-        Vector<String> vtName = new Vector<>();
-        vtName.add("Duy");
-        vtName.add("trinh");
-        vtName.add("đạt");
-        vtName.add("Dũng");
-        vtName.add("nhân");
-        vtName.add("1");
-        vtName.add("a");
-
-        Collections.sort(vtName, new Comparator<String>() {
-
-            @Override
-            public int compare(String o1, String o2) {
-                return sorting.generator(o1).compareTo(sorting.generator(o2));
-            }
-        });
-
-        for (String name : vtName) {
-            System.out.print(name + " : ");
-        }
-
-    }
-
 }

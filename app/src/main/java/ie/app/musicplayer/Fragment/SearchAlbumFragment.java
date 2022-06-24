@@ -71,14 +71,7 @@ public class SearchAlbumFragment extends Fragment {
                 albumList.add(new Album(entry.getKey(), entry.getValue()));
         }
 
-        Collections.sort(albumList, new Comparator<Album>() {
-            @Override
-            public int compare(Album album, Album t1) {
-                return Constant.sorting.generator(album.getAlbumName()).compareTo(
-                        Constant.sorting.generator(t1.getAlbumName()));
-            }
-        });
-
+        Collections.sort(albumList, Constant.albumComparator);
         albumListAdapter.setData(albumList);
     }
 }
