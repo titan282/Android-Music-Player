@@ -11,6 +11,8 @@ import androidx.viewpager.widget.ViewPager;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -114,6 +116,13 @@ public class SearchActivity extends AppCompatActivity {
                     albumList.add(new Album(entry.getKey(), entry.getValue()));
                 }
             }
+
+            Collections.sort(albumList, new Comparator<Album>() {
+                @Override
+                public int compare(Album album, Album t1) {
+                    return album.getAlbumName().compareTo(t1.getAlbumName());
+                }
+            });
         });
 
         Thread searchingSingerThread = new Thread(() -> {
@@ -122,6 +131,13 @@ public class SearchActivity extends AppCompatActivity {
                     singerList.add(new Singer(entry.getKey(), entry.getValue()));
                 }
             }
+
+            Collections.sort(singerList, new Comparator<Singer>() {
+                @Override
+                public int compare(Singer singer, Singer t1) {
+                    return singer.getSingerName().compareTo(t1.getSingerName());
+                }
+            });
         });
 
         searchingSingerThread.start();

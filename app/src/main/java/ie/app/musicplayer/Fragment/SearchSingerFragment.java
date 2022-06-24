@@ -64,6 +64,7 @@ public class SearchSingerFragment extends Fragment {
 
     public void updateSingerList(List<Singer> singerList) {
         singerAdapter.setData(singerList);
+
         this.singerList = singerList;
     }
 
