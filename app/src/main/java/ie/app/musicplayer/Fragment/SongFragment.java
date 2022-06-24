@@ -66,7 +66,8 @@ public class SongFragment extends Fragment{
                         Collections.sort(temp, new Comparator<Song>() {
                             @Override
                             public int compare(Song song, Song t1) {
-                                return song.getSongName().compareTo(t1.getSongName());
+                                return Constant.sorting.generator(song.getSongName()).compareTo(
+                                        Constant.sorting.generator(t1.getSongName()));
                             }
                         });
                         songListAdapter.setData(temp);
@@ -76,7 +77,8 @@ public class SongFragment extends Fragment{
                         Collections.sort(temp, new Comparator<Song>() {
                             @Override
                             public int compare(Song song, Song t1) {
-                                return song.getSongName().compareTo(t1.getSongName());
+                                return Constant.sorting.generator(song.getSongName()).compareTo(
+                                        Constant.sorting.generator(t1.getSongName()));
                             }
                         });
                         Collections.reverse(temp);

@@ -73,12 +73,7 @@ public class SearchSingerFragment extends Fragment {
         for (Map.Entry<String, ArrayList<Song>> entry : ((MusicPlayerApp) getActivity().getApplication()).singer.entrySet()) {
             singerList.add(new Singer(entry.getKey(), entry.getValue()));
         }
-        Collections.sort(singerList, new Comparator<Singer>() {
-            @Override
-            public int compare(Singer singer, Singer t1) {
-                return singer.getSingerName().compareTo(t1.getSingerName());
-            }
-        });
+        Collections.sort(singerList, Constant.singerComparator);
         singerAdapter.setData(singerList);
     }
 }

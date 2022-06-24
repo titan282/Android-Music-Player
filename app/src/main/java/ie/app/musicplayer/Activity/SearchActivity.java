@@ -116,13 +116,6 @@ public class SearchActivity extends AppCompatActivity {
                     albumList.add(new Album(entry.getKey(), entry.getValue()));
                 }
             }
-
-            Collections.sort(albumList, new Comparator<Album>() {
-                @Override
-                public int compare(Album album, Album t1) {
-                    return album.getAlbumName().compareTo(t1.getAlbumName());
-                }
-            });
         });
 
         Thread searchingSingerThread = new Thread(() -> {
@@ -131,13 +124,6 @@ public class SearchActivity extends AppCompatActivity {
                     singerList.add(new Singer(entry.getKey(), entry.getValue()));
                 }
             }
-
-            Collections.sort(singerList, new Comparator<Singer>() {
-                @Override
-                public int compare(Singer singer, Singer t1) {
-                    return singer.getSingerName().compareTo(t1.getSingerName());
-                }
-            });
         });
 
         searchingSingerThread.start();

@@ -62,13 +62,6 @@ public class SearchAlbumFragment extends Fragment {
     public void updateAlbumList(List<Album> albumList) {
         albumListAdapter.setData(albumList);
 
-        Collections.sort(albumList, new Comparator<Album>() {
-            @Override
-            public int compare(Album album, Album t1) {
-                return album.getAlbumName().compareTo(t1.getAlbumName());
-            }
-        });
-
         this.albumList = albumList;
     }
 
@@ -78,13 +71,7 @@ public class SearchAlbumFragment extends Fragment {
                 albumList.add(new Album(entry.getKey(), entry.getValue()));
         }
 
-        Collections.sort(albumList, new Comparator<Album>() {
-            @Override
-            public int compare(Album album, Album t1) {
-                return album.getAlbumName().compareTo(t1.getAlbumName());
-            }
-        });
-
+        Collections.sort(albumList, Constant.albumComparator);
         albumListAdapter.setData(albumList);
     }
 }

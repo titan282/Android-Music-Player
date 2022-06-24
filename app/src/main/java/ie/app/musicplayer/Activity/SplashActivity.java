@@ -22,11 +22,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 import ie.app.musicplayer.Adapter.SongListAdapter;
 import ie.app.musicplayer.Application.MusicPlayerApp;
 import ie.app.musicplayer.Model.Song;
 import ie.app.musicplayer.R;
+import ie.app.musicplayer.Utility.Constant;
 
 public class SplashActivity extends AppCompatActivity {
     private View view;
@@ -35,8 +38,8 @@ public class SplashActivity extends AppCompatActivity {
     private SongListAdapter songListAdapter;
     private ActivityResultLauncher<String> requestPermissionLauncher;
     private Thread loadingThread;
-    private HashMap<String, ArrayList<Song>> temp_album = new HashMap<>();
-    private HashMap<String, ArrayList<Song>> temp_singer = new HashMap<>();
+    private Map<String, ArrayList<Song>> temp_album = new HashMap<>();
+    private Map<String, ArrayList<Song>> temp_singer = new HashMap<>();
     public MusicPlayerApp app;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,6 +99,7 @@ public class SplashActivity extends AppCompatActivity {
                         Song song = new Song(songId, songName, songAlbum, R.drawable.music_rect, songSinger, songURL, addedDate);
                         songList.add(song);
                     }
+                    Collections.sort(songList, Constant.songComparator);
                     ((MusicPlayerApp)getApplication()).songList = new ArrayList<>(songList);
                 }
             });
@@ -125,8 +129,9 @@ public class SplashActivity extends AppCompatActivity {
                     }
                     temp_singer.get(song.getSongSinger()).add(song);
                 }
-                ((MusicPlayerApp)getApplication()).album = new HashMap<>(temp_album);
-                ((MusicPlayerApp)getApplication()).singer = new HashMap<>(temp_singer);
+                ((MusicPlayerApp)getApplication()).album = new TreeMap<>(temp_album);
+                ((MusicPlayerApp)getApplication()).singer = new TreeMap<>(temp_singer);
+
             });
             loadAlbum.start();
         }
