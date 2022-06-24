@@ -91,6 +91,8 @@ public class SearchActivity extends AppCompatActivity {
 
             }
         });
+
+        sViewPager.setOffscreenPageLimit(searchViewPagerAdapter.getCount());
     }
 
     private void searching() {

@@ -1,12 +1,5 @@
 package ie.app.musicplayer.Activity;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -15,21 +8,19 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-import ie.app.musicplayer.Adapter.PlaylistListAdapter;
 import ie.app.musicplayer.Adapter.SongListAdapter;
-import ie.app.musicplayer.Adapter.ViewPagerAdapter;
-import ie.app.musicplayer.Database.DBManager;
-import ie.app.musicplayer.Fragment.PlaylistFragment;
-import ie.app.musicplayer.Fragment.SearchAlbumFragment;
-import ie.app.musicplayer.Fragment.SearchSingerFragment;
-import ie.app.musicplayer.Fragment.SongFragment;
 import ie.app.musicplayer.Model.Playlist;
 import ie.app.musicplayer.Model.Song;
 import ie.app.musicplayer.R;
+import ie.app.musicplayer.Utility.Constant;
 
 public class PlaylistDetailActivity extends AppCompatActivity {
 
@@ -47,9 +38,9 @@ public class PlaylistDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         playlists = Playlist.listAll(Playlist.class);
         Intent intent = getIntent();
-        playlistId= intent.getExtras().getInt(PlaylistListAdapter.POSITION);
+        playlistId= intent.getExtras().getInt(Constant.POSITION_KEY);
         songList = playlists.get(playlistId).getSongList();
-        playlistCover = intent.getExtras().getInt("cover");
+        playlistCover = intent.getExtras().getInt(Constant.COVER_KEY);
         setContentView(R.layout.activity_playlist_detail);
         rvSongList = findViewById(R.id.playlistDetailRecycleView);
         ivPlaylistCover = findViewById(R.id.playlistCover);
@@ -66,8 +57,8 @@ public class PlaylistDetailActivity extends AppCompatActivity {
             public void onItemClick(Song song) {
                 Intent intent = new Intent(PlaylistDetailActivity.this, PlayControlActivity.class);
                 Bundle bundle = new Bundle();
-                bundle.putParcelableArrayList("Playlist", (ArrayList<? extends Parcelable>) songList);
-                bundle.putInt("Position", songList.indexOf(song));
+                bundle.putParcelableArrayList(Constant.PLAYLIST_KEY, (ArrayList<? extends Parcelable>) songList);
+                bundle.putInt(Constant.POSITION_KEY, songList.indexOf(song));
                 intent.putExtras(bundle);
                 startActivityForResult(intent,1);
                 overridePendingTransition(R.anim.slide_up, R.anim.no_animation);
@@ -75,7 +66,9 @@ public class PlaylistDetailActivity extends AppCompatActivity {
         },playlistId);
 
             for (Song song : songList) {
-                song.loadEmbeddedPicture();
+                if (song.isHasPic()) {
+                    song.loadEmbeddedPicture();
+                }
             }
 
         adapter.setData(songList);

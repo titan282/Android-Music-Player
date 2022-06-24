@@ -1,15 +1,12 @@
 package ie.app.musicplayer.Fragment;
 
 import android.content.Intent;
-import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,16 +14,15 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 import ie.app.musicplayer.Activity.PlayControlActivity;
-import ie.app.musicplayer.Activity.SearchActivity;
 import ie.app.musicplayer.Adapter.SongListAdapter;
 import ie.app.musicplayer.Application.MusicPlayerApp;
 import ie.app.musicplayer.Model.Song;
 import ie.app.musicplayer.R;
+import ie.app.musicplayer.Utility.Constant;
 
 public class SearchSongFragment extends Fragment {
 
@@ -53,8 +49,8 @@ public class SearchSongFragment extends Fragment {
         songListAdapter = new SongListAdapter(getContext(), song -> {
             Intent intent = new Intent(SearchSongFragment.this.getActivity(), PlayControlActivity.class);
             Bundle bundle = new Bundle();
-            bundle.putParcelableArrayList("Playlist", (ArrayList<? extends Parcelable>) songList);
-            bundle.putInt("Position", songList.indexOf(song));
+            bundle.putParcelableArrayList(Constant.PLAYLIST_KEY, (ArrayList<? extends Parcelable>) songList);
+            bundle.putInt(Constant.POSITION_KEY, songList.indexOf(song));
             intent.putExtras(bundle);
             startActivity(intent);
             getActivity().overridePendingTransition(R.anim.slide_up, R.anim.no_animation);

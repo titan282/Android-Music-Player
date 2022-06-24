@@ -15,23 +15,23 @@ public class ReceiverActionBroadcast extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         Bundle bundle = intent.getExtras();
-        Constant.Status status = updateStatus((Constant.Status) bundle.get("Play Status"));
+        Constant.Status status = updateStatus((Constant.Status) bundle.get(Constant.PLAY_KEY));
         Intent intentService = new Intent(context, PlayControlService.class);
-        intentService.putExtra("Song", (Song) bundle.get("Song"));
-        intentService.putExtra("Play Status", status);
+        intentService.putExtra(Constant.SONG_KEY, (Song) bundle.get(Constant.SONG_KEY));
+        intentService.putExtra(Constant.PLAY_KEY, status);
 
-        Intent toPlayControl = new Intent("To PlayControlActivity");
-        toPlayControl.putExtra("Song", (Song) bundle.get("Song"));
-        toPlayControl.putExtra("Play Status", status);
+        Intent toPlayControl = new Intent(Constant.SEND_TO_PLAY_CONTROL_ACTIVITY);
+        toPlayControl.putExtra(Constant.SONG_KEY, (Song) bundle.get(Constant.SONG_KEY));
+        toPlayControl.putExtra(Constant.PLAY_KEY, status);
 
-        if (bundle.containsKey("Next")) {
-            toPlayControl.putExtra("Next",true);
-            toPlayControl.putExtra("Play Status", Constant.Status.OFF);
+        if (bundle.containsKey(Constant.NEXT_KEY)) {
+            toPlayControl.putExtra(Constant.NEXT_KEY,true);
+            toPlayControl.putExtra(Constant.PLAY_KEY, Constant.Status.OFF);
         }
 
-        if (bundle.containsKey("Previous")) {
-            toPlayControl.putExtra("Previous",true);
-            toPlayControl.putExtra("Play Status", Constant.Status.OFF);
+        if (bundle.containsKey(Constant.PREV_KEY)) {
+            toPlayControl.putExtra(Constant.PREV_KEY,true);
+            toPlayControl.putExtra(Constant.PLAY_KEY, Constant.Status.OFF);
         }
         LocalBroadcastManager.getInstance(context).sendBroadcast(toPlayControl);
         context.startService(intentService);

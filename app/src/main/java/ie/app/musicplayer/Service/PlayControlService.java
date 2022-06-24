@@ -49,9 +49,9 @@ public class PlayControlService extends Service {
 
         Log.e("PlayControlService", "On Start Command");
         Bundle bundle = intent.getExtras();
-        song = (Song) bundle.get("Song");
-        if (bundle.containsKey("Play Status")) {
-            playStatus = (Constant.Status) bundle.get("Play Status");
+        song = (Song) bundle.get(Constant.SONG_KEY);
+        if (bundle.containsKey(Constant.PLAY_KEY)) {
+            playStatus = (Constant.Status) bundle.get(Constant.PLAY_KEY);
         }
         sendNotificationMedia(song);
         return START_NOT_STICKY;
@@ -59,35 +59,6 @@ public class PlayControlService extends Service {
 
     public void sendNotificationMedia(Song song) {
         MediaSessionCompat mediaSessionCompat = new MediaSessionCompat(this,"tag");
-
-//        RemoteViews remoteViews = new RemoteViews(getPackageName(), R.layout.notification_layout);
-//        remoteViews.setTextViewText(R.id.songName, song.getSongName());
-//        remoteViews.setOnClickPendingIntent(R.id.playPauseBtn, sendPlayStatus());
-//        remoteViews.setOnClickPendingIntent(R.id.nextBtn, sendNextCommand());
-//        remoteViews.setOnClickPendingIntent(R.id.previousBtn, sendPrevCommand());
-//
-//        remoteViews.setImageViewResource(R.id.nextBtn, R.drawable.ic_skip_next);
-//        remoteViews.setImageViewResource(R.id.previousBtn, R.drawable.ic_skip_previous);
-//        if(playStatus == Constant.Status.OFF) {
-//            remoteViews.setImageViewResource(R.id.playPauseBtn, R.drawable.ic_play_arrow);
-//        } else {
-//            remoteViews.setImageViewResource(R.id.playPauseBtn, R.drawable.ic_pause);
-//        }
-//
-//
-//                NotificationCompat.Builder notification = new NotificationCompat.Builder(this, MusicPlayerApp.CHANNEL_ID)
-//                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-//                .setPriority(Notification.PRIORITY_MAX)
-//                .setSubText("MusicPlayer")
-//                .setContentTitle(song.getSongName())
-//                .setSubText(song.getSongSinger())
-//                .setSmallIcon(R.drawable.ic_music)
-//                .setCustomContentView(remoteViews);
-//
-//        if (song.isHasPic()) {
-//            song.loadEmbeddedPicture();
-//            notification.setLargeIcon(song.getSongEmbeddedPicture());
-//        }
 
         int pauseImageId;
         if (playStatus == Constant.Status.OFF) {
@@ -118,22 +89,21 @@ public class PlayControlService extends Service {
                         .build()
                 );
 
-        if (song.isHasPic()) {
-            song.loadEmbeddedPicture();
-            notification.setLargeIcon(song.getSongEmbeddedPicture());
-        } else {
+        if (!song.isHasPic()) {
             Log.e("PlayControlService", "Dảk");
             notification.setLargeIcon(BitmapFactory.decodeResource(this.getResources(),
-                    R.drawable.ic_pause));
+                    R.drawable.black_image));
+        } else {
+            song.loadEmbeddedPicture();
+            notification.setLargeIcon(song.getSongEmbeddedPicture());
         }
         startForeground(Constant.NOTIFICATION_ID, notification.build());
-//        managerCompat.notify(Constant.NOTIFICATION_ID,notification.build());
     }
 
     private PendingIntent sendNextCommand() {
         Intent toReceiver = new Intent(this, ReceiverActionBroadcast.class);
-        toReceiver.putExtra("Next", true);
-        toReceiver.putExtra("Song", song);
+        toReceiver.putExtra(Constant.NEXT_KEY, true);
+        toReceiver.putExtra(Constant.SONG_KEY, song);
 
         return PendingIntent.getBroadcast(this.getApplicationContext(), 5,
                 toReceiver, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -141,8 +111,8 @@ public class PlayControlService extends Service {
 
     private PendingIntent sendPrevCommand() {
         Intent toReceiver = new Intent(this, ReceiverActionBroadcast.class);
-        toReceiver.putExtra("Previous", true);
-        toReceiver.putExtra("Song", song);
+        toReceiver.putExtra(Constant.PREV_KEY, true);
+        toReceiver.putExtra(Constant.SONG_KEY, song);
 
         return PendingIntent.getBroadcast(this.getApplicationContext(), 6,
                 toReceiver, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -150,8 +120,8 @@ public class PlayControlService extends Service {
 
     private PendingIntent sendPlayStatus() {
         Intent toReceiver = new Intent(this, ReceiverActionBroadcast.class);
-        toReceiver.putExtra("Play Status", playStatus);
-        toReceiver.putExtra("Song", song);
+        toReceiver.putExtra(Constant.PLAY_KEY, playStatus);
+        toReceiver.putExtra(Constant.SONG_KEY, song);
 
         return PendingIntent.getBroadcast(this.getApplicationContext(), Constant.PAUSE_REQUEST_CODE,
                 toReceiver, PendingIntent.FLAG_UPDATE_CURRENT);
