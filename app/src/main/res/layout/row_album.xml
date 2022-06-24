@@ -28,6 +28,7 @@
         android:maxWidth="220dp"
         android:maxLines="1"
         android:text=""
+        android:textColor="@color/dark_color"
         android:textSize="21sp"
         app:layout_constraintStart_toEndOf="@+id/albumImage"
         app:layout_constraintTop_toTopOf="parent" />

@@ -29,6 +29,7 @@
         android:maxLines="1"
         android:text=""
         android:textSize="21sp"
+        android:textColor="@color/dark_color"
         app:layout_constraintStart_toEndOf="@+id/singerImage"
         app:layout_constraintTop_toTopOf="parent" />
 

@@ -108,11 +108,11 @@ public class PlayControlBottomSheetFragment extends BottomSheetDialogFragment {
         switch (loopStatus) {
             case OFF:
                 loopStatus = Constant.Status.WHOLE;
-                loopBtn.setImageResource(R.drawable.ic_repeat_whole);
+                loopBtn.setImageResource(R.drawable.ic_repeat_whole_blue);
                 break;
             case WHOLE:
                 loopStatus = Constant.Status.SINGLE;
-                loopBtn.setImageResource(R.drawable.ic_repeat_one);
+                loopBtn.setImageResource(R.drawable.ic_repeat_one_blue);
                 break;
             default:
                 loopStatus = Constant.Status.OFF;
@@ -124,7 +124,7 @@ public class PlayControlBottomSheetFragment extends BottomSheetDialogFragment {
     private void shuffle() {
         if (shuffleStatus == Constant.Status.OFF) {
             shuffleStatus = Constant.Status.ON;
-            shuffleBtn.setImageResource(R.drawable.ic_shuffle_on);
+            shuffleBtn.setImageResource(R.drawable.ic_shuffle_on_blue);
         } else {
             shuffleStatus = Constant.Status.OFF;
             shuffleBtn.setImageResource(R.drawable.ic_shuffle_off);
@@ -141,7 +141,7 @@ public class PlayControlBottomSheetFragment extends BottomSheetDialogFragment {
         if (shuffleStatus == Constant.Status.OFF) {
             shuffleBtn.setImageResource(R.drawable.ic_shuffle_off);
         } else {
-            shuffleBtn.setImageResource(R.drawable.ic_shuffle_on);
+            shuffleBtn.setImageResource(R.drawable.ic_shuffle_on_blue);
         }
 
         switch (loopStatus) {
@@ -149,10 +149,10 @@ public class PlayControlBottomSheetFragment extends BottomSheetDialogFragment {
                 loopBtn.setImageResource(R.drawable.ic_repeat);
                 break;
             case WHOLE:
-                loopBtn.setImageResource(R.drawable.ic_repeat_whole);
+                loopBtn.setImageResource(R.drawable.ic_repeat_whole_blue);
                 break;
             default:
-                loopBtn.setImageResource(R.drawable.ic_repeat_one);
+                loopBtn.setImageResource(R.drawable.ic_repeat_one_blue);
                 break;
         }
     }

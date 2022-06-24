@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context = ".Activity.HomeActivity">
+    tools:context = ".Activity.HomeActivity"
+    android:background="@color/twenty_percent_black_overlay">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -23,7 +24,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_shuffle_off"
-            >
+            android:backgroundTint="@color/transparent">
 
         </ImageButton>
 
@@ -34,7 +35,8 @@
             app:layout_constraintStart_toEndOf="@id/shuffleBtn"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_repeat"
-            android:layout_marginLeft="8dp">
+            android:layout_marginLeft="8dp"
+            android:backgroundTint="@color/transparent">
 
         </ImageButton>
 

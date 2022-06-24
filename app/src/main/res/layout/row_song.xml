@@ -30,18 +30,19 @@
         android:text="Tên Bài Hát"
         android:textSize="21sp"
         app:layout_constraintStart_toEndOf="@+id/albumImage"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:textColor="@color/dark_color"/>
 
     <TextView
         android:id="@+id/textViewSingerName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
-        android:layout_marginLeft="12dp"
+        android:layout_marginLeft="20dp"
         android:layout_marginTop="6dp"
         android:maxWidth="250dp"
         android:text="@string/singer"
-        android:textColor="#C3C3C3"
+        android:textColor="#6E6D6D"
         android:textSize="16sp"
         app:layout_constraintStart_toEndOf="@+id/albumImage"
         app:layout_constraintTop_toBottomOf="@+id/textViewSongName" />
