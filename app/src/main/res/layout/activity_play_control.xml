@@ -49,13 +49,13 @@
 
     <ImageView
         android:id="@+id/thumnail"
-        android:layout_width="362dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/collapse"
         android:layout_centerHorizontal="true"
-        android:layout_marginLeft="16dp"
+        android:layout_marginLeft="32dp"
         android:layout_marginTop="6dp"
-        android:layout_marginRight="16dp"
+        android:layout_marginRight="32dp"
         android:background="@drawable/music_rect" />
 
     <RelativeLayout
