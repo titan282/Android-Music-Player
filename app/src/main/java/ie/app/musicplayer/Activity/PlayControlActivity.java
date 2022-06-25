@@ -401,7 +401,7 @@ public class PlayControlActivity extends AppCompatActivity implements PlayContro
             Log.d("Debug","songName= "+song.getSongName());
             singerName.setText(song.getSongSinger());
             if (song.isHasPic()) {
-                song.checkPicStatusAndLoad();
+                song.loadEmbeddedPicture();
                 songPicture.setImageBitmap(song.getSongEmbeddedPicture());
             } else {
                 songPicture.setImageResource(song.getSongImage());

@@ -63,23 +63,22 @@ public class PlayControlService extends Service {
                 .setSmallIcon(R.drawable.ic_music)
                 .addAction(R.drawable.ic_skip_previous, "Previous", sendPrevCommand()) // #0
                 .addAction(pauseImageId, "Pause", sendPlayStatus())  // #1
-                .addAction(R.drawable.ic_skip_next, "Next", sendNextCommand())
+                .addAction(R.drawable.ic_skip_next, "Next", sendNextCommand())  // #2
                 .setStyle(new androidx.media.app.NotificationCompat.MediaStyle()
-                        .setShowActionsInCompactView(1 /* #1: pause button */)
+                        .setShowActionsInCompactView(0, 1, 2 /* #1: pause button */)
                         .setMediaSession(mediaSessionCompat.getSessionToken()))
                 .setSound(null);
-        notification.setOngoing(true);
 
-        mediaSessionCompat.setMetadata
-                (new MediaMetadataCompat.Builder()
-                        .putBitmap(MediaMetadataCompat.METADATA_KEY_ALBUM_ART,song.getSongEmbeddedPicture())
-                        .putString(MediaMetadata.METADATA_KEY_TITLE, song.getSongName())
-                        .putString(MediaMetadata.METADATA_KEY_ARTIST, song.getSongSinger())
-                        .build()
-                );
+//        mediaSessionCompat.setMetadata
+//                (new MediaMetadataCompat.Builder()
+//                        .putBitmap(MediaMetadataCompat.METADATA_KEY_ALBUM_ART,song.getSongEmbeddedPicture())
+//                        .putString(MediaMetadata.METADATA_KEY_TITLE, song.getSongName())
+//                        .putString(MediaMetadata.METADATA_KEY_ARTIST, song.getSongSinger())
+//                        .build()
+//                );
 
         if (!song.isHasPic()) {
-            Log.e("PlayControlService", "Dảk");
+            Log.e("PlayControlService", "Dark");
             notification.setLargeIcon(BitmapFactory.decodeResource(this.getResources(),
                     R.drawable.black_image));
         } else {

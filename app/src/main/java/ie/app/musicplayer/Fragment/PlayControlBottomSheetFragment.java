@@ -97,7 +97,9 @@ public class PlayControlBottomSheetFragment extends BottomSheetDialogFragment {
     private void loadPicture() {
         Thread thread = new Thread(() -> {
             for (Song song : songList) {
-                song.checkPicStatusAndLoad();
+                if (song.isHasPic()) {
+                    song.loadEmbeddedPicture();
+                }
             }
         });
 
