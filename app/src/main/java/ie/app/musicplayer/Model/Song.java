@@ -163,11 +163,6 @@ public class Song implements Parcelable {
         mmr.release();
     }
 
-    public void checkPicStatusAndLoad() {
-        if (isHasPic()) {
-            loadEmbeddedPicture();
-        }
-    }
 
     @Override
     public String toString() {

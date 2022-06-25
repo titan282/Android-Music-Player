@@ -9,12 +9,18 @@ import android.graphics.BitmapFactory;
 import android.media.MediaMetadata;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.support.v4.media.MediaDescriptionCompat;
 import android.support.v4.media.MediaMetadataCompat;
+import android.support.v4.media.session.MediaControllerCompat;
 import android.support.v4.media.session.MediaSessionCompat;
+import android.support.v4.media.session.PlaybackStateCompat;
 import android.util.Log;
+import android.widget.RemoteViews;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
+import androidx.core.content.ContextCompat;
+import androidx.media.session.MediaButtonReceiver;
 
 import ie.app.musicplayer.Application.MusicPlayerApp;
 import ie.app.musicplayer.Model.Song;
@@ -32,6 +38,7 @@ public class PlayControlService extends Service {
         return null;
     }
 
+
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
@@ -48,6 +55,8 @@ public class PlayControlService extends Service {
     public void sendNotificationMedia(Song song) {
         MediaSessionCompat mediaSessionCompat = new MediaSessionCompat(this,"tag");
 
+        boolean onGoing = (playStatus == Constant.Status.OFF) ? false : true;
+
         int pauseImageId;
         if (playStatus == Constant.Status.OFF) {
             pauseImageId = R.drawable.ic_play_arrow;
@@ -61,33 +70,40 @@ public class PlayControlService extends Service {
                 .setContentTitle(song.getSongName())
                 .setSubText(song.getSongSinger())
                 .setSmallIcon(R.drawable.ic_music)
+                .setOngoing(onGoing)
                 .addAction(R.drawable.ic_skip_previous, "Previous", sendPrevCommand()) // #0
                 .addAction(pauseImageId, "Pause", sendPlayStatus())  // #1
-                .addAction(R.drawable.ic_skip_next, "Next", sendNextCommand())
+                .addAction(R.drawable.ic_skip_next, "Next", sendNextCommand())  // #2
                 .setStyle(new androidx.media.app.NotificationCompat.MediaStyle()
-                        .setShowActionsInCompactView(1 /* #1: pause button */)
-                        .setMediaSession(mediaSessionCompat.getSessionToken()))
+                        .setShowActionsInCompactView(0, 1, 2 /* #1: pause button */)
+                        )
                 .setSound(null);
-        notification.setOngoing(true);
 
-        mediaSessionCompat.setMetadata
-                (new MediaMetadataCompat.Builder()
-                        .putBitmap(MediaMetadataCompat.METADATA_KEY_ALBUM_ART,song.getSongEmbeddedPicture())
-                        .putString(MediaMetadata.METADATA_KEY_TITLE, song.getSongName())
-                        .putString(MediaMetadata.METADATA_KEY_ARTIST, song.getSongSinger())
-                        .build()
-                );
-
+        mediaSessionCompat.setPlaybackState(new PlaybackStateCompat.Builder()
+                .setState(PlaybackStateCompat.STATE_PLAYING, 0, 1f)
+                .build());
         if (!song.isHasPic()) {
-            Log.e("PlayControlService", "Dảk");
+            Log.e("PlayControlService", "Dark");
             notification.setLargeIcon(BitmapFactory.decodeResource(this.getResources(),
                     R.drawable.black_image));
         } else {
             song.loadEmbeddedPicture();
             notification.setLargeIcon(song.getSongEmbeddedPicture());
         }
-        startForeground(Constant.NOTIFICATION_ID, notification.build());
+
+//        mediaSessionCompat.setMetadata
+//                (new MediaMetadataCompat.Builder()
+//                        .putBitmap(MediaMetadataCompat.METADATA_KEY_ALBUM_ART, song.getSongEmbeddedPicture())
+//                        .putString(MediaMetadata.METADATA_KEY_TITLE, song.getSongName())
+//                        .putString(MediaMetadata.METADATA_KEY_ARTIST, song.getSongSinger())
+//                        .build()
+//                );
+
+            NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            notificationManager.notify("tag", Constant.NOTIFICATION_ID, notification.build());
     }
+
+
 
     private PendingIntent sendNextCommand() {
         Intent toReceiver = new Intent(this, ReceiverActionBroadcast.class);
@@ -108,6 +124,7 @@ public class PlayControlService extends Service {
     }
 
     private PendingIntent sendPlayStatus() {
+
         Intent toReceiver = new Intent(this, ReceiverActionBroadcast.class);
         toReceiver.putExtra(Constant.PLAY_KEY, playStatus);
         toReceiver.putExtra(Constant.SONG_KEY, song);
@@ -121,6 +138,6 @@ public class PlayControlService extends Service {
     public void onDestroy() {
         super.onDestroy();
         NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.cancel(Constant.NOTIFICATION_ID);
+        notificationManager.cancel("tag", Constant.NOTIFICATION_ID);
     }
 }

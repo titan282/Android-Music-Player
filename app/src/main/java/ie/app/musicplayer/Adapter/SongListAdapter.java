@@ -61,6 +61,7 @@ public class SongListAdapter extends RecyclerView.Adapter<SongListAdapter.SongVi
         }
 
         if (song.isHasPic()) {
+            song.loadEmbeddedPicture();
            holder.songImage.setImageBitmap(song.getSongEmbeddedPicture());
         } else {
             holder.songImage.setImageResource(song.getSongImage());
