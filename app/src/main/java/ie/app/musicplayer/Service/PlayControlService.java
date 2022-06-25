@@ -15,6 +15,7 @@ import android.support.v4.media.session.MediaControllerCompat;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
 import android.util.Log;
+import android.widget.RemoteViews;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
@@ -37,6 +38,7 @@ public class PlayControlService extends Service {
         return null;
     }
 
+
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
@@ -53,6 +55,8 @@ public class PlayControlService extends Service {
     public void sendNotificationMedia(Song song) {
         MediaSessionCompat mediaSessionCompat = new MediaSessionCompat(this,"tag");
 
+        boolean onGoing = (playStatus == Constant.Status.OFF) ? false : true;
+
         int pauseImageId;
         if (playStatus == Constant.Status.OFF) {
             pauseImageId = R.drawable.ic_play_arrow;
@@ -66,14 +70,18 @@ public class PlayControlService extends Service {
                 .setContentTitle(song.getSongName())
                 .setSubText(song.getSongSinger())
                 .setSmallIcon(R.drawable.ic_music)
+                .setOngoing(onGoing)
                 .addAction(R.drawable.ic_skip_previous, "Previous", sendPrevCommand()) // #0
                 .addAction(pauseImageId, "Pause", sendPlayStatus())  // #1
                 .addAction(R.drawable.ic_skip_next, "Next", sendNextCommand())  // #2
                 .setStyle(new androidx.media.app.NotificationCompat.MediaStyle()
                         .setShowActionsInCompactView(0, 1, 2 /* #1: pause button */)
-                        .setMediaSession(mediaSessionCompat.getSessionToken()))
+                        )
                 .setSound(null);
 
+        mediaSessionCompat.setPlaybackState(new PlaybackStateCompat.Builder()
+                .setState(PlaybackStateCompat.STATE_PLAYING, 0, 1f)
+                .build());
         if (!song.isHasPic()) {
             Log.e("PlayControlService", "Dark");
             notification.setLargeIcon(BitmapFactory.decodeResource(this.getResources(),
@@ -116,6 +124,7 @@ public class PlayControlService extends Service {
     }
 
     private PendingIntent sendPlayStatus() {
+
         Intent toReceiver = new Intent(this, ReceiverActionBroadcast.class);
         toReceiver.putExtra(Constant.PLAY_KEY, playStatus);
         toReceiver.putExtra(Constant.SONG_KEY, song);
