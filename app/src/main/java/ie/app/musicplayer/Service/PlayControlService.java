@@ -9,12 +9,17 @@ import android.graphics.BitmapFactory;
 import android.media.MediaMetadata;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.support.v4.media.MediaDescriptionCompat;
 import android.support.v4.media.MediaMetadataCompat;
+import android.support.v4.media.session.MediaControllerCompat;
 import android.support.v4.media.session.MediaSessionCompat;
+import android.support.v4.media.session.PlaybackStateCompat;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
+import androidx.core.content.ContextCompat;
+import androidx.media.session.MediaButtonReceiver;
 
 import ie.app.musicplayer.Application.MusicPlayerApp;
 import ie.app.musicplayer.Model.Song;
@@ -69,14 +74,6 @@ public class PlayControlService extends Service {
                         .setMediaSession(mediaSessionCompat.getSessionToken()))
                 .setSound(null);
 
-//        mediaSessionCompat.setMetadata
-//                (new MediaMetadataCompat.Builder()
-//                        .putBitmap(MediaMetadataCompat.METADATA_KEY_ALBUM_ART,song.getSongEmbeddedPicture())
-//                        .putString(MediaMetadata.METADATA_KEY_TITLE, song.getSongName())
-//                        .putString(MediaMetadata.METADATA_KEY_ARTIST, song.getSongSinger())
-//                        .build()
-//                );
-
         if (!song.isHasPic()) {
             Log.e("PlayControlService", "Dark");
             notification.setLargeIcon(BitmapFactory.decodeResource(this.getResources(),
@@ -85,8 +82,20 @@ public class PlayControlService extends Service {
             song.loadEmbeddedPicture();
             notification.setLargeIcon(song.getSongEmbeddedPicture());
         }
-        startForeground(Constant.NOTIFICATION_ID, notification.build());
+
+//        mediaSessionCompat.setMetadata
+//                (new MediaMetadataCompat.Builder()
+//                        .putBitmap(MediaMetadataCompat.METADATA_KEY_ALBUM_ART, song.getSongEmbeddedPicture())
+//                        .putString(MediaMetadata.METADATA_KEY_TITLE, song.getSongName())
+//                        .putString(MediaMetadata.METADATA_KEY_ARTIST, song.getSongSinger())
+//                        .build()
+//                );
+
+            NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            notificationManager.notify("tag", Constant.NOTIFICATION_ID, notification.build());
     }
+
+
 
     private PendingIntent sendNextCommand() {
         Intent toReceiver = new Intent(this, ReceiverActionBroadcast.class);
@@ -120,6 +129,6 @@ public class PlayControlService extends Service {
     public void onDestroy() {
         super.onDestroy();
         NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.cancel(Constant.NOTIFICATION_ID);
+        notificationManager.cancel("tag", Constant.NOTIFICATION_ID);
     }
 }
