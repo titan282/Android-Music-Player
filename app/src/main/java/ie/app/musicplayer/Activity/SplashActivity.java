@@ -50,19 +50,20 @@ public class SplashActivity extends AppCompatActivity {
                 new ActivityResultContracts.RequestPermission(), isGranted -> {
                     if (isGranted) {
                         loadSongFromSharedStorage();
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                Intent intent = new Intent(SplashActivity.this, HomeActivity.class);
+                                startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(SplashActivity.this).toBundle());
+                            }
+                        },2000);
                     } else {
                         onRequestPermissionResult();
                     }
                 });
 
         requestPermissionLauncher.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Intent intent = new Intent(SplashActivity.this, HomeActivity.class);
-                startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(SplashActivity.this).toBundle());
-            }
-        },2000);
+
     }
     public void loadSongFromSharedStorage() {
         if (((MusicPlayerApp)getApplication()).songList != null &&
